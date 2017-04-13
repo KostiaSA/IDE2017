@@ -5,12 +5,15 @@ import {Window} from "../platform/components/gui/Window";
 import {Button} from "../platform/components/gui/Button";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {IEventArgs} from "../platform/components/Component";
+import {Panel} from "../platform/components/gui/Panel";
 
 
 export class TestWindow extends Window {
     //=== код дизайнера (объявление свойств начало) ===//
     кнопка123: Button = new Button();
+    кнопкаPanel123: Button = new Button();
     testSql: Button = new Button();
+    panel1: Panel = new Panel();
     //=== код дизайнера (объявление свойств конец) ===//
     init() {
         super.init();
@@ -29,6 +32,22 @@ export class TestWindow extends Window {
         this.testSql.text = "test sql 456";
         this.children.push(this.testSql);
         this.title = "win1122---";
+
+        this.panel1.name = "panel1";
+        this.panel1.top = 50;
+        this.panel1.left = 150;
+        this.panel1.width = 410;
+        this.panel1.height = 410;
+        //this.panel1.autoSize = true;
+        this.children.push(this.panel1);
+
+        this.кнопкаPanel123.name = "кнопкаPanel123";
+        this.кнопкаPanel123.top = 10;
+        this.кнопкаPanel123.left = 10;
+        this.кнопкаPanel123.text = "это кнопка на панели";
+        this.panel1.children.push(this.кнопкаPanel123);
+
+
         //=== код дизайнера (конструктор конец) ===//
     }
 
@@ -37,9 +56,11 @@ export class TestWindow extends Window {
         //alert("12")
     }
 
-    кнопка123456_Click (args: IEventArgs) {
+    кнопка123456_Click(args: IEventArgs) {
         this.кнопка123.text = "жопа456";
-        this.кнопка123.onClick = this.кнопка123_Click;
+       // this.panel1.autoSize = true;
+        this.panel1.height = 100;
+//        this.кнопка123.onClick = this.кнопка123_Click;
         //alert("12")
     }
 }
@@ -47,10 +68,10 @@ export class TestWindow extends Window {
 
 export function createTestApplication2() {
 
-    let w=new TestWindow();
+    let w = new TestWindow();
     appState.desktop.windows.push(w);
 
-    setTimeout(()=>{
+    setTimeout(() => {
         console.log("time");
         let code: string[] = [];
         code.push("export class " + w.name + " extends Window {");
@@ -64,7 +85,7 @@ export function createTestApplication2() {
         code.push("}");
         console.log(code.join("\n"));
 
-    },1000);
+    }, 1000);
 
 
     return;

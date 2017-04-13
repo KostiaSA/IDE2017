@@ -4,7 +4,7 @@ import {EmittedCode} from "../code-emitter/EmittedCode";
 export class Control extends Component {
 
     // --- visible ---
-    private _visible: boolean;
+    private _visible: boolean = true;
     get visible(): boolean {
         return this._visible;
     }
@@ -16,7 +16,7 @@ export class Control extends Component {
 
     emitCode(code: EmittedCode, level: number) {
         super.emitCode(code, level);
-        code.emitBooleanValue(this, "visible", level);
+        code.emitBooleanValue(this, "visible", true);
     }
 
 }

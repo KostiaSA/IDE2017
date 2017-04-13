@@ -21,9 +21,9 @@ export class EmittedCode {
         }
     }
 
-    emitBooleanValue(component: any, varName: string, level: number) {
-        if (component[varName] !== undefined) {
-            if (level === 0)
+    emitBooleanValue(component: any, varName: string, defaultValue?: boolean) {
+        if (component[varName] !== undefined && (defaultValue === undefined || defaultValue !== component[varName])) {
+            if (component === component._owner)
                 this.inits.push("    " + "this." + varName + "=" + component[varName] + ";");
             else
                 this.inits.push("    " + "this." + component.name + "." + varName + "=" + component[varName] + ";");

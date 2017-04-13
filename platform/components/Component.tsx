@@ -61,6 +61,7 @@ export class Component {
         this._left = value;
     }
 
+    // --- height ---
     protected _height: number = 0;
     get height(): number {
         return this._height;
@@ -68,8 +69,14 @@ export class Component {
 
     set height(value: number) {
         this._height = value;
+        this.height_change();
     }
 
+    height_change() {
+
+    }
+
+    // --- width ---
     protected _width: number = 0;
     get width(): number {
         return this._width;
@@ -77,6 +84,11 @@ export class Component {
 
     set width(value: number) {
         this._width = value;
+        this.width_change();
+    }
+
+    width_change() {
+
     }
 
     private _codePath: string;
@@ -116,11 +128,6 @@ export class Component {
     }
 
     init() {
-        // for (let child of this.children) {
-        //     child._owner=this._owner;
-        //     child._designer = this._designer;
-        //     child.init();
-        // }
     }
 
     renderBody() {
@@ -130,6 +137,8 @@ export class Component {
         this.$.css("position", "absolute");
         this.$.css("left", this.left + "px");
         this.$.css("top", this.top + "px");
+        this.height_change();
+        this.width_change();
     }
 
     renderChildren() {
