@@ -7,6 +7,7 @@ import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {IEventArgs} from "../platform/components/Component";
 import {Panel} from "../platform/components/gui/Panel";
 import {Layout} from "../platform/components/gui/Layout";
+import {LayoutPanel} from "../platform/components/gui/LayoutPanel";
 
 
 export class TestWindow extends Window {
@@ -16,6 +17,8 @@ export class TestWindow extends Window {
     testSql: Button = new Button();
     panel1: Panel = new Panel();
     layout1: Layout = new Layout();
+    laypanel: LayoutPanel = new LayoutPanel();
+    laypanel2: LayoutPanel = new LayoutPanel();
     //=== код дизайнера (объявление свойств конец) ===//
     init() {
         super.init();
@@ -34,10 +37,10 @@ export class TestWindow extends Window {
         this.childrenAdd(this.testSql);
         this.title = "win1122---";
 
-        this.panel1.top = 0;
-        this.panel1.left = 0;
-        this.panel1.width = 100;
-        this.panel1.height = 100;
+        this.panel1.top = 10;
+        this.panel1.left = 10;
+        this.panel1.width = 50;
+        this.panel1.height = 50;
         this.childrenAdd(this.panel1);
 
         this.кнопкаPanel123.top = 10;
@@ -51,6 +54,15 @@ export class TestWindow extends Window {
         this.layout1.height = 410;
         //this.layout1.autoSize = true;
         this.childrenAdd(this.layout1);
+
+        this.laypanel.width=100;
+        this.laypanel.height=100;
+        this.layout1.childrenAdd(this.laypanel);
+
+        this.laypanel2.title="laypanel2";
+        this.laypanel2.width=100;
+        this.laypanel2.height=100;
+        this.layout1.childrenAdd(this.laypanel2);
 
         //=== код дизайнера (конструктор конец) ===//
     }

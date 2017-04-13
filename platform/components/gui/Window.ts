@@ -33,6 +33,9 @@ export class Window extends Control {
         return this.$id + "-content";
     }
 
+    get $childrenContainer(): JQuery {
+        return $("#"+this.$contentId);
+    }
 
 
     renderBody() {

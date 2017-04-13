@@ -38,7 +38,7 @@ export class Panel extends Control {
 
     renderBody() {
         super.renderBody();
-        this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo(this.parent.$);
+        this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
         let panelOptions: PanelOptions = {
             autoUpdate:true,
             theme: appState.theme,

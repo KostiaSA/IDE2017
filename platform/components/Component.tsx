@@ -21,6 +21,12 @@ export class Component {
         this._parent = value;
     }
 
+    // для рендеринга children
+    get $childrenContainer(): JQuery {
+        return this.$;
+    }
+
+
     // --- owner ---
     protected _owner: Component;
     get owner(): Component {
@@ -43,10 +49,7 @@ export class Component {
 
     protected _$id: string;
     get $id(): string {
-        if (this._$)
-            return this._$.attr("id");
-        else
-            return this._$id;
+        return this._$id;
     }
 
     // --- name ---
@@ -63,7 +66,7 @@ export class Component {
     }
 
     // --- top ---
-    protected _top: number = 0;
+    protected _top: number;
     get top(): number {
         return this._top;
     }
@@ -73,7 +76,7 @@ export class Component {
     }
 
     // --- left ---
-    protected _left: number = 0;
+    protected _left: number;
     get left(): number {
         return this._left;
     }
@@ -83,7 +86,7 @@ export class Component {
     }
 
     // --- height ---
-    protected _height: number = 0;
+    protected _height: number;
     get height(): number {
         return this._height;
     }
@@ -98,7 +101,7 @@ export class Component {
     }
 
     // --- width ---
-    protected _width: number = 0;
+    protected _width: number;
     get width(): number {
         return this._width;
     }
@@ -127,6 +130,8 @@ export class Component {
 
         code.emitNumberValue(this, "top");
         code.emitNumberValue(this, "left");
+        code.emitNumberValue(this, "width");
+        code.emitNumberValue(this, "height");
 
         this.children.forEach((child: Component, index: number) => {
             console.log(child.constructor.name);
@@ -160,9 +165,13 @@ export class Component {
     }
 
     renderProperties() {
-        this.$.css("position", "absolute");
-        this.$.css("left", this.left + "px");
-        this.$.css("top", this.top + "px");
+        if (this.left || this.top) {
+            this.$.css("position", "absolute");
+            this.$.css("left", this.left + "px");
+            this.$.css("top", this.top + "px");
+        }
+        else
+            this.$.css("position", "relative");
         this.height_change();
         this.width_change();
     }

@@ -36,7 +36,7 @@ export class Button extends Control {
 
     renderBody() {
         super.renderBody();
-        this.$ = $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$);
+        this.$ = $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
         this.$.jqxButton({theme: appState.theme});
     }
 

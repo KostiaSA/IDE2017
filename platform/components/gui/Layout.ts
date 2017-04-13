@@ -4,7 +4,12 @@ import {Control} from "./Control";
 import {appState} from "../../AppState";
 import jqxLayoutOptions = jqwidgets.LayoutOptions;
 import jqxLayoutLayout = jqwidgets.LayoutLayout;
+import {IDesigner} from "../../designer/IDesigner";
 
+
+export interface ILayoutItem {
+    getLayoutLayout(): jqxLayoutLayout;
+}
 
 export class Layout extends Control {
 
@@ -25,29 +30,47 @@ export class Layout extends Control {
         let layout: Array<jqxLayoutLayout> = [];
         layout.push({
             type: 'layoutGroup',
-            orientation: 'horizontal',
-            items: [{
-                type: 'layoutPanel',
-                title: 'Contacts',
-                contentContainer: 'ContactsPanel'}
-            ]
+            //orientation: 'horizo222ntal',
+            items: this.children.map((child: Component) => {
+                if (!(child as any as ILayoutItem).getLayoutLayout)
+                    throw  "internal error Layout.getLayout()";
+                return (child as any as ILayoutItem).getLayoutLayout();
+            })
         } as jqxLayoutLayout);
+        console.log(layout);
         return layout;
     }
 
-    renderBody() {
-        super.renderBody();
-        this.$ = $("<div style='border: 1px solid red' id='" + this.$id + "'></div>").appendTo(this.parent.$);
-        let LayoutOptions: jqxLayoutOptions = {
+    render(designer?: IDesigner) {
+        // this._parentId = parentId;
+        this._designer = designer;
+        this._$id = "a" + Math.random().toString(36).slice(2, 21);
+        this.init();
+//        this.$ = $("<div style='border: 1px solid red' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: 1px solid red' id='" + this.$id + "'></div>").appendTo($("body"));
+        for (let child of this.children) {
+            child.render(this._designer);
+        }
+        let layoutOptions: jqxLayoutOptions = {
             theme: appState.theme,
             height: 300,
-            width: 300,
+            width: 400,
             layout: this.getLayout()
 
         };
 
-        this.$.jqxLayout(LayoutOptions);
+        //this.$.jqxLayout(layoutOptions);
+        //this.renderProperties();
+
+
     }
+
+
+    // renderChildren() {
+    //     super.renderChildren();
+    //     //this.$.jqxLayout("refresh");
+    //     this.$.jqxLayout("loadLayout",this.getLayout());
+    // }
 
     renderProperties() {
         super.renderProperties();
