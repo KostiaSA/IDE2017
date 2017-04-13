@@ -14,7 +14,7 @@ export class EmittedCode {
 
     emitNumberValue(component: any, varName: string, defaultValue?: number) {
         if (component[varName] !== undefined && (defaultValue === undefined || defaultValue !== component[varName])) {
-            if (component === component._owner)
+            if (component === component.owner)
                 this.inits.push("    " + "this." + varName + "=" + component[varName] + ";");
             else
                 this.inits.push("    " + "this." + component.name + "." + varName + "=" + component[varName] + ";");
@@ -23,7 +23,7 @@ export class EmittedCode {
 
     emitBooleanValue(component: any, varName: string, defaultValue?: boolean) {
         if (component[varName] !== undefined && (defaultValue === undefined || defaultValue !== component[varName])) {
-            if (component === component._owner)
+            if (component === component.owner)
                 this.inits.push("    " + "this." + varName + "=" + component[varName] + ";");
             else
                 this.inits.push("    " + "this." + component.name + "." + varName + "=" + component[varName] + ";");
@@ -32,7 +32,7 @@ export class EmittedCode {
 
     emitStringValue(component: any, varName: string, defaultValue?: string) {
         if (component[varName] !== undefined && (defaultValue === undefined || defaultValue !== component[varName])) {
-            if (component === component._owner)
+            if (component === component.owner)
                 this.inits.push("    " + "this." + varName + "=" + JSON.stringify(component[varName]) + ";");
             else
                 this.inits.push("    " + "this." + component.name + "." + varName + "=" + JSON.stringify(component[varName]) + ";");
@@ -41,16 +41,16 @@ export class EmittedCode {
 
     emitEventValue(component: any, varName: string) {
         if (component[varName] !== undefined) {
-            for (let propName of Object.getOwnPropertyNames(Object.getPrototypeOf(component._owner))) {
-                if (component[varName] === component._owner[propName]) {
-                    if (component === component._owner)
+            for (let propName of Object.getOwnPropertyNames(Object.getPrototypeOf(component.owner))) {
+                if (component[varName] === component.owner[propName]) {
+                    if (component === component.owner)
                         this.inits.push("    " + "this." + varName + "= this." + propName + ";");
                     else
                         this.inits.push("    " + "this." + component.name + "." + varName + "= this." + propName + ";");
                     return
                 }
             }
-            if (component === component._owner)
+            if (component === component.owner)
                 this.inits.push("    " + "this." + varName + "= this.!ошибка не найдено '" + varName + "';");
             else
                 this.inits.push("    " + "this." + component.name + "." + varName + "= this.!ошибка не найдено '" + varName + "';");

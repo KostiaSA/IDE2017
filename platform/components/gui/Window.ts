@@ -33,14 +33,15 @@ export class Window extends Control {
         return this.$id + "-content";
     }
 
+
+
     renderBody() {
         super.renderBody();
 
         this._height = this._height || 600;
         this._width = this._width || 500;
 
-        let parent = $("#" + this._parentId);
-        this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "'></div></div>").appendTo(parent);
+        this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
 
         let opt: WindowOptions = {
             //opt.theme=appState.theme;

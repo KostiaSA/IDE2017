@@ -6,6 +6,7 @@ import {Button} from "../platform/components/gui/Button";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {IEventArgs} from "../platform/components/Component";
 import {Panel} from "../platform/components/gui/Panel";
+import {Layout} from "../platform/components/gui/Layout";
 
 
 export class TestWindow extends Window {
@@ -14,39 +15,42 @@ export class TestWindow extends Window {
     кнопкаPanel123: Button = new Button();
     testSql: Button = new Button();
     panel1: Panel = new Panel();
+    layout1: Layout = new Layout();
     //=== код дизайнера (объявление свойств конец) ===//
     init() {
         super.init();
+
         //=== код дизайнера (конструктор начало) ===//
         this.top = 100;
         this.left = 300;
-        this.кнопка123.name = "кнопка123";
         this.кнопка123.top = 100;
         this.кнопка123.left = 100;
         this.кнопка123.text = "это кнопка123456";
         this.кнопка123.onClick = this.кнопка123456_Click;
-        this.children.push(this.кнопка123);
-        this.testSql.name = "testSql";
+        this.childrenAdd(this.кнопка123);
         this.testSql.top = 200;
         this.testSql.left = 200;
         this.testSql.text = "test sql 456";
-        this.children.push(this.testSql);
+        this.childrenAdd(this.testSql);
         this.title = "win1122---";
 
-        this.panel1.name = "panel1";
-        this.panel1.top = 50;
-        this.panel1.left = 150;
-        this.panel1.width = 410;
-        this.panel1.height = 410;
-        //this.panel1.autoSize = true;
-        this.children.push(this.panel1);
+        this.panel1.top = 0;
+        this.panel1.left = 0;
+        this.panel1.width = 100;
+        this.panel1.height = 100;
+        this.childrenAdd(this.panel1);
 
-        this.кнопкаPanel123.name = "кнопкаPanel123";
         this.кнопкаPanel123.top = 10;
         this.кнопкаPanel123.left = 10;
         this.кнопкаPanel123.text = "это кнопка на панели";
-        this.panel1.children.push(this.кнопкаPanel123);
+        this.panel1.childrenAdd(this.кнопкаPanel123);
 
+        this.layout1.top = 120;
+        this.layout1.left = 10;
+        this.layout1.width = 410;
+        this.layout1.height = 410;
+        //this.layout1.autoSize = true;
+        this.childrenAdd(this.layout1);
 
         //=== код дизайнера (конструктор конец) ===//
     }

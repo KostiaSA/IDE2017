@@ -11,6 +11,25 @@ export interface IEvent<TArgs extends IEventArgs> {
 }
 
 export class Component {
+    // --- parent ---
+    protected _parent: Component;
+    get parent(): Component {
+        return this._parent;
+    }
+
+    set parent(value: Component) {
+        this._parent = value;
+    }
+
+    // --- owner ---
+    protected _owner: Component;
+    get owner(): Component {
+        return this._owner || this;
+    }
+
+    set owner(value: Component) {
+        this._owner = value;
+    }
 
     // --- $ ---
     protected _$: JQuery;
@@ -31,15 +50,17 @@ export class Component {
     }
 
     // --- name ---
-    protected _name: string;
     get name(): string {
-        return this._name;
-    }
+        for (let propName of Object.keys(this.owner)) {
+            if ((this.owner as any)[propName] === this)
+                return propName;
+        }
 
-    set name(value: string) {
-        this._name = value;
-    }
+        if (this.owner === this)
+            return this.constructor.name;
 
+        throw "ошибка платформы Component.get name()"
+    }
 
     // --- top ---
     protected _top: number = 0;
@@ -95,6 +116,12 @@ export class Component {
 
     children: Component[] = [];
 
+    childrenAdd(child: Component) {
+        child.owner = this.owner;
+        child.parent = this;
+        this.children.push(child);
+    }
+
 
     emitCode(code: EmittedCode) {
 
@@ -105,20 +132,19 @@ export class Component {
             console.log(child.constructor.name);
             code.emitDeclaration(child.name, child.constructor.name);
             child.emitCode(code);
-            if (this === this._owner)
-                code.inits.push("    " + "this.children.push(this." + child.name + ");");
+            if (this === this.owner)
+                code.inits.push("    " + "this.childrenAdd(this." + child.name + ");");
             else
-                code.inits.push("    " + "this." + this.name + ".children.push(this." + child.name + ");");
+                code.inits.push("    " + "this." + this.name + ".childrenAdd(this." + child.name + ");");
         });
     }
 
     protected _designer?: IDesigner;
-    protected _parentId: string;
-    protected _owner: Component;
+    //protected _parentId: string;
 
-    render(owner: Component, parentId: string, designer?: IDesigner) {
-        this._owner = owner;
-        this._parentId = parentId;
+
+    render(designer?: IDesigner) {
+        // this._parentId = parentId;
         this._designer = designer;
         this._$id = "a" + Math.random().toString(36).slice(2, 21);
         this.init();
@@ -143,7 +169,7 @@ export class Component {
 
     renderChildren() {
         for (let child of this.children) {
-            child.render(this._owner, this.$id, this._designer);
+            child.render(this._designer);
         }
     }
 
