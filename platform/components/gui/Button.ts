@@ -46,10 +46,10 @@ export class Button extends Control {
         this.text=this._text;
     }
 
-    emitCode(code: EmittedCode, level: number) {
-        super.emitCode(code, level);
-        code.emitStringValue(this, "text", level);
-        code.emitEventValue(this, "onClick", level);
+    emitCode(code: EmittedCode) {
+        super.emitCode(code);
+        code.emitStringValue(this, "text");
+        code.emitEventValue(this, "onClick");
     }
 
 }

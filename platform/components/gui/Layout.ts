@@ -2,9 +2,9 @@ import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
-import PanelOptions = jqwidgets.PanelOptions;
+import LayoutOptions = jqwidgets.LayoutOptions;
 
-export class Panel extends Control {
+export class Layout extends Control {
 
     // --- autoSize ---
     protected _autoSize: boolean = false;
@@ -19,7 +19,7 @@ export class Panel extends Control {
 
     autoSize_change() {
         if (this.$) {
-            this.$.jqxPanel({sizeMode: this.autoSize === true ? "wrap" : "fixed"} as PanelOptions);
+            this.$.jqxLayout({sizeMode: this.autoSize === true ? "wrap" : "fixed"} as LayoutOptions);
         }
     }
 
@@ -27,24 +27,23 @@ export class Panel extends Control {
     height_change() {
         super.height_change();
         if (this.$)
-            this.$.jqxPanel({height: this.height + "px"} as PanelOptions);
+            this.$.jqxLayout({height: this.height + "px"} as LayoutOptions);
     }
 
     width_change() {
         super.width_change();
         if (this.$)
-            this.$.jqxPanel({width: this.width + "px"} as PanelOptions);
+            this.$.jqxLayout({width: this.width + "px"} as LayoutOptions);
     }
 
     renderBody() {
         super.renderBody();
-        this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo($("#" + this._parentId));
-        let panelOptions: PanelOptions = {
-            autoUpdate:true,
+        this.$ = $("<div style='border: 1px solid red' id='" + this.$id + "'></div>").appendTo($("#" + this._parentId));
+        let LayoutOptions: LayoutOptions = {
             theme: appState.theme,
         };
 
-        this.$.jqxPanel(panelOptions);
+        this.$.jqxLayout(LayoutOptions);
     }
 
     renderProperties() {
@@ -54,7 +53,6 @@ export class Panel extends Control {
 
     emitCode(code: EmittedCode) {
         super.emitCode(code);
-        code.emitBooleanValue(this, "autoSize", false);
     }
 
 }

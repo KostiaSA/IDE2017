@@ -96,16 +96,16 @@ export class Component {
     children: Component[] = [];
 
 
-    emitCode(code: EmittedCode, level: number) {
+    emitCode(code: EmittedCode) {
 
-        code.emitNumberValue(this, "top", level);
-        code.emitNumberValue(this, "left", level);
+        code.emitNumberValue(this, "top");
+        code.emitNumberValue(this, "left");
 
         this.children.forEach((child: Component, index: number) => {
             console.log(child.constructor.name);
             code.emitDeclaration(child.name, child.constructor.name);
-            child.emitCode(code, level + 1);
-            if (level === 0)
+            child.emitCode(code);
+            if (this === this._owner)
                 code.inits.push("    " + "this.children.push(this." + child.name + ");");
             else
                 code.inits.push("    " + "this." + this.name + ".children.push(this." + child.name + ");");

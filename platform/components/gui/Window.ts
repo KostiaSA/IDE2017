@@ -7,7 +7,7 @@ import WindowOptions = jqwidgets.WindowOptions;
 export class Window extends Control {
 
     // --- title ---
-    private _title: string;
+    private _title: string = "окно";
     get title(): string {
         return this._title;
     }
@@ -18,10 +18,10 @@ export class Window extends Control {
             $("#" + this.$titleId).text(this.title);
     }
 
-    emitCode(code: EmittedCode, level: number) {
-        super.emitCode(code, level);
+    emitCode(code: EmittedCode) {
+        super.emitCode(code);
 
-        code.emitStringValue(this, "title", level);
+        code.emitStringValue(this, "title", "окно");
 
     }
 
@@ -52,23 +52,6 @@ export class Window extends Control {
         this.$.jqxWindow(opt);
 
         this.title = this._title;
-
-
-        // for (let c of this.controls) {
-        //     c.$designer = this.$designer;
-        //     c.show(this.$id + "content");
-        // }
-        //
-        // this.$autoRunDisposer.push(autorunAsync(() => {
-        //     $("#" + this.$id + "title").text(this.title);
-        //     //this.width += 10;
-        // }, 10));
-        //
-        // this.$autoRunDisposer.push(autorunAsync(() => {
-        //     this.$native.jqxWindow({width: this.width});
-        //     this.$native.jqxWindow({height: this.height});
-        //     this.$native.jqxWindow({position: {y: this.top, x: this.left}});
-        // }, 10));
 
     }
 }

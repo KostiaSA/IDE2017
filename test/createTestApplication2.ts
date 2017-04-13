@@ -77,7 +77,7 @@ export function createTestApplication2() {
         code.push("export class " + w.name + " extends Window {");
 
         let e = new EmittedCode();
-        w.emitCode(e, 0);
+        w.emitCode(e);
         code.push(e.getDeclaresCode());
         code.push("  init(){");
         code.push(e.getInitsCode());

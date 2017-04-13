@@ -14,8 +14,8 @@ export class Control extends Component {
     }
 
 
-    emitCode(code: EmittedCode, level: number) {
-        super.emitCode(code, level);
+    emitCode(code: EmittedCode) {
+        super.emitCode(code);
         code.emitBooleanValue(this, "visible", true);
     }
 
