@@ -82,14 +82,14 @@ export class TestWindow extends Window {
         this.splitPanel1.width = 410;
         this.splitPanel1.height = 410;
         //this.splitPanel1.dock = "fill";
-        this.splitPanel1.orientation="vertical";
+        this.splitPanel1.orientation = "vertical";
         this.childrenAdd(this.splitPanel1);
 
 
-        this.panelA.size="30%";
+        this.panelA.size = "30%";
         this.splitPanel1.childrenAdd(this.panelA);
 
-        this.panelB.size="70%";
+        this.panelB.size = "70%";
         this.splitPanel1.childrenAdd(this.panelB);
 
         this.кнопкаA.top = 10;
@@ -112,9 +112,9 @@ export class TestWindow extends Window {
     кнопка123456_Click(args: IEventArgs) {
         this.кнопка123.text = "жопа456";
         console.log("set dock 0");
-
+        this.splitPanel1.orientation = "horizontal";
         //this.splitPanel1.dock = "fill";
-        this.panel1.dock = "fill";
+        //this.panel1.dock = "fill";
         // this.panel1.autoSize = true;
         //this.panel1.height = 100;
 //        this.кнопка123.onClick = this.кнопка123_Click;

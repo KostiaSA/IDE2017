@@ -163,8 +163,9 @@ export class SplitPanel extends Component {
 
     set orientation(value: SplitPanelOrientation) {
         this._orientation = value;
-        if (this.$)
-            this.$.jqxWidget({orientation: this.orientation} as jqxWidgetOptions);
+        if (this.$) {
+            this.jqxWidget({orientation: this.orientation} as jqxWidgetOptions);
+        }
     }
 
     private __emitCode_orientation(code: EmittedCode) {
