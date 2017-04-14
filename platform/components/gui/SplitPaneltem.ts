@@ -7,8 +7,8 @@ import {isString} from "util";
 
 export class SplitPanelItem extends Control {
 
-    // --- size ---
-    protected _size: string | number;
+    // ------------------------------ size ------------------------------
+    _size: string | number;
     get size(): string | number {
         return this._size;
     }
@@ -19,22 +19,23 @@ export class SplitPanelItem extends Control {
         //  this.$.size(this.size);
     }
 
-
-    renderBody() {
-//        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-        this.$ = $("<div style='border: 0px solid orange'></div>").appendTo(this.parent.$childrenContainer);
-    }
-
-    // не удалять
-    renderProperties() {
-    }
-
-    emitCode(code: EmittedCode) {
-        super.emitCode(code);
+    private __emitCode_size(code: EmittedCode) {
         if (isString(this.size))
             code.emitStringValue(this, "size");
         else
             code.emitNumberValue(this, "size");
+    }
+
+    private __setOptions_size() {
+        this.size = this._size;
+    }
+
+
+    // ------------------------------ size ------------------------------
+    render() {
+        this.init();
+        this.$ = $("<div style='border: 0px solid orange'></div>").appendTo(this.parent.$childrenContainer);
+        this.renderChildren();
     }
 
 }

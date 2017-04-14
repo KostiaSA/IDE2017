@@ -18,6 +18,7 @@ export class Component {
 
     }
 
+    protected renderJqxWidgetAfterChildren: boolean = false;
     protected jqxWidget: Function;
 
     protected jqxWidgetFunc: string;
@@ -92,7 +93,7 @@ export class Component {
         for (let propName of getAllObjectProps(this)) {
             if (propName.startsWith("__emitCode_")) {
                 ((this as any)[propName]).call(this, code);
-                console.log("emit",propName);
+                console.log("emit", propName);
             }
         }
 
@@ -116,9 +117,16 @@ export class Component {
         this._$id = "a" + Math.random().toString(36).slice(2, 21);
         this.init();
         this.renderBody();
-        this.createJqxWidget();
-        this.setJqxWidgetOptions();
-        this.renderChildren();
+        if (this.renderJqxWidgetAfterChildren){
+            this.renderChildren();
+            this.createJqxWidget();
+            this.setJqxWidgetOptions();
+        }
+        else {
+            this.createJqxWidget();
+            this.setJqxWidgetOptions();
+            this.renderChildren();
+        }
     }
 
     init() {
@@ -137,10 +145,14 @@ export class Component {
                 console.log(propName);
             }
         }
+        this.fillJqxWidgetOptions(opt);
         console.log(this.jqxWidgetFunc, opt, getAllObjectProps(this));
         this.$[this.jqxWidgetFunc](opt);
         this.jqxWidget = this.$[this.jqxWidgetFunc];
 
+    }
+
+    fillJqxWidgetOptions(opt: any) {
     }
 
     setJqxWidgetOptions() {

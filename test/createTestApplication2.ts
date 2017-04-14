@@ -35,7 +35,7 @@ export class TestWindow extends Window {
         //=== код дизайнера (конструктор начало) ===//
         this.top = 100;
         this.left = 100;
-        this.height = 400;
+        this.height = 800;
         this.width = 600;
         this.кнопка123.top = 100;
         this.кнопка123.left = 100;
@@ -75,28 +75,32 @@ export class TestWindow extends Window {
         // // this.laypanel2.height=100;
         // // this.layout1.childrenAdd(this.laypanel2);
         //
-        // this.splitPanel1.top = 120;
-        // this.splitPanel1.left = 10;
-        // this.splitPanel1.width = 410;
-        // this.splitPanel1.height = 410;
-        // this.childrenAdd(this.splitPanel1);
-        //
-        //
-        // this.panelA.size="30%";
-        // this.splitPanel1.childrenAdd(this.panelA);
-        //
-        // this.panelB.size="70%";
-        // this.splitPanel1.childrenAdd(this.panelB);
-        //
-        // this.кнопкаA.top = 10;
-        // this.кнопкаA.left = 10;
-        // this.кнопкаA.text = "кнопкаA";
-        // this.panelA.childrenAdd(this.кнопкаA);
-        //
-        // this.кнопкаB.top = 10;
-        // this.кнопкаB.left = 10;
-        // this.кнопкаB.text = "кнопкаB";
-        // this.panelB.childrenAdd(this.кнопкаB);
+
+
+        this.splitPanel1.top = 120;
+        this.splitPanel1.left = 10;
+        this.splitPanel1.width = 410;
+        this.splitPanel1.height = 410;
+        this.splitPanel1.dock = "fill";
+        this.splitPanel1.orientation="vertical";
+        this.childrenAdd(this.splitPanel1);
+
+
+        this.panelA.size="30%";
+        this.splitPanel1.childrenAdd(this.panelA);
+
+        this.panelB.size="70%";
+        this.splitPanel1.childrenAdd(this.panelB);
+
+        this.кнопкаA.top = 10;
+        this.кнопкаA.left = 10;
+        this.кнопкаA.text = "кнопкаA";
+        this.panelA.childrenAdd(this.кнопкаA);
+
+        this.кнопкаB.top = 10;
+        this.кнопкаB.left = 10;
+        this.кнопкаB.text = "кнопкаB";
+        this.panelB.childrenAdd(this.кнопкаB);
         //=== код дизайнера (конструктор конец) ===//
     }
 

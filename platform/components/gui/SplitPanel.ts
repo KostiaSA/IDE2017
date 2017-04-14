@@ -2,16 +2,158 @@ import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
-import SplitterOptions = jqwidgets.SplitterOptions;
 import SplitterPanel = jqwidgets.SplitterPanel;
 import {SplitPanelItem} from "./SplitPaneltem";
 
+import jqxWidgetOptions = jqwidgets.SplitterOptions;
+
 export type SplitPanelOrientation = "vertical" | "horizontal";
+export type SplitPanelDock = "none" | "fill";
 
-export class SplitPanel extends Control {
+export class SplitPanel extends Component {
+    constructor() {
+        super();
+        this.jqxWidgetFunc = "jqxSplitter";
+        this.renderJqxWidgetAfterChildren = true;
+    }
 
-    // --- orientation ---
-    protected _orientation: SplitPanelOrientation = "horizontal";
+    // ------------------------------ dock ------------------------------
+    _dock: SplitPanelDock = "none";
+    get dock(): SplitPanelDock {
+        return this._dock;
+    }
+
+    set dock(value: SplitPanelDock) {
+        this._dock = value;
+        if (this.$ && value) {
+            this.top = this._top;
+            this.left = this._left;
+            this.width = this._width;
+            this.height = this._height;
+        }
+    }
+
+    private __emitCode_dock(code: EmittedCode) {
+        code.emitStringValue(this, "dock", "none");
+    }
+
+    private __setOptions_dock() {
+        this.dock = this._dock;
+    }
+
+    // ------------------------------ top ------------------------------
+    _top: number;
+    get top(): number {
+        return this._top;
+    }
+
+    set top(value: number) {
+        this._top = value;
+        if (this.$ && value) {
+            if (this.dock === "fill") {
+                this.$.css("top", "0px");
+            }
+            else {
+                this.$.css("top", value + "px");
+                this.$.css("position", "absolute");
+            }
+        }
+    }
+
+    private __emitCode_top(code: EmittedCode) {
+        code.emitNumberValue(this, "top");
+    }
+
+    private __setOptions_top() {
+        this.top = this._top;
+    }
+
+
+    // ------------------------------ left ------------------------------
+    _left: number;
+    get left(): number {
+        return this._left;
+    }
+
+    set left(value: number) {
+        this._left = value;
+        if (this.$ && value) {
+            if (this.dock === "fill") {
+                this.$.css("left", "0px");
+            }
+            else {
+                this.$.css("left", value + "px");
+                this.$.css("position", "absolute");
+            }
+        }
+    }
+
+    private __emitCode_left(code: EmittedCode) {
+        code.emitNumberValue(this, "left");
+    }
+
+    private __setOptions_left() {
+        this.left = this._left;
+    }
+
+    // ------------------------------ height ------------------------------
+    _height: number;
+    get height(): number {
+        return this._height;
+    }
+
+    set height(value: number) {
+        this._height = value;
+        if (this.$ && value)
+            if (this.dock === "fill") {
+                this.jqxWidget({height: "100%"} as jqxWidgetOptions);
+            }
+            else {
+                this.jqxWidget({height: value} as jqxWidgetOptions);
+            }
+    }
+
+    private __emitCode_height(code: EmittedCode) {
+        code.emitNumberValue(this, "height");
+    }
+
+    private __fillOptions_height(opt: jqxWidgetOptions) {
+        if (this.dock === "fill")
+            opt.height = "100%";
+        else
+            opt.height = this.height;
+    }
+
+    // ------------------------------ width ------------------------------
+    _width: number;
+    get width(): number {
+        return this._width;
+    }
+
+    set width(value: number) {
+        this._width = value;
+        if (this.$ && value)
+            if (this.dock === "fill") {
+                this.jqxWidget({width: "100%"} as jqxWidgetOptions);
+            }
+            else {
+                this.jqxWidget({width: value} as jqxWidgetOptions);
+            }
+    }
+
+    private __emitCode_width(code: EmittedCode) {
+        code.emitNumberValue(this, "width");
+    }
+
+    private __fillOptions_width(opt: jqxWidgetOptions) {
+        if (this.dock === "fill")
+            opt.width = "100%";
+        else
+            opt.width = this.width;
+    }
+
+    // ------------------------------ orientation ------------------------------
+    _orientation: SplitPanelOrientation = "horizontal";
     get orientation(): SplitPanelOrientation {
         return this._orientation;
     }
@@ -19,11 +161,18 @@ export class SplitPanel extends Control {
     set orientation(value: SplitPanelOrientation) {
         this._orientation = value;
         if (this.$)
-            this.$.jqxSplitter({orientation: this.orientation} as SplitterOptions);
+            this.$.jqxWidget({orientation: this.orientation} as jqxWidgetOptions);
     }
 
+    private __emitCode_orientation(code: EmittedCode) {
+        code.emitStringValue(this, "orientation", "horizontal");
+    }
 
-    // --- splitterVisible ---
+    private __fillOptions_orientation(opt: jqxWidgetOptions) {
+        opt.orientation = this.orientation;
+    }
+
+    // ------------------------------ splitterVisible ------------------------------
     private _splitterVisible: boolean = true;
     get splitterVisible(): boolean {
         return this._splitterVisible;
@@ -32,21 +181,16 @@ export class SplitPanel extends Control {
     set splitterVisible(value: boolean) {
         this._splitterVisible = value;
         if (this.$)
-            this.$.jqxSplitter({showSplitBar: value} as SplitterOptions);
+            this.$.jqxWidget({showSplitBar: value} as jqxWidgetOptions);
     }
 
-    // height_change() {
-    //     super.height_change();
-    //     if (this.$)
-    //         this.$.jqxSplitter({height: this.height + "px"} as SplitterOptions);
-    // }
-    //
-    // width_change() {
-    //     super.width_change();
-    //     if (this.$)
-    //         this.$.jqxSplitter({width: this.width + "px"} as SplitterOptions);
-    // }
-    //
+    private __emitCode_splitterVisible(code: EmittedCode) {
+        code.emitBooleanValue(this, "splitterVisible", true);
+    }
+
+    private __fillOptions_splitterVisible(opt: jqxWidgetOptions) {
+        opt.showSplitBar = this.splitterVisible;
+    }
 
     getPanelsLayout(): SplitterPanel[] {
         return this.children.map((child: Component) => {
@@ -55,33 +199,32 @@ export class SplitPanel extends Control {
     }
 
     renderBody() {
-        super.renderBody();
-        this.$ = $("<div style='border: 1px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-
+        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
-    // не удалять
-    renderProperties() {
+    fillJqxWidgetOptions(opt: jqxWidgetOptions) {
+        opt.panels = this.getPanelsLayout();
+        opt.splitBarSize = 3;
     }
 
-    renderChildren() {
-        super.renderChildren();
-        let panelOptions: SplitterOptions = {
-            theme: appState.theme,
-            orientation: this.orientation,
-            splitBarSize: 2,
-            showSplitBar: this.splitterVisible,
-            panels: this.getPanelsLayout(),
-        };
-        this.$.jqxSplitter(panelOptions);
-        super.setJqxWidgetOptions();
-    }
-
-    emitCode(code: EmittedCode) {
-        super.emitCode(code);
-        code.emitStringValue(this, "text");
-        code.emitBooleanValue(this, "splitterVisible", true);
-
-    }
+    // renderChildren() {
+    //     super.renderChildren();
+    //     let panelOptions: jqxWidgetOptions = {
+    //         theme: appState.theme,
+    //         orientation: this.orientation,
+    //         splitBarSize: 2,
+    //         showSplitBar: this.splitterVisible,
+    //         panels: this.getPanelsLayout(),
+    //     };
+    //     this.$.jqxSplitter(panelOptions);
+    //     super.setJqxWidgetOptions();
+    // }
+    //
+    // emitCode(code: EmittedCode) {
+    //     super.emitCode(code);
+    //     code.emitStringValue(this, "text");
+    //     code.emitBooleanValue(this, "splitterVisible", true);
+    //
+    // }
 
 }
