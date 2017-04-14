@@ -63,7 +63,7 @@ export class LayoutPanel extends Control implements ILayoutItem {
     }
 
     renderProperties() {
-        super.renderProperties();
+        super.setJqxWidgetOptions();
     }
 
     emitCode(code: EmittedCode) {

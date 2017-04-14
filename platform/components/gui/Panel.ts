@@ -24,17 +24,17 @@ export class Panel extends Control {
     }
 
 
-    height_change() {
-        super.height_change();
-        if (this.$)
-            this.$.jqxPanel({height: this.height + "px"} as PanelOptions);
-    }
-
-    width_change() {
-        super.width_change();
-        if (this.$)
-            this.$.jqxPanel({width: this.width + "px"} as PanelOptions);
-    }
+    // height_change() {
+    //     super.height_change();
+    //     if (this.$)
+    //         this.$.jqxPanel({height: this.height + "px"} as PanelOptions);
+    // }
+    //
+    // width_change() {
+    //     super.width_change();
+    //     if (this.$)
+    //         this.$.jqxPanel({width: this.width + "px"} as PanelOptions);
+    // }
 
     renderBody() {
         super.renderBody();
@@ -48,7 +48,7 @@ export class Panel extends Control {
     }
 
     renderProperties() {
-        super.renderProperties();
+        super.setJqxWidgetOptions();
         this.autoSize_change();
     }
 

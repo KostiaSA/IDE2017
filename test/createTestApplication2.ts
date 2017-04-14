@@ -34,7 +34,9 @@ export class TestWindow extends Window {
 
         //=== код дизайнера (конструктор начало) ===//
         this.top = 100;
-        this.left = 300;
+        this.left = 100;
+        this.height = 400;
+        this.width = 600;
         this.кнопка123.top = 100;
         this.кнопка123.left = 100;
         this.кнопка123.text = "это кнопка123456";
@@ -46,55 +48,55 @@ export class TestWindow extends Window {
         this.childrenAdd(this.testSql);
         this.title = "win1122---";
 
-        this.panel1.top = 10;
-        this.panel1.left = 10;
-        this.panel1.width = 50;
-        this.panel1.height = 50;
-        this.childrenAdd(this.panel1);
-
-        this.кнопкаPanel123.top = 10;
-        this.кнопкаPanel123.left = 10;
-        this.кнопкаPanel123.text = "это кнопка на панели";
-        this.panel1.childrenAdd(this.кнопкаPanel123);
-
-        // this.layout1.top = 120;
-        // this.layout1.left = 10;
-        // this.layout1.width = 410;
-        // this.layout1.height = 410;
-        // //this.layout1.autoSize = true;
-        // this.childrenAdd(this.layout1);
+        // this.panel1.top = 10;
+        // this.panel1.left = 10;
+        // this.panel1.width = 50;
+        // this.panel1.height = 50;
+        // this.childrenAdd(this.panel1);
         //
-        // this.laypanel.width=100;
-        // this.laypanel.height=100;
-        // this.layout1.childrenAdd(this.laypanel);
+        // this.кнопкаPanel123.top = 10;
+        // this.кнопкаPanel123.left = 10;
+        // this.кнопкаPanel123.text = "это кнопка на панели";
+        // this.panel1.childrenAdd(this.кнопкаPanel123);
         //
-        // this.laypanel2.title="laypanel2";
-        // this.laypanel2.width=100;
-        // this.laypanel2.height=100;
-        // this.layout1.childrenAdd(this.laypanel2);
-
-        this.splitPanel1.top = 120;
-        this.splitPanel1.left = 10;
-        this.splitPanel1.width = 410;
-        this.splitPanel1.height = 410;
-        this.childrenAdd(this.splitPanel1);
-
-
-        this.panelA.size="30%";
-        this.splitPanel1.childrenAdd(this.panelA);
-
-        this.panelB.size="70%";
-        this.splitPanel1.childrenAdd(this.panelB);
-
-        this.кнопкаA.top = 10;
-        this.кнопкаA.left = 10;
-        this.кнопкаA.text = "кнопкаA";
-        this.panelA.childrenAdd(this.кнопкаA);
-
-        this.кнопкаB.top = 10;
-        this.кнопкаB.left = 10;
-        this.кнопкаB.text = "кнопкаB";
-        this.panelB.childrenAdd(this.кнопкаB);
+        // // this.layout1.top = 120;
+        // // this.layout1.left = 10;
+        // // this.layout1.width = 410;
+        // // this.layout1.height = 410;
+        // // //this.layout1.autoSize = true;
+        // // this.childrenAdd(this.layout1);
+        // //
+        // // this.laypanel.width=100;
+        // // this.laypanel.height=100;
+        // // this.layout1.childrenAdd(this.laypanel);
+        // //
+        // // this.laypanel2.title="laypanel2";
+        // // this.laypanel2.width=100;
+        // // this.laypanel2.height=100;
+        // // this.layout1.childrenAdd(this.laypanel2);
+        //
+        // this.splitPanel1.top = 120;
+        // this.splitPanel1.left = 10;
+        // this.splitPanel1.width = 410;
+        // this.splitPanel1.height = 410;
+        // this.childrenAdd(this.splitPanel1);
+        //
+        //
+        // this.panelA.size="30%";
+        // this.splitPanel1.childrenAdd(this.panelA);
+        //
+        // this.panelB.size="70%";
+        // this.splitPanel1.childrenAdd(this.panelB);
+        //
+        // this.кнопкаA.top = 10;
+        // this.кнопкаA.left = 10;
+        // this.кнопкаA.text = "кнопкаA";
+        // this.panelA.childrenAdd(this.кнопкаA);
+        //
+        // this.кнопкаB.top = 10;
+        // this.кнопкаB.left = 10;
+        // this.кнопкаB.text = "кнопкаB";
+        // this.panelB.childrenAdd(this.кнопкаB);
         //=== код дизайнера (конструктор конец) ===//
     }
 
@@ -106,7 +108,7 @@ export class TestWindow extends Window {
     кнопка123456_Click(args: IEventArgs) {
         this.кнопка123.text = "жопа456";
         // this.panel1.autoSize = true;
-        this.panel1.height = 100;
+        //this.panel1.height = 100;
 //        this.кнопка123.onClick = this.кнопка123_Click;
         //alert("12")
     }

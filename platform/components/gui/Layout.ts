@@ -14,17 +14,17 @@ export interface ILayoutItem {
 export class Layout extends Control {
 
 
-    height_change() {
-        super.height_change();
-        if (this.$)
-            this.$.jqxLayout({height: this.height} as jqxLayoutOptions);
-    }
-
-    width_change() {
-        super.width_change();
-        if (this.$)
-            this.$.jqxLayout({width: this.width} as jqxLayoutOptions);
-    }
+    // height_change() {
+    //     super.height_change();
+    //     if (this.$)
+    //         this.$.jqxLayout({height: this.height} as jqxLayoutOptions);
+    // }
+    //
+    // width_change() {
+    //     super.width_change();
+    //     if (this.$)
+    //         this.$.jqxLayout({width: this.width} as jqxLayoutOptions);
+    // }
 
     getLayout(): Array<jqxLayoutLayout> {
         let layout: Array<jqxLayoutLayout> = [];
@@ -60,7 +60,7 @@ export class Layout extends Control {
         };
 
         //this.$.jqxLayout(layoutOptions);
-        //this.renderProperties();
+        //this.setJqxWidgetOptions();
 
 
     }
@@ -73,7 +73,7 @@ export class Layout extends Control {
     // }
 
     renderProperties() {
-        super.renderProperties();
+        super.setJqxWidgetOptions();
     }
 
     emitCode(code: EmittedCode) {

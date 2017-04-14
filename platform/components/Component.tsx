@@ -1,6 +1,8 @@
 import {EmittedCode} from "./code-emitter/EmittedCode";
 import {getObjectConstructorName} from "../utils/getObjectConstructorName";
 import {IDesigner} from "../designer/IDesigner";
+import {appState} from "../AppState";
+import {getAllObjectProps} from "../utils/getAllObjectProps";
 
 export interface IEventArgs {
     sender: Component;
@@ -11,6 +13,15 @@ export interface IEvent<TArgs extends IEventArgs> {
 }
 
 export class Component {
+
+    constructor() {
+
+    }
+
+    protected jqxWidget: Function;
+
+    protected jqxWidgetFunc: string;
+
     // --- parent ---
     protected _parent: Component;
     get parent(): Component {
@@ -65,56 +76,6 @@ export class Component {
         throw "ошибка платформы Component.get name()"
     }
 
-    // --- top ---
-    protected _top: number;
-    get top(): number {
-        return this._top;
-    }
-
-    set top(value: number) {
-        this._top = value;
-    }
-
-    // --- left ---
-    protected _left: number;
-    get left(): number {
-        return this._left;
-    }
-
-    set left(value: number) {
-        this._left = value;
-    }
-
-    // --- height ---
-    protected _height: number;
-    get height(): number {
-        return this._height;
-    }
-
-    set height(value: number) {
-        this._height = value;
-        this.height_change();
-    }
-
-    height_change() {
-
-    }
-
-    // --- width ---
-    protected _width: number;
-    get width(): number {
-        return this._width;
-    }
-
-    set width(value: number) {
-        this._width = value;
-        this.width_change();
-    }
-
-    width_change() {
-
-    }
-
     private _codePath: string;
 
     children: Component[] = [];
@@ -134,7 +95,7 @@ export class Component {
         code.emitNumberValue(this, "height");
 
         this.children.forEach((child: Component, index: number) => {
-            console.log(child.constructor.name);
+            //console.log(child.constructor.name);
             code.emitDeclaration(child.name, child.constructor.name);
             child.emitCode(code);
             if (this === this.owner)
@@ -145,7 +106,6 @@ export class Component {
     }
 
     protected _designer?: IDesigner;
-    //protected _parentId: string;
 
 
     render(designer?: IDesigner) {
@@ -154,26 +114,40 @@ export class Component {
         this._$id = "a" + Math.random().toString(36).slice(2, 21);
         this.init();
         this.renderBody();
-        this.renderProperties();
+        this.createJqxWidget();
+        this.setJqxWidgetOptions();
         this.renderChildren();
     }
 
     init() {
+       //throw "Component.init(): abstract error";
     }
 
     renderBody() {
+        this.$ = $("<div data-compoment='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
-    renderProperties() {
-        if (this.left || this.top) {
-            this.$.css("position", "absolute");
-            this.$.css("left", this.left + "px");
-            this.$.css("top", this.top + "px");
+    createJqxWidget() {
+        let opt: any = {};
+        for (let propName of getAllObjectProps(this)) {
+            if (propName.startsWith("__fillOptions_")) {
+                ((this as any)[propName]).call(this, opt);
+                console.log(propName);
+            }
         }
-        else
-            this.$.css("position", "relative");
-        this.height_change();
-        this.width_change();
+        console.log(this.jqxWidgetFunc,opt,getAllObjectProps(this));
+        this.$[this.jqxWidgetFunc](opt);
+        this.jqxWidget=this.$[this.jqxWidgetFunc];
+
+    }
+
+    setJqxWidgetOptions() {
+        for (let propName of getAllObjectProps(this)) {
+            if (propName.startsWith("__setOptions_")) {
+                ((this as any)[propName]).call(this);
+                console.log(propName);
+            }
+        }
     }
 
     renderChildren() {

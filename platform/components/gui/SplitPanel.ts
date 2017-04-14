@@ -35,18 +35,18 @@ export class SplitPanel extends Control {
             this.$.jqxSplitter({showSplitBar: value} as SplitterOptions);
     }
 
-    height_change() {
-        super.height_change();
-        if (this.$)
-            this.$.jqxSplitter({height: this.height + "px"} as SplitterOptions);
-    }
-
-    width_change() {
-        super.width_change();
-        if (this.$)
-            this.$.jqxSplitter({width: this.width + "px"} as SplitterOptions);
-    }
-
+    // height_change() {
+    //     super.height_change();
+    //     if (this.$)
+    //         this.$.jqxSplitter({height: this.height + "px"} as SplitterOptions);
+    // }
+    //
+    // width_change() {
+    //     super.width_change();
+    //     if (this.$)
+    //         this.$.jqxSplitter({width: this.width + "px"} as SplitterOptions);
+    // }
+    //
 
     getPanelsLayout(): SplitterPanel[] {
         return this.children.map((child: Component) => {
@@ -74,7 +74,7 @@ export class SplitPanel extends Control {
             panels: this.getPanelsLayout(),
         };
         this.$.jqxSplitter(panelOptions);
-        super.renderProperties();
+        super.setJqxWidgetOptions();
     }
 
     emitCode(code: EmittedCode) {
