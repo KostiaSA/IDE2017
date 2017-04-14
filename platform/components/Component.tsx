@@ -149,8 +149,6 @@ export class Component {
         }
         this.fillJqxWidgetOptions(opt);
         this.jqxWidget(opt);
-        //this.jqxWidget = this.$[this.jqxWidgetFunc];
-
     }
 
     fillJqxWidgetOptions(opt: any) {
