@@ -24,12 +24,16 @@ export class SplitPanel extends Component {
     }
 
     set dock(value: SplitPanelDock) {
+        console.log("set dock");
+        let needRefresh = this._dock !== value;
         this._dock = value;
-        if (this.$ && value) {
+        if (this.$ && needRefresh) {
             this.top = this._top;
             this.left = this._left;
             this.width = this._width;
             this.height = this._height;
+            console.log("this.jqxWidget(refresh)");
+            //this.jqxWidget("refresh");
         }
     }
 
@@ -134,6 +138,9 @@ export class SplitPanel extends Component {
         this._width = value;
         if (this.$ && value)
             if (this.dock === "fill") {
+                console.log("xxxxxx1",this._$);
+                console.log("xxxxxx2",this.$);
+                debugger
                 this.jqxWidget({width: "100%"} as jqxWidgetOptions);
             }
             else {
@@ -192,15 +199,17 @@ export class SplitPanel extends Component {
         opt.showSplitBar = this.splitterVisible;
     }
 
+    // ------------------------------ renderBody ------------------------------
+    renderBody() {
+        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+    }
+
     getPanelsLayout(): SplitterPanel[] {
         return this.children.map((child: Component) => {
             return {size: (child as SplitPanelItem).size};
         });
     }
 
-    renderBody() {
-        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-    }
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
         opt.panels = this.getPanelsLayout();

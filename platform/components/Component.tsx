@@ -19,7 +19,7 @@ export class Component {
     }
 
     protected renderJqxWidgetAfterChildren: boolean = false;
-    protected jqxWidget: Function;
+    protected jqxWidget: Function=()=>{};
 
     protected jqxWidgetFunc: string;
 
