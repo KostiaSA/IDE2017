@@ -133,17 +133,5 @@ export class Window extends Component {
         //this._width = this._width || 500;
 
         this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
-
-        // let opt: WindowOptions = {
-        //     //opt.theme=appState.theme;
-        //     position: {y: this.top, x: this.left},
-        //     height: this.height,
-        //     width: this.width,
-        // };
-        //
-        // this.$.jqxWindow(opt);
-        //
-        // this.title = this._title;
-
     }
 }

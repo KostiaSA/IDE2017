@@ -89,10 +89,12 @@ export class Component {
 
     emitCode(code: EmittedCode) {
 
-        code.emitNumberValue(this, "top");
-        code.emitNumberValue(this, "left");
-        code.emitNumberValue(this, "width");
-        code.emitNumberValue(this, "height");
+        for (let propName of getAllObjectProps(this)) {
+            if (propName.startsWith("__emitCode_")) {
+                ((this as any)[propName]).call(this, code);
+                console.log("emit",propName);
+            }
+        }
 
         this.children.forEach((child: Component, index: number) => {
             //console.log(child.constructor.name);
@@ -120,7 +122,7 @@ export class Component {
     }
 
     init() {
-       //throw "Component.init(): abstract error";
+        //throw "Component.init(): abstract error";
     }
 
     renderBody() {
@@ -135,9 +137,9 @@ export class Component {
                 console.log(propName);
             }
         }
-        console.log(this.jqxWidgetFunc,opt,getAllObjectProps(this));
+        console.log(this.jqxWidgetFunc, opt, getAllObjectProps(this));
         this.$[this.jqxWidgetFunc](opt);
-        this.jqxWidget=this.$[this.jqxWidgetFunc];
+        this.jqxWidget = this.$[this.jqxWidgetFunc];
 
     }
 

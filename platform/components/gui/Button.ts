@@ -78,6 +78,7 @@ export class Button extends Component {
     private __setOptions_left() {
         this.left = this._left;
     }
+
     // ------------------------------ height ------------------------------
     _height: number;
     get height(): number {
@@ -140,9 +141,9 @@ export class Button extends Component {
         this.onClick = this._onClick;
     }
 
-    // private __emitCode_onClick(code: EmittedCode) {
-    //     code.emitEventValue(this, "onClick");
-    // }
+    private __emitCode_onClick(code: EmittedCode) {
+        code.emitEventValue(this, "onClick");
+    }
 
 
     // // ------------------------------ render ------------------------------
