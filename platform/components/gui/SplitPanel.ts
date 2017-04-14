@@ -22,6 +22,19 @@ export class SplitPanel extends Control {
             this.$.jqxSplitter({orientation: this.orientation} as SplitterOptions);
     }
 
+
+    // --- splitterVisible ---
+    private _splitterVisible: boolean = true;
+    get splitterVisible(): boolean {
+        return this._splitterVisible;
+    }
+
+    set splitterVisible(value: boolean) {
+        this._splitterVisible = value;
+        if (this.$)
+            this.$.jqxSplitter({showSplitBar: value} as SplitterOptions);
+    }
+
     height_change() {
         super.height_change();
         if (this.$)
@@ -55,9 +68,9 @@ export class SplitPanel extends Control {
         super.renderChildren();
         let panelOptions: SplitterOptions = {
             theme: appState.theme,
-            orientation: 'horizontal',
+            orientation: this.orientation,
             splitBarSize: 2,
-            //showSplitBar:false,
+            showSplitBar: this.splitterVisible,
             panels: this.getPanelsLayout(),
         };
         this.$.jqxSplitter(panelOptions);
@@ -67,6 +80,8 @@ export class SplitPanel extends Control {
     emitCode(code: EmittedCode) {
         super.emitCode(code);
         code.emitStringValue(this, "text");
+        code.emitBooleanValue(this, "splitterVisible", true);
+
     }
 
 }

@@ -3,6 +3,7 @@ import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
 import PanelOptions = jqwidgets.PanelOptions;
+import {isString} from "util";
 
 export class SplitPanelItem extends Control {
 
@@ -11,22 +12,17 @@ export class SplitPanelItem extends Control {
     get size(): string | number {
         return this._size;
     }
+
     set size(value: string | number) {
         this._size = value;
         //if (this.$)
-          //  this.$.size(this.size);
+        //  this.$.size(this.size);
     }
 
 
     renderBody() {
-        super.renderBody();
-        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-        // let panelOptions: PanelOptions = {
-        //     //autoUpdate:true,
-        //     theme: appState.theme,
-        // };
-        //
-        // this.$.jqxPanel(panelOptions);
+//        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: 0px solid orange'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     // не удалять
@@ -35,7 +31,10 @@ export class SplitPanelItem extends Control {
 
     emitCode(code: EmittedCode) {
         super.emitCode(code);
-        //code.emitBooleanValue(this, "autoSize", false);
+        if (isString(this.size))
+            code.emitStringValue(this, "size");
+        else
+            code.emitNumberValue(this, "size");
     }
 
 }
