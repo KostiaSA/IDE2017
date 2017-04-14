@@ -8,6 +8,8 @@ import {IEventArgs} from "../platform/components/Component";
 import {Panel} from "../platform/components/gui/Panel";
 import {Layout} from "../platform/components/gui/Layout";
 import {LayoutPanel} from "../platform/components/gui/LayoutPanel";
+import {SplitPanel} from "../platform/components/gui/SplitPanel";
+import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 
 
 export class TestWindow extends Window {
@@ -19,6 +21,13 @@ export class TestWindow extends Window {
     layout1: Layout = new Layout();
     laypanel: LayoutPanel = new LayoutPanel();
     laypanel2: LayoutPanel = new LayoutPanel();
+
+    splitPanel1: SplitPanel = new SplitPanel();
+    panelA: SplitPanelItem = new SplitPanelItem();
+    panelB: SplitPanelItem = new SplitPanelItem();
+    кнопкаA: Button = new Button();
+    кнопкаB: Button = new Button();
+
     //=== код дизайнера (объявление свойств конец) ===//
     init() {
         super.init();
@@ -48,22 +57,44 @@ export class TestWindow extends Window {
         this.кнопкаPanel123.text = "это кнопка на панели";
         this.panel1.childrenAdd(this.кнопкаPanel123);
 
-        this.layout1.top = 120;
-        this.layout1.left = 10;
-        this.layout1.width = 410;
-        this.layout1.height = 410;
-        //this.layout1.autoSize = true;
-        this.childrenAdd(this.layout1);
+        // this.layout1.top = 120;
+        // this.layout1.left = 10;
+        // this.layout1.width = 410;
+        // this.layout1.height = 410;
+        // //this.layout1.autoSize = true;
+        // this.childrenAdd(this.layout1);
+        //
+        // this.laypanel.width=100;
+        // this.laypanel.height=100;
+        // this.layout1.childrenAdd(this.laypanel);
+        //
+        // this.laypanel2.title="laypanel2";
+        // this.laypanel2.width=100;
+        // this.laypanel2.height=100;
+        // this.layout1.childrenAdd(this.laypanel2);
 
-        this.laypanel.width=100;
-        this.laypanel.height=100;
-        this.layout1.childrenAdd(this.laypanel);
+        this.splitPanel1.top = 120;
+        this.splitPanel1.left = 10;
+        this.splitPanel1.width = 410;
+        this.splitPanel1.height = 410;
+        this.childrenAdd(this.splitPanel1);
 
-        this.laypanel2.title="laypanel2";
-        this.laypanel2.width=100;
-        this.laypanel2.height=100;
-        this.layout1.childrenAdd(this.laypanel2);
 
+        this.panelA.size="30%";
+        this.splitPanel1.childrenAdd(this.panelA);
+
+        this.panelB.size="70%";
+        this.splitPanel1.childrenAdd(this.panelB);
+
+        this.кнопкаA.top = 10;
+        this.кнопкаA.left = 10;
+        this.кнопкаA.text = "кнопкаA";
+        this.panelA.childrenAdd(this.кнопкаA);
+
+        this.кнопкаB.top = 10;
+        this.кнопкаB.left = 10;
+        this.кнопкаB.text = "кнопкаB";
+        this.panelB.childrenAdd(this.кнопкаB);
         //=== код дизайнера (конструктор конец) ===//
     }
 
@@ -74,7 +105,7 @@ export class TestWindow extends Window {
 
     кнопка123456_Click(args: IEventArgs) {
         this.кнопка123.text = "жопа456";
-       // this.panel1.autoSize = true;
+        // this.panel1.autoSize = true;
         this.panel1.height = 100;
 //        this.кнопка123.onClick = this.кнопка123_Click;
         //alert("12")
