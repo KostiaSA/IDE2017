@@ -1,7 +1,5 @@
 import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
-import {Control} from "./Control";
-import {appState} from "../../AppState";
 import SplitterPanel = jqwidgets.SplitterPanel;
 import {SplitPanelItem} from "./SplitPaneltem";
 

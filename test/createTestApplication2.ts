@@ -48,16 +48,16 @@ export class TestWindow extends Window {
         this.childrenAdd(this.testSql);
         this.title = "win1122---";
 
-        // this.panel1.top = 10;
-        // this.panel1.left = 10;
-        // this.panel1.width = 50;
-        // this.panel1.height = 50;
-        // this.childrenAdd(this.panel1);
-        //
-        // this.кнопкаPanel123.top = 10;
-        // this.кнопкаPanel123.left = 10;
-        // this.кнопкаPanel123.text = "это кнопка на панели";
-        // this.panel1.childrenAdd(this.кнопкаPanel123);
+        this.panel1.top = 10;
+        this.panel1.left = 10;
+        this.panel1.width = 150;
+        this.panel1.height = 150;
+        this.childrenAdd(this.panel1);
+
+        this.кнопкаPanel123.top = 10;
+        this.кнопкаPanel123.left = 10;
+        this.кнопкаPanel123.text = "это кнопка на панели";
+        this.panel1.childrenAdd(this.кнопкаPanel123);
         //
         // // this.layout1.top = 120;
         // // this.layout1.left = 10;
@@ -113,7 +113,8 @@ export class TestWindow extends Window {
         this.кнопка123.text = "жопа456";
         console.log("set dock 0");
 
-        this.splitPanel1.dock = "fill";
+        //this.splitPanel1.dock = "fill";
+        this.panel1.dock = "fill";
         // this.panel1.autoSize = true;
         //this.panel1.height = 100;
 //        this.кнопка123.onClick = this.кнопка123_Click;

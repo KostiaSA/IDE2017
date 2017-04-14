@@ -2,59 +2,176 @@ import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
-import PanelOptions = jqwidgets.PanelOptions;
+import jqxWidgetOptions = jqwidgets.PanelOptions;
+import {SplitPanelDock} from "./SplitPanel";
 
 export class Panel extends Control {
 
-    // --- autoSize ---
-    protected _autoSize: boolean = false;
-    get autoSize(): boolean {
-        return this._autoSize;
+    constructor() {
+        super();
+        this.renderJqxWidgetAfterChildren = true;
     }
 
-    set autoSize(value: boolean) {
-        this._autoSize = value;
-        this.autoSize_change();
+    jqxWidget(...args: any[]): Function {
+        return this.$.jqxPanel(...args);
+    };
+
+    // // ------------------------------ _autoSize ------------------------------
+    // protected _autoSize: boolean = false;
+    // get autoSize(): boolean {
+    //     return this._autoSize;
+    // }
+    //
+    // set autoSize(value: boolean) {
+    //     this._autoSize = value;
+    //     this.autoSize_change();
+    // }
+    //
+    // autoSize_change() {
+    //     if (this.$) {
+    //         this.$.jqxPanel({sizeMode: this.autoSize === true ? "wrap" : "fixed"} as PanelOptions);
+    //     }
+    // }
+
+
+    // ------------------------------ dock ------------------------------
+    _dock: SplitPanelDock = "none";
+    get dock(): SplitPanelDock {
+        return this._dock;
     }
 
-    autoSize_change() {
-        if (this.$) {
-            this.$.jqxPanel({sizeMode: this.autoSize === true ? "wrap" : "fixed"} as PanelOptions);
+    set dock(value: SplitPanelDock) {
+        let needRefresh = this._dock !== value;
+        this._dock = value;
+        if (this.$ && needRefresh) {
+            this.top = this._top;
+            this.left = this._left;
+            this.width = this._width;
+            this.height = this._height;
         }
     }
 
+    private __emitCode_dock(code: EmittedCode) {
+        code.emitStringValue(this, "dock", "none");
+    }
 
-    // height_change() {
-    //     super.height_change();
-    //     if (this.$)
-    //         this.$.jqxPanel({height: this.height + "px"} as PanelOptions);
-    // }
-    //
-    // width_change() {
-    //     super.width_change();
-    //     if (this.$)
-    //         this.$.jqxPanel({width: this.width + "px"} as PanelOptions);
-    // }
+    private __setOptions_dock() {
+        this.dock = this._dock;
+    }
+
+    // ------------------------------ top ------------------------------
+    _top: number;
+    get top(): number {
+        return this._top;
+    }
+
+    set top(value: number) {
+        this._top = value;
+        if (this.$ && value) {
+            if (this.dock === "fill") {
+                this.$.css("top", "0px");
+            }
+            else {
+                this.$.css("top", value + "px");
+                this.$.css("position", "absolute");
+            }
+        }
+    }
+
+    private __emitCode_top(code: EmittedCode) {
+        code.emitNumberValue(this, "top");
+    }
+
+    private __setOptions_top() {
+        this.top = this._top;
+    }
+
+
+    // ------------------------------ left ------------------------------
+    _left: number;
+    get left(): number {
+        return this._left;
+    }
+
+    set left(value: number) {
+        this._left = value;
+        if (this.$ && value) {
+            if (this.dock === "fill") {
+                this.$.css("left", "0px");
+            }
+            else {
+                this.$.css("left", value + "px");
+                this.$.css("position", "absolute");
+            }
+        }
+    }
+
+    private __emitCode_left(code: EmittedCode) {
+        code.emitNumberValue(this, "left");
+    }
+
+    private __setOptions_left() {
+        this.left = this._left;
+    }
+
+    // ------------------------------ height ------------------------------
+    _height: number;
+    get height(): number {
+        return this._height;
+    }
+
+    set height(value: number) {
+        this._height = value;
+        if (this.$ && value)
+            if (this.dock === "fill") {
+                this.jqxWidget({height: "100%"} as jqxWidgetOptions);
+            }
+            else {
+                this.jqxWidget({height: value} as jqxWidgetOptions);
+            }
+    }
+
+    private __emitCode_height(code: EmittedCode) {
+        code.emitNumberValue(this, "height");
+    }
+
+    private __fillOptions_height(opt: jqxWidgetOptions) {
+        if (this.dock === "fill")
+            opt.height = "100%";
+        else
+            opt.height = this.height;
+    }
+
+    // ------------------------------ width ------------------------------
+    _width: number;
+    get width(): number {
+        return this._width;
+    }
+
+    set width(value: number) {
+        this._width = value;
+        if (this.$ && value)
+            if (this.dock === "fill") {
+                this.jqxWidget({width: "100%"} as jqxWidgetOptions);
+            }
+            else {
+                this.jqxWidget({width: value} as jqxWidgetOptions);
+            }
+    }
+
+    private __emitCode_width(code: EmittedCode) {
+        code.emitNumberValue(this, "width");
+    }
+
+    private __fillOptions_width(opt: jqxWidgetOptions) {
+        if (this.dock === "fill")
+            opt.width = "100%";
+        else
+            opt.width = this.width;
+    }
 
     renderBody() {
-        super.renderBody();
         this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-        let panelOptions: PanelOptions = {
-            autoUpdate:true,
-            theme: appState.theme,
-        };
-
-        this.$.jqxPanel(panelOptions);
-    }
-
-    renderProperties() {
-        super.setJqxWidgetOptions();
-        this.autoSize_change();
-    }
-
-    emitCode(code: EmittedCode) {
-        super.emitCode(code);
-        code.emitBooleanValue(this, "autoSize", false);
     }
 
 }
