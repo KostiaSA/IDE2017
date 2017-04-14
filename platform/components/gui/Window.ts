@@ -7,8 +7,11 @@ import jqxWidgetOptions = jqwidgets.WindowOptions;
 export class Window extends Component {
     constructor() {
         super();
-        this.jqxWidgetFunc = "jqxWindow";
     }
+
+    jqxWidget(...args: any[]): Function {
+        return this.$.jqxWindow(...args);
+    };
 
     // ------------------------------ top ------------------------------
     _top: number;

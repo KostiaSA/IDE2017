@@ -11,11 +11,15 @@ export type SplitPanelOrientation = "vertical" | "horizontal";
 export type SplitPanelDock = "none" | "fill";
 
 export class SplitPanel extends Component {
+
     constructor() {
         super();
-        this.jqxWidgetFunc = "jqxSplitter";
         this.renderJqxWidgetAfterChildren = true;
     }
+
+    jqxWidget(...args: any[]): Function {
+        return this.$.jqxSplitter(...args);
+    };
 
     // ------------------------------ dock ------------------------------
     _dock: SplitPanelDock = "none";
@@ -24,7 +28,6 @@ export class SplitPanel extends Component {
     }
 
     set dock(value: SplitPanelDock) {
-        console.log("set dock");
         let needRefresh = this._dock !== value;
         this._dock = value;
         if (this.$ && needRefresh) {
@@ -32,8 +35,6 @@ export class SplitPanel extends Component {
             this.left = this._left;
             this.width = this._width;
             this.height = this._height;
-            console.log("this.jqxWidget(refresh)");
-            //this.jqxWidget("refresh");
         }
     }
 
@@ -138,9 +139,6 @@ export class SplitPanel extends Component {
         this._width = value;
         if (this.$ && value)
             if (this.dock === "fill") {
-                console.log("xxxxxx1",this._$);
-                console.log("xxxxxx2",this.$);
-                debugger
                 this.jqxWidget({width: "100%"} as jqxWidgetOptions);
             }
             else {

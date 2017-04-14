@@ -19,9 +19,11 @@ export class Component {
     }
 
     protected renderJqxWidgetAfterChildren: boolean = false;
-    protected jqxWidget: Function=()=>{};
 
-    protected jqxWidgetFunc: string;
+    protected jqxWidget(...args:any[]): Function{
+        throw "abstract error Component.jqxWidget()";
+    };
+
 
     // --- parent ---
     protected _parent: Component;
@@ -146,9 +148,8 @@ export class Component {
             }
         }
         this.fillJqxWidgetOptions(opt);
-        console.log(this.jqxWidgetFunc, opt, getAllObjectProps(this));
-        this.$[this.jqxWidgetFunc](opt);
-        this.jqxWidget = this.$[this.jqxWidgetFunc];
+        this.jqxWidget(opt);
+        //this.jqxWidget = this.$[this.jqxWidgetFunc];
 
     }
 

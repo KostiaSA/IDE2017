@@ -10,8 +10,11 @@ export class Button extends Component {
 
     constructor() {
         super();
-        this.jqxWidgetFunc = "jqxButton";
     }
+
+    jqxWidget(...args: any[]): Function {
+        return this.$.jqxButton(...args);
+    };
 
     // ------------------------------ text ------------------------------
     _text: string;
