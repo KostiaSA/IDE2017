@@ -3,7 +3,7 @@ import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.PanelOptions;
-import {SplitPanelDock} from "./SplitPanel";
+import {PanelDock} from "./SplitPanel";
 
 export class Panel extends Control {
 
@@ -35,12 +35,12 @@ export class Panel extends Control {
 
 
     // ------------------------------ dock ------------------------------
-    _dock: SplitPanelDock = "none";
-    get dock(): SplitPanelDock {
+    _dock: PanelDock = "none";
+    get dock(): PanelDock {
         return this._dock;
     }
 
-    set dock(value: SplitPanelDock) {
+    set dock(value: PanelDock) {
         let needRefresh = this._dock !== value;
         this._dock = value;
         if (this.$ && needRefresh) {

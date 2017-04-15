@@ -1,14 +1,14 @@
 import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
-import SplitterPanel = jqwidgets.SplitterPanel;
-import {SplitPanelItem} from "./SplitPaneltem";
+import Tabs = jqwidgets.jqxTabs;
+import {Tab} from "./Tab";
 
-import jqxWidgetOptions = jqwidgets.SplitterOptions;
+import jqxWidgetOptions = jqwidgets.TabsOptions;
+import {PanelDock} from "./SplitPanel";
 
-export type SplitPanelOrientation = "vertical" | "horizontal";
-export type PanelDock = "none" | "fill";
+export type TabsPosition = "top" | "bottom";
 
-export class SplitPanel extends Component {
+export class TabsPanel extends Component {
 
     constructor() {
         super();
@@ -16,7 +16,7 @@ export class SplitPanel extends Component {
     }
 
     jqxWidget(...args: any[]): Function {
-        return this.$.jqxSplitter(...args);
+        return this.$.jqxTabs(...args);
     };
 
     // ------------------------------ dock ------------------------------
@@ -155,82 +155,38 @@ export class SplitPanel extends Component {
             opt.width = this.width;
     }
 
-    // ------------------------------ orientation ------------------------------
-    _orientation: SplitPanelOrientation = "horizontal";
-    get orientation(): SplitPanelOrientation {
-        return this._orientation;
+    // ------------------------------ tabsPosition ------------------------------
+    _tabsPosition: TabsPosition = "top";
+    get tabsPosition(): TabsPosition {
+        return this._tabsPosition;
     }
 
-    set orientation(value: SplitPanelOrientation) {
-        this._orientation = value;
+    set tabsPosition(value: TabsPosition) {
+        this._tabsPosition = value;
         if (this.$) {
-            this.jqxWidget({orientation: this.orientation} as jqxWidgetOptions);
+            this.jqxWidget({position: this.tabsPosition} as jqxWidgetOptions);
         }
     }
 
-    private __emitCode_orientation(code: EmittedCode) {
-        code.emitStringValue(this, "orientation", "horizontal");
+    private __emitCode_tabsPosition(code: EmittedCode) {
+        code.emitStringValue(this, "tabsPosition", "top");
     }
 
-    private __fillOptions_orientation(opt: jqxWidgetOptions) {
-        opt.orientation = this.orientation;
+    private __fillOptions_tabsPosition(opt: jqxWidgetOptions) {
+        opt.position = this.tabsPosition;
     }
 
-    // ------------------------------ splitterVisible ------------------------------
-    private _splitterVisible: boolean = true;
-    get splitterVisible(): boolean {
-        return this._splitterVisible;
-    }
-
-    set splitterVisible(value: boolean) {
-        this._splitterVisible = value;
-        if (this.$)
-            this.$.jqxWidget({showSplitBar: value} as jqxWidgetOptions);
-    }
-
-    private __emitCode_splitterVisible(code: EmittedCode) {
-        code.emitBooleanValue(this, "splitterVisible", true);
-    }
-
-    private __fillOptions_splitterVisible(opt: jqxWidgetOptions) {
-        opt.showSplitBar = this.splitterVisible;
-    }
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: 1px solid orange' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
     }
 
-    getPanelsLayout(): SplitterPanel[] {
-        return this.children.map((child: Component) => {
-            return {size: (child as SplitPanelItem).size};
-        });
-    }
 
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
-        opt.panels = this.getPanelsLayout();
-        opt.splitBarSize = 3;
+        //opt.panels = this.getPanelsLayout();
+        //opt.TabsBarSize = 3;
     }
-
-    // renderChildren() {
-    //     super.renderChildren();
-    //     let panelOptions: jqxWidgetOptions = {
-    //         theme: appState.theme,
-    //         orientation: this.orientation,
-    //         splitBarSize: 2,
-    //         showSplitBar: this.splitterVisible,
-    //         panels: this.getPanelsLayout(),
-    //     };
-    //     this.$.jqxSplitter(panelOptions);
-    //     super.setJqxWidgetOptions();
-    // }
-    //
-    // emitCode(code: EmittedCode) {
-    //     super.emitCode(code);
-    //     code.emitStringValue(this, "text");
-    //     code.emitBooleanValue(this, "splitterVisible", true);
-    //
-    // }
 
 }

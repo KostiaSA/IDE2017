@@ -95,7 +95,6 @@ export class Component {
         for (let propName of getAllObjectProps(this)) {
             if (propName.startsWith("__emitCode_")) {
                 ((this as any)[propName]).call(this, code);
-                console.log("emit", propName);
             }
         }
 
@@ -144,7 +143,6 @@ export class Component {
         for (let propName of getAllObjectProps(this)) {
             if (propName.startsWith("__fillOptions_")) {
                 ((this as any)[propName]).call(this, opt);
-                console.log(propName);
             }
         }
         this.fillJqxWidgetOptions(opt);
@@ -158,7 +156,6 @@ export class Component {
         for (let propName of getAllObjectProps(this)) {
             if (propName.startsWith("__setOptions_")) {
                 ((this as any)[propName]).call(this);
-                console.log(propName);
             }
         }
     }

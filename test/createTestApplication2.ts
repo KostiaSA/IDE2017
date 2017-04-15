@@ -10,7 +10,40 @@ import {Layout} from "../platform/components/gui/Layout";
 import {LayoutPanel} from "../platform/components/gui/LayoutPanel";
 import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
+import {TabsPanel} from "../platform/components/gui/TabPanel";
+import {Tab} from "../platform/components/gui/Tab";
 
+export class TestWindow0 extends Window {
+    кнопка123: Button = new Button();
+    tabs: TabsPanel = new TabsPanel();
+    tab1: Tab = new Tab();
+    кнопкаPanel123: Button = new Button();
+
+    init() {
+        super.init();
+
+        //=== код дизайнера (конструктор начало) ===//
+        this.top = 100;
+        this.left = 100;
+        this.height = 800;
+        this.width = 600;
+
+        this.tabs.top = 10;
+        this.tabs.left = 10;
+        this.tabs.width = 150;
+        this.tabs.height = 150;
+        this.childrenAdd(this.tabs);
+
+        this.tab1.title = "tab N1";
+        this.tabs.childrenAdd(this.tab1);
+
+        this.кнопкаPanel123.top = 10;
+        this.кнопкаPanel123.left = 10;
+        this.кнопкаPanel123.text = "это кнопка на панели";
+        this.tab1.childrenAdd(this.кнопкаPanel123);
+
+    }
+}
 
 export class TestWindow extends Window {
     //=== код дизайнера (объявление свойств начало) ===//
@@ -125,7 +158,7 @@ export class TestWindow extends Window {
 
 export function createTestApplication2() {
 
-    let w = new TestWindow();
+    let w = new TestWindow0();
     appState.desktop.windows.push(w);
 
     setTimeout(() => {
