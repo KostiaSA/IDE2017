@@ -1,3 +1,6 @@
-export interface IDesigner{
+import {Component} from "../components/Component";
 
+export interface IDesigner{
+    designedForm: Component;
+    activeComponent:Component;
 }

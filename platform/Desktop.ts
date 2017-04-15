@@ -6,7 +6,7 @@ export class Desktop {
     render() {
 
         for (let w of this.windows) {
-            w.render("content");
+            w.render();
         }
     }
 }

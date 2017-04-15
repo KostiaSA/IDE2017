@@ -10,7 +10,10 @@ export class Window extends Component {
     }
 
     jqxWidget(...args: any[]): Function {
-        return this.$.jqxWindow(...args);
+        if (this._designer)
+            return this.$.jqxPanel(...args);
+        else
+            return this.$.jqxWindow(...args);
     };
 
     // ------------------------------ top ------------------------------
@@ -21,8 +24,15 @@ export class Window extends Component {
 
     set top(value: number) {
         this._top = value;
-        if (this.$ && value)
-            this.jqxWidget({position: {y: this._top, x: this._left}} as jqxWidgetOptions);
+        if (this.$ && value) {
+            if (!this._designer)
+                this.jqxWidget({position: {y: this._top, x: this._left}} as jqxWidgetOptions);
+            else {
+                this.$.css("top", "10px");
+                this.$.css("position", "absolute");
+            }
+
+        }
     }
 
     private __emitCode_top(code: EmittedCode) {
@@ -30,7 +40,13 @@ export class Window extends Component {
     }
 
     private __fillOptions_top(opt: jqxWidgetOptions) {
-        opt.position = {y: this._top, x: this._left}
+        if (!this._designer)
+            opt.position = {y: this._top, x: this._left}
+    }
+
+    private __setOptions_top() {
+        if (this._designer)
+            this.top = this._top;
     }
 
 
@@ -42,8 +58,14 @@ export class Window extends Component {
 
     set left(value: number) {
         this._left = value;
-        if (this.$ && value)
-            this.jqxWidget({position: {y: this._top, x: this._left}} as jqxWidgetOptions);
+        if (this.$ && value) {
+            if (!this._designer)
+                this.jqxWidget({position: {y: this._top, x: this._left}} as jqxWidgetOptions);
+            else {
+                this.$.css("left", "10px");
+                this.$.css("position", "absolute");
+            }
+        }
     }
 
     private __emitCode_left(code: EmittedCode) {
@@ -51,7 +73,13 @@ export class Window extends Component {
     }
 
     private __fillOptions_left(opt: jqxWidgetOptions) {
-        opt.position = {y: this._top, x: this._left}
+        if (!this._designer)
+            opt.position = {y: this._top, x: this._left}
+    }
+
+    private __setOptions_left() {
+        if (this._designer)
+            this.left = this._left;
     }
 
     // ------------------------------ height ------------------------------
@@ -103,11 +131,12 @@ export class Window extends Component {
 
     set title(value: string) {
         this._title = value;
-        if (this.$)
+        if (this.$ && !this._designer)
             $("#" + this.$titleId).text(this.title);
     }
 
     private __setOptions_title() {
+
         this.title = this._title;
     }
 
@@ -126,7 +155,10 @@ export class Window extends Component {
     }
 
     get $childrenContainer(): JQuery {
-        return $("#" + this.$contentId);
+        if (this._designer)
+            return this.$;
+        else
+            return $("#" + this.$contentId);
     }
 
 
@@ -134,7 +166,14 @@ export class Window extends Component {
 
         //this._height = this._height || 600;
         //this._width = this._width || 500;
+        if (this._designer) {
+            this.$ = $("<div id='" + this.$id + "' style='position: relative; padding: 10px'></div>").appendTo(this.parent.$childrenContainer);
+            this.$.resizable({
+                grid: 1,
+            });
 
-        this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
+        }
+        else
+            this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
     }
 }

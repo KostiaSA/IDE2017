@@ -12,6 +12,7 @@ import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
 import {Tab} from "../platform/components/gui/Tab";
+import {FormDesigner_Window} from "../designer/FormDesigner_Window";
 
 export class TestWindow0 extends Window {
     кнопка123: Button = new Button();
@@ -34,6 +35,7 @@ export class TestWindow0 extends Window {
         this.tabs.left = 10;
         this.tabs.width = 150;
         this.tabs.height = 150;
+        this.tabs.tabsPosition="bottom";
         this.childrenAdd(this.tabs);
 
         this.tab1.title = "tab N1";
@@ -169,10 +171,36 @@ export class TestWindow extends Window {
     }
 }
 
+export class TestWindow111 extends Window {
+    кнопка123: Button = new Button();
+
+    init() {
+        super.init();
+
+        //=== код дизайнера (конструктор начало) ===//
+        this.top = 10;
+        this.left = 10;
+        this.height = 200;
+        this.width = 200;
+
+
+        this.кнопка123.top = 10;
+        this.кнопка123.left = 30;
+        this.кнопка123.text = "это кнопка";
+        this.childrenAdd(this.кнопка123);
+    }
+
+    кнопка123456_Click(args: IEventArgs) {
+      ///  this.tabs.tabsPosition="bottom";
+    }
+}
 
 export function createTestApplication2() {
 
-    let w = new TestWindow0();
+    let w = new FormDesigner_Window();
+    w.designedForm=new TestWindow111();
+    //w.designedForm.init();
+
     appState.desktop.windows.push(w);
 
     setTimeout(() => {

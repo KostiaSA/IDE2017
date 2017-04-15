@@ -21,7 +21,7 @@ export class Component {
     protected renderJqxWidgetAfterChildren: boolean = false;
 
     protected jqxWidget(...args:any[]): Function{
-        throw "abstract error Component.jqxWidget()";
+        throw "abstract error Component.jqxWidget() for "+this.constructor.name;
     };
 
 
@@ -76,7 +76,8 @@ export class Component {
         if (this.owner === this)
             return this.constructor.name;
 
-        throw "ошибка платформы Component.get name()"
+        console.error("ошибка платформы Component.get name() for "+this.constructor.name);
+        return "ошибка_"+this.constructor.name;
     }
 
     private _codePath: string;
@@ -112,8 +113,7 @@ export class Component {
     protected _designer?: IDesigner;
 
 
-    render(designer?: IDesigner) {
-        // this._parentId = parentId;
+    render(designer?: IDesigner) {// this._parentId = parentId;
         this._designer = designer;
         this._$id = "a" + Math.random().toString(36).slice(2, 21);
         this.init();
@@ -135,7 +135,21 @@ export class Component {
     }
 
     renderBody() {
-        this.$ = $("<div data-compoment='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
+        if (this._designer) {
+            this.$.draggable({
+                grid: [5, 5],
+                drag: () => {
+                  //  this.activeControl.left = frame.position().left;
+                  //  this.activeControl.top = frame.position().top;
+                },
+            });
+            this.$.resizable({
+                grid: 1,
+            });
+
+        }
+
     }
 
     createJqxWidget() {
