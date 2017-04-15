@@ -18,6 +18,8 @@ export class TestWindow0 extends Window {
     tabs: TabsPanel = new TabsPanel();
     tab1: Tab = new Tab();
     кнопкаPanel123: Button = new Button();
+    tab2: Tab = new Tab();
+    кнопкаPanel1232: Button = new Button();
 
     init() {
         super.init();
@@ -38,10 +40,22 @@ export class TestWindow0 extends Window {
         this.tabs.childrenAdd(this.tab1);
 
         this.кнопкаPanel123.top = 10;
-        this.кнопкаPanel123.left = 10;
+        this.кнопкаPanel123.left = 30;
         this.кнопкаPanel123.text = "это кнопка на панели";
         this.tab1.childrenAdd(this.кнопкаPanel123);
 
+        this.tab2.title = "tab N2";
+        this.tabs.childrenAdd(this.tab2);
+
+        this.кнопкаPanel1232.top = 10;
+        this.кнопкаPanel1232.left = 10;
+        this.кнопкаPanel1232.text = "это кнопка 2";
+        this.кнопкаPanel1232.onClick=this.кнопка123456_Click;
+        this.tab2.childrenAdd(this.кнопкаPanel1232);
+    }
+
+    кнопка123456_Click(args: IEventArgs) {
+        this.tabs.tabsPosition="bottom";
     }
 }
 
