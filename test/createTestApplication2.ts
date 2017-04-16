@@ -13,6 +13,7 @@ import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
 import {Tab} from "../platform/components/gui/Tab";
 import {FormDesigner_Window} from "../designer/FormDesigner_Window";
+import {Input} from "../platform/components/gui/Input";
 
 export class TestWindow0 extends Window {
     кнопка123: Button = new Button();
@@ -174,6 +175,7 @@ export class TestWindow extends Window {
 export class TestWindow111 extends Window {
     кнопка123: Button = new Button();
     кнопка2: Button = new Button();
+    edit1: Input = new Input();
 
     init() {
         super.init();
@@ -182,7 +184,7 @@ export class TestWindow111 extends Window {
         this.top = 10;
         this.left = 10;
         this.height = 200;
-        this.width = 200;
+        this.width = 300;
 
 
         this.кнопка123.top = 10;
@@ -194,6 +196,12 @@ export class TestWindow111 extends Window {
         this.кнопка2.left = 130;
         this.кнопка2.text = "это кнопка 2";
         this.childrenAdd(this.кнопка2);
+
+        this.edit1.top = 50;
+        this.edit1.left = 30;
+        this.edit1.bindObject = this.кнопка123;
+        this.edit1.bindProperty = "text";
+        this.childrenAdd(this.edit1);
     }
 
     кнопка123456_Click(args: IEventArgs) {
