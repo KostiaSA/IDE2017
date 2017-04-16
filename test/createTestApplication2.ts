@@ -173,6 +173,7 @@ export class TestWindow extends Window {
 
 export class TestWindow111 extends Window {
     кнопка123: Button = new Button();
+    кнопка2: Button = new Button();
 
     init() {
         super.init();
@@ -186,8 +187,13 @@ export class TestWindow111 extends Window {
 
         this.кнопка123.top = 10;
         this.кнопка123.left = 30;
-        this.кнопка123.text = "это кнопка";
+        this.кнопка123.text = "это кнопка 1";
         this.childrenAdd(this.кнопка123);
+
+        this.кнопка2.top = 10;
+        this.кнопка2.left = 130;
+        this.кнопка2.text = "это кнопка 2";
+        this.childrenAdd(this.кнопка2);
     }
 
     кнопка123456_Click(args: IEventArgs) {

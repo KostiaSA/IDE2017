@@ -20,8 +20,8 @@ export class Component {
 
     protected renderJqxWidgetAfterChildren: boolean = false;
 
-    protected jqxWidget(...args:any[]): Function{
-        throw "abstract error Component.jqxWidget() for "+this.constructor.name;
+    protected jqxWidget(...args: any[]): Function {
+        throw "abstract error Component.jqxWidget() for " + this.constructor.name;
     };
 
 
@@ -76,8 +76,8 @@ export class Component {
         if (this.owner === this)
             return this.constructor.name;
 
-        console.error("ошибка платформы Component.get name() for "+this.constructor.name);
-        return "ошибка_"+this.constructor.name;
+        console.error("ошибка платформы Component.get name() for " + this.constructor.name);
+        return "ошибка_" + this.constructor.name;
     }
 
     private _codePath: string;
@@ -118,7 +118,7 @@ export class Component {
         this._$id = "a" + Math.random().toString(36).slice(2, 21);
         this.init();
         this.renderBody();
-        if (this.renderJqxWidgetAfterChildren){
+        if (this.renderJqxWidgetAfterChildren) {
             this.renderChildren();
             this.createJqxWidget();
             this.setJqxWidgetOptions();
@@ -137,20 +137,14 @@ export class Component {
     renderBody() {
         this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
         if (this._designer) {
-            this.$.draggable({
-                grid: [5, 5],
-                drag: () => {
-                  //  this.activeControl.left = frame.position().left;
-                  //  this.activeControl.top = frame.position().top;
-                },
-            });
-            this.$.resizable({
-                grid: 1,
-            });
-
+            this.$.on("mousedown", this.designModeOnMouseDown);
         }
 
     }
+
+    designModeOnMouseDown = () => {
+        this._designer!.activeComponent = this;
+    };
 
     createJqxWidget() {
         let opt: any = {};
@@ -161,6 +155,21 @@ export class Component {
         }
         this.fillJqxWidgetOptions(opt);
         this.jqxWidget(opt);
+         if (this._designer) {
+        //     this.$.css("outline", "solid 2px deepskyblue");
+        //
+             this.$.draggable({
+                grid: [5, 5],
+                drag: () => {
+                    (this._designer!.activeComponent as any).left = this.$.position().left;
+                    (this._designer!.activeComponent as any).top = this.$.position().top;
+                },
+             });
+        //     this.$.resizable({
+        //         grid: 5,
+        //     });
+        //
+         }
     }
 
     fillJqxWidgetOptions(opt: any) {

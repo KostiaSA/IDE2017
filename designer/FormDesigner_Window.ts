@@ -8,9 +8,9 @@ import {FormDesigner_Panel} from "./FormDesigner_Panel";
 import {Component} from "../platform/components/Component";
 import {IDesigner} from "../platform/designer/IDesigner";
 
-export class FormDesigner_Window extends Window  implements IDesigner{
+export class FormDesigner_Window extends Window implements IDesigner {
 
-    _designedForm:Component;
+    _designedForm: Component;
     get designedForm(): Component {
         return this._designedForm;
     }
@@ -19,15 +19,44 @@ export class FormDesigner_Window extends Window  implements IDesigner{
         this._designedForm = value;
     }
 
-    _activeComponent:Component;
+    _activeComponent: Component;
     get activeComponent(): Component {
         return this._activeComponent;
     }
 
     set activeComponent(value: Component) {
+        if (this._activeComponent === value)
+            return;
+        for (let func of this.onBeforeActiveComponentChanged) {
+            if (!func(value, this._activeComponent))
+                return;
+        }
+
+        if (this._activeComponent && this._activeComponent.$) {
+            let frame = this._activeComponent.$;
+            frame.css("outline", frame.$$savedBorder);
+            frame.resizable("destroy");
+        }
+        let savedOld = this._activeComponent;
         this._activeComponent = value;
+
+        let frame = this._activeComponent.$;
+        frame.$$savedBorder = frame.css("outline");
+        frame.css("outline", "solid 2px deepskyblue");
+        frame.resizable({
+            grid: 5,
+        });
+
+        for (let func of this.onAfterActiveComponentChanged) {
+            func(value, savedOld);
+        }
+
+
+        console.log("new active", value);
     }
 
+    onBeforeActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => boolean)[] = [];
+    onAfterActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => void)[] = [];
 
     splitPanel1: SplitPanel = new SplitPanel();
     splitPanelLeft: SplitPanelItem = new SplitPanelItem();
