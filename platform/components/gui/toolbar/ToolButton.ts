@@ -25,7 +25,7 @@ export class ToolButton extends Component implements IToolBarItem {
     set text(value: string) {
         this._text = value;
         //if (this.$)
-          //  this.$.text(this.text);
+        //  this.$.text(this.text);
     }
 
     private __emitCode_text(code: EmittedCode) {
@@ -34,6 +34,26 @@ export class ToolButton extends Component implements IToolBarItem {
 
     private __setOptions_text() {
         this.text = this._text;
+    }
+
+    // ------------------------------ separator ------------------------------
+    _separator: boolean;
+    get separator(): boolean {
+        return this._separator;
+    }
+
+    set separator(value:  boolean) {
+        this._separator = value;
+        //if (this.$)
+        //  this.$.separator(this.separator);
+    }
+
+    private __emitCode_separator(code: EmittedCode) {
+        code.emitStringValue(this, "separator");
+    }
+
+    private __setOptions_separator() {
+        this.separator = this._separator;
     }
 
     // ------------------------------ image ------------------------------
@@ -45,7 +65,7 @@ export class ToolButton extends Component implements IToolBarItem {
     set image(value: string) {
         this._image = value;
         //if (this.$)
-          //  this.jqxWidget({imgSrc: this.image});
+        //  this.jqxWidget({imgSrc: this.image});
     }
 
     private __emitCode_image(code: EmittedCode) {
@@ -82,16 +102,38 @@ export class ToolButton extends Component implements IToolBarItem {
         code.emitEventValue(this, "onClick");
     }
 
+    // ------------------------------ group ------------------------------
+    _group: string;
+    get group(): string {
+        return this._group;
+    }
+
+    set group(value: string) {
+        this._group = value;
+        //if (this.$)
+        //  this.$.group(this.group);
+    }
+
+    private __emitCode_group(code: EmittedCode) {
+        code.emitStringValue(this, "group");
+    }
+
+    private __setOptions_group() {
+        this.group = this._group;
+    }
+
     // ------------------------------ renderItem ------------------------------
     renderItem() {
-        this.parent.jqxWidget("addTool", "button", "last", true, (type: string, $tool: any, menuToolIninitialization: boolean) => {
-            this.$=$tool;
-            // var width: number | string = 100;
-            // if (menuToolIninitialization === true) {
-            //     width = "100%";
-            // }
-            $tool.text(this.text);
-            //$tool.jqxButton({ width: width , imgSrc:(child as Button).image});
+        this.parent.jqxWidget("addTool", "button", "last", this.separator, (type: string, $tool: any) => {
+            this.$ = $tool;
+            if (this.image) {
+                let button = $("<div>" + "<img src='" + this.image + "'/>" + "</div>");
+                $tool.append(button);
+            }
+            else {
+                $tool.text(this.text);
+            }
+            //$tool.jqxButton();
         });
 
     }

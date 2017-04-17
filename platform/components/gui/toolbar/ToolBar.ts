@@ -8,6 +8,8 @@ import {IDesigner} from "../../../designer/IDesigner";
 
 
 export interface IToolBarItem {
+    group: string;
+    separator: boolean;
     renderItem: () => void;
 }
 
@@ -41,13 +43,58 @@ export class ToolBar extends Component {
         this.text = this._text;
     }
 
-    // ------------------------------ render ------------------------------
-    renderChildren() {
-        for (let child of this.children) {
-            (child as any as IToolBarItem).renderItem();
-        }
+    // ------------------------------ group ------------------------------
+    _groups: string[];
+    get groups(): string[] {
+        return this._groups;
     }
 
+    set groups(value: string[]) {
+        this._groups = value;
+        //if (this.$)
+        //  this.$.groups(this.groups);
+    }
+
+    private __emitCode_groups(code: EmittedCode) {
+        code.emitStringValue(this, "groups");
+    }
+
+    private __setOptions_groups() {
+        this.groups = this._groups;
+    }
+
+    // ------------------------------ render ------------------------------
+    renderChildren() {
+
+        let items: IToolBarItem[] = [];
+
+        for (let group of this.groups) {
+
+            for (let child of this.children) {
+                if ((child as any as IToolBarItem).group === group) {
+                    items.push(child as any as IToolBarItem);
+                    let last = items.slice(-1)[0];
+                    let prev = items.slice(-2, -1)[0];
+                    if (last && prev && last.group !== prev.group)
+                        prev.separator = true;
+                }
+            }
+        }
+
+        for (let child of this.children) {
+            if (items.indexOf(child as any as IToolBarItem) === -1) {
+                items.push(child as any as IToolBarItem);
+                let last = items.slice(-1)[0];
+                let prev = items.slice(-2, -1)[0];
+                if (last && prev && last.group !== prev.group)
+                    prev.separator = true;
+            }
+        }
+
+        items.forEach((item) => {
+            item.renderItem();
+        })
+    }
 
 
     fillJqxWidgetOptions(opt: any) {
