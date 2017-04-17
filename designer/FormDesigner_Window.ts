@@ -9,9 +9,21 @@ import {Component} from "../platform/components/Component";
 import {IDesigner} from "../platform/designer/IDesigner";
 import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
 import {appState} from "../platform/AppState";
+import {CodeEditor} from "../platform/components/gui/CodeEditor";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
+    // ------------------------------ designedFormPath ------------------------------
+    _designedFormPath: string;
+    get designedFormPath(): string {
+        return this._designedFormPath;
+    }
+
+    set designedFormPath(value: string) {
+        this._designedFormPath = value;
+    }
+
+    // ------------------------------ designedForm ------------------------------
     _designedForm: Component;
     get designedForm(): Component {
         return this._designedForm;
@@ -21,6 +33,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this._designedForm = value;
     }
 
+    // ------------------------------ activeComponent ------------------------------
     _activeComponent: Component;
     get activeComponent(): Component {
         return this._activeComponent;
@@ -59,6 +72,8 @@ export class FormDesigner_Window extends Window implements IDesigner {
         //console.log("new active", value);
     }
 
+    // ------------------------------ onClick ------------------------------
+
     onBeforeActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => boolean)[] = [];
     onAfterActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => void)[] = [];
 
@@ -70,6 +85,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
     formTab: Tab = new Tab();
     codeTab: Tab = new Tab();
     formDesignerPanel: FormDesigner_Panel = new FormDesigner_Panel();
+    codeEditor: CodeEditor = new CodeEditor();
 
     rightTabsPanel: TabsPanel = new TabsPanel();
     propertyEditorTab: Tab = new Tab();
@@ -107,7 +123,14 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.formTab.childrenAdd(this.formDesignerPanel);
 
         this.codeTab.title = "Код";
+        this.codeTab.onSelect=()=>{
+            this.codeEditor.initMonacoEditor();
+        };
         this.leftTabsPanel.childrenAdd(this.codeTab);
+        this.codeEditor.dock="fill";
+        this.codeTab.childrenAdd(this.codeEditor);
+
+
 
 
         this.rightTabsPanel.tabsPosition = "bottom";
@@ -127,10 +150,21 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
     createAppToolBar(){
         let saveButton: ToolButton = new ToolButton();
-        saveButton.group="window";
-        saveButton.image="vendor/fugue/icons/disc.png";
+        saveButton.group="form-designer";
+        saveButton.image="vendor/fugue/icons/disk.png";
         appState.toolbar.childrenAdd(saveButton);
 
+        let runButton: ToolButton = new ToolButton();
+        runButton.group="form-designer";
+        runButton.image="vendor/fugue/icons/control.png";
+        runButton.onClick=(sender)=>{
+            this.testRun();
+        };
+        appState.toolbar.childrenAdd(runButton);
+
+    }
+
+    testRun(){
 
     }
 

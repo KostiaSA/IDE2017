@@ -127,6 +127,7 @@ export class Component {
             this.setJqxWidgetOptions();
             this.renderChildren();
         }
+        this.afterRender();
     }
 
 
@@ -187,6 +188,10 @@ export class Component {
         for (let child of this.children) {
             child.render(this._designer);
         }
+    }
+
+    afterRender(){
+
     }
 
     createAppToolBar(){

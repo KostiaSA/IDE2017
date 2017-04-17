@@ -27,6 +27,32 @@ export class Tab extends Component {
         code.emitStringValue(this, "title", "tab");
     }
 
+    // ------------------------------ onSelect ------------------------------
+    _onSelect: IEvent<IEventArgs>;
+    get onSelect(): IEvent<IEventArgs> {
+        return this._onSelect;
+    }
+
+    set onSelect(value: IEvent<IEventArgs>) {
+        this._onSelect = value;
+        // if (this.$ && this._onSelect) {
+        //     this.$.on("click", () => {
+        //         let args: IEventArgs = {
+        //             sender: this
+        //         };
+        //         this._onSelect.call(this._owner, args);
+        //     })
+        // }
+    }
+
+    // private __setOptions_onSelect() {
+    //     this.onSelect = this._onSelect;
+    // }
+
+    private __emitCode_onSelect(code: EmittedCode) {
+        code.emitEventValue(this, "onSelect");
+    }
+
     // ------------------------------ render ------------------------------
     $li: JQuery;
     render() {

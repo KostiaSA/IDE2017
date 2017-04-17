@@ -182,7 +182,25 @@ export class TabsPanel extends Component {
         this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
     }
 
+    afterRender() {
+        this.$.on("selected", (event: any) => {
+            var selectedTab = event.args.item;
+            let title = this.jqxWidget("getTitleAt", selectedTab).toString();
+            let tab = this.getTabByTitle(title);
+            if (tab.onSelect) {
+                tab.onSelect.call(tab, tab);
+            }
+            //console.log("selectedTab", selectedTab, title);
+        });
+    };
 
+    getTabByTitle(title: string): Tab {
+        for (let child of this.children) {
+            if ((child as Tab).title === title)
+                return child as Tab;
+        }
+        throw "TabPanel.getTabByTitle(): не найден Tab '" + title + "'";
+    }
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
         //opt.panels = this.getPanelsLayout();
