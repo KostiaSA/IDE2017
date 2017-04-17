@@ -7,6 +7,8 @@ import {Tab} from "../platform/components/gui/Tab";
 import {FormDesigner_Panel} from "./FormDesigner_Panel";
 import {Component} from "../platform/components/Component";
 import {IDesigner} from "../platform/designer/IDesigner";
+import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
+import {appState} from "../platform/AppState";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
@@ -47,12 +49,14 @@ export class FormDesigner_Window extends Window implements IDesigner {
             grid: 5,
         });
 
+        appState.activeComponent=this.activeComponent;
+
         for (let func of this.onAfterActiveComponentChanged) {
             func(value, savedOld);
         }
 
 
-        console.log("new active", value);
+        //console.log("new active", value);
     }
 
     onBeforeActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => boolean)[] = [];
@@ -120,4 +124,14 @@ export class FormDesigner_Window extends Window implements IDesigner {
     // кнопка123456_Click(args: IEventArgs) {
     //     this.tabs.tabsPosition="bottom";
     // }
+
+    createAppToolBar(){
+        let saveButton: ToolButton = new ToolButton();
+        saveButton.group="window";
+        saveButton.image="vendor/fugue/icons/disc.png";
+        appState.toolbar.childrenAdd(saveButton);
+
+
+    }
+
 }

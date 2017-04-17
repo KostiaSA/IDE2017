@@ -4,6 +4,8 @@ import {Control} from "./Control";
 import {appState} from "../../AppState";
 
 import jqxWidgetOptions = jqwidgets.ButtonOptions;
+import {ToolButton} from "./toolbar/ToolButton";
+import {getRandomId} from "../../../app/utils/getRandomId";
 
 
 export class Button extends Component {
@@ -44,8 +46,8 @@ export class Button extends Component {
 
     set image(value: string) {
         this._image = value;
-        if (this.$)
-            this.jqxWidget({imgSrc: this.image});
+        if (this.$ && this._image)
+            this.jqxWidget({imgSrc: this._image});
     }
 
     private __emitCode_image(code: EmittedCode) {
@@ -167,6 +169,13 @@ export class Button extends Component {
         code.emitEventValue(this, "onClick");
     }
 
+    createAppToolBar(){
+        let saveButton: ToolButton = new ToolButton();
+        saveButton.group="form-designer";
+        saveButton.text=getRandomId();
+        appState.toolbar.childrenAdd(saveButton);
+
+    }
 
     // // ------------------------------ render ------------------------------
     // renderBody() {

@@ -15,7 +15,6 @@ export interface IEvent<TArgs extends IEventArgs> {
 export class Component {
 
     constructor() {
-
     }
 
     protected renderJqxWidgetAfterChildren: boolean = false;
@@ -130,6 +129,7 @@ export class Component {
         }
     }
 
+
     init() {
         //throw "Component.init(): abstract error";
     }
@@ -187,6 +187,10 @@ export class Component {
         for (let child of this.children) {
             child.render(this._designer);
         }
+    }
+
+    createAppToolBar(){
+
     }
 
 }

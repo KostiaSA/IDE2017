@@ -5,6 +5,7 @@ import {createTestApplication2} from "../test/createTestApplication2";
 import {Desktop} from "./Desktop";
 import {ToolBar} from "./components/gui/toolbar/ToolBar";
 import {AppToolBar} from "./components/gui/AppToolBar";
+import {Component} from "./components/Component";
 
 
 export class AppState {
@@ -22,6 +23,19 @@ export class AppState {
         //if (this.$)
         //  this.$.text(this.text);
     }
+
+    _activeComponent: Component;
+    get activeComponent(): Component {
+        return this._activeComponent;
+    }
+
+    set activeComponent(value: Component) {
+        let needRefresh=this._activeComponent !== value;
+        this._activeComponent = value;
+        if (needRefresh)
+            this.toolbar.refresh();
+    }
+
 
     theme: string = "office";
 

@@ -183,7 +183,7 @@ export class TestWindow111 extends Window {
         //=== код дизайнера (конструктор начало) ===//
         this.top = 10;
         this.left = 10;
-        this.height = 200;
+        this.height = 400;
         this.width = 300;
 
 
