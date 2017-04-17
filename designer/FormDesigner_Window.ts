@@ -79,7 +79,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         super.init();
 
         //=== код дизайнера (конструктор начало) ===//
-        this.top = 10;
+        this.top = 100;
         this.left = 10;
         this.height = 800;
         this.width = 1000;

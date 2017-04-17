@@ -36,6 +36,25 @@ export class Button extends Component {
         this.text = this._text;
     }
 
+    // ------------------------------ image ------------------------------
+    _image: string;
+    get image(): string {
+        return this._image;
+    }
+
+    set image(value: string) {
+        this._image = value;
+        if (this.$)
+            this.jqxWidget({imgSrc: this.image});
+    }
+
+    private __emitCode_image(code: EmittedCode) {
+        code.emitStringValue(this, "image");
+    }
+
+    private __setOptions_image() {
+        this.image = this._image;
+    }
 
     // ------------------------------ top ------------------------------
     _top: number;

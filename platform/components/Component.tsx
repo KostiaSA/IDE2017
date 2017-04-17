@@ -20,7 +20,7 @@ export class Component {
 
     protected renderJqxWidgetAfterChildren: boolean = false;
 
-    protected jqxWidget(...args: any[]): Function {
+    jqxWidget(...args: any[]): Function {
         throw "abstract error Component.jqxWidget() for " + this.constructor.name;
     };
 
