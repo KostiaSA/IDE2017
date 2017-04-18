@@ -14,6 +14,7 @@ import {appState} from "../platform/AppState";
 import {CodeEditor} from "../platform/components/gui/CodeEditor";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {CompilerOptions, JsxEmit, ScriptTarget} from "typescript";
+import {replaceAll} from "../platform/utils/replaceAll";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
@@ -261,13 +262,13 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
         let compilerOptions: CompilerOptions = {
             module: ts.ModuleKind.CommonJS,
-            noEmitOnError:true,
-            sourceMap:false,
-            removeComments:true,
-            target:ScriptTarget.ES2017,
-            jsx:JsxEmit.React,
-            experimentalDecorators:true,
-            emitDecoratorMetadata:true,
+            noEmitOnError: true,
+            sourceMap: false,
+            removeComments: true,
+            target: ScriptTarget.ES2017,
+            jsx: JsxEmit.React,
+            experimentalDecorators: true,
+            emitDecoratorMetadata: true,
             noImplicitThis: true,
             strictNullChecks: true,
             lib: [
@@ -281,6 +282,15 @@ export class FormDesigner_Window extends Window implements IDesigner {
         fs.writeFileSync(jsFileName, res.outputText);
 
         console.log(res.outputText);
+
+        // reload
+
+        Object.keys(require.cache).forEach(module => {
+            if (replaceAll(module, "\\", "/").indexOf(jsFileName) >= 0) {
+                delete require.cache[module];
+                console.log(module);
+            }
+        });
 
 
     }
