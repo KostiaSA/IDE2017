@@ -13,6 +13,7 @@ import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
 import {appState} from "../platform/AppState";
 import {CodeEditor} from "../platform/components/gui/CodeEditor";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
+import {CompilerOptions, JsxEmit, ScriptTarget} from "typescript";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
@@ -248,12 +249,38 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
         let p = path.parse(this.designedFormPath);
         let bakFileName = p.dir + "/" + p.name + ".bak";
+        let jsFileName = p.dir + "/" + p.name + ".js";
 
         console.log(this.designedFormPath, bakFileName);
         fs.renameSync(this.designedFormPath, bakFileName);
-        fs.writeFileSync(this.designedFormPath,code);
+        fs.writeFileSync(this.designedFormPath, code);
 
         console.log(code);
+
+        let ts = require("typescript");
+
+        let compilerOptions: CompilerOptions = {
+            module: ts.ModuleKind.CommonJS,
+            noEmitOnError:true,
+            sourceMap:false,
+            removeComments:true,
+            target:ScriptTarget.ES2017,
+            jsx:JsxEmit.React,
+            experimentalDecorators:true,
+            emitDecoratorMetadata:true,
+            noImplicitThis: true,
+            strictNullChecks: true,
+            lib: [
+                "es2017",
+                "dom"
+            ],
+            skipLibCheck: true
+        };
+
+        let res = ts.transpileModule(code, {compilerOptions: compilerOptions, fileName: this.designedFormPath});
+        fs.writeFileSync(jsFileName, res.outputText);
+
+        console.log(res.outputText);
 
 
     }
