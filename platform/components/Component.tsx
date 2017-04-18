@@ -103,9 +103,9 @@ export class Component {
             code.emitDeclaration(child.name, child.constructor.name);
             child.emitCode(code);
             if (this === this.owner)
-                code.inits.push("    " + "this.childrenAdd(this." + child.name + ");");
+                code.inits.push("        " + "this.childrenAdd(this." + child.name + ");");
             else
-                code.inits.push("    " + "this." + this.name + ".childrenAdd(this." + child.name + ");");
+                code.inits.push("        " + "this." + this.name + ".childrenAdd(this." + child.name + ");");
         });
     }
 

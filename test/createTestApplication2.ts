@@ -217,22 +217,22 @@ export function createTestApplication2() {
 
     appState.desktop.windows.push(w);
 
-    setTimeout(() => {
-        console.log("time");
-        let code: string[] = [];
-        code.push("export class " + w.name + " extends Window {");
-
-        let e = new EmittedCode();
-        w.emitCode(e);
-        code.push(e.getDeclaresCode());
-        code.push("  init(){");
-        code.push(e.getInitsCode());
-        code.push("  }");
-        code.push("}");
-        console.log(code.join("\n"));
-
-    }, 1000);
-
+    // setTimeout(() => {
+    //     console.log("time");
+    //     let code: string[] = [];
+    //     code.push("export class " + w.name + " extends Window {");
+    //
+    //     let e = new EmittedCode();
+    //     w.emitCode(e);
+    //     code.push(e.getDeclaresCode());
+    //     code.push("  init(){");
+    //     code.push(e.getInitsCode());
+    //     code.push("  }");
+    //     code.push("}");
+    //     console.log(code.join("\n"));
+    //
+    // }, 1000);
+    //
 
     return;
 

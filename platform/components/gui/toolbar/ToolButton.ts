@@ -133,6 +133,7 @@ export class ToolButton extends Component implements IToolBarItem {
             else {
                 $tool.text(this.text);
             }
+            this.__setOptions_onClick();
             //$tool.jqxButton();
         });
 

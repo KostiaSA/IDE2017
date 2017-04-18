@@ -10,6 +10,7 @@ import {IDesigner} from "../platform/designer/IDesigner";
 import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
 import {appState} from "../platform/AppState";
 import {CodeEditor} from "../platform/components/gui/CodeEditor";
+import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
@@ -61,8 +62,13 @@ export class FormDesigner_Window extends Window implements IDesigner {
         frame.resizable({
             grid: 5,
         });
+        frame.on("resize", (event: any, ui: any) => {
+            (this._activeComponent as any).width = ui.size.width;
+            (this._activeComponent as any).height = ui.size.height;
+        });
 
-        appState.activeComponent=this.activeComponent;
+
+        appState.activeComponent = this.activeComponent;
 
         for (let func of this.onAfterActiveComponentChanged) {
             func(value, savedOld);
@@ -123,14 +129,12 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.formTab.childrenAdd(this.formDesignerPanel);
 
         this.codeTab.title = "Код";
-        this.codeTab.onSelect=()=>{
+        this.codeTab.onSelect = () => {
             this.codeEditor.initMonacoEditor();
         };
         this.leftTabsPanel.childrenAdd(this.codeTab);
-        this.codeEditor.dock="fill";
+        this.codeEditor.dock = "fill";
         this.codeTab.childrenAdd(this.codeEditor);
-
-
 
 
         this.rightTabsPanel.tabsPosition = "bottom";
@@ -149,41 +153,83 @@ export class FormDesigner_Window extends Window implements IDesigner {
     //     this.tabs.tabsPosition="bottom";
     // }
 
-    createAppToolBar(){
+    createAppToolBar() {
         let saveButton: ToolButton = new ToolButton();
-        saveButton.group="form-designer";
-        saveButton.image="vendor/fugue/icons/disk.png";
-        saveButton.onClick=(sender)=>{
+        saveButton.group = "form-designer";
+        saveButton.image = "vendor/fugue/icons/disk.png";
+        saveButton.onClick = (sender) => {
             this.save();
         };
         appState.toolbar.childrenAdd(saveButton);
 
         let runButton: ToolButton = new ToolButton();
-        runButton.group="form-designer";
-        runButton.image="vendor/fugue/icons/control.png";
-        runButton.onClick=(sender)=>{
+        runButton.group = "form-designer";
+        runButton.image = "vendor/fugue/icons/control.png";
+        runButton.onClick = (sender) => {
             this.testRun();
         };
         appState.toolbar.childrenAdd(runButton);
 
         let compileButton: ToolButton = new ToolButton();
-        compileButton.group="form-designer";
-        compileButton.image="vendor/fugue/icons/compile.png";
-        compileButton.onClick=(sender)=>{
+        compileButton.group = "form-designer";
+        compileButton.image = "vendor/fugue/icons/compile.png";
+        compileButton.onClick = (sender) => {
             this.compile();
         };
         appState.toolbar.childrenAdd(compileButton);
     }
 
-    testRun(){
+    testRun() {
 
     }
 
-    compile(){
+    compile() {
 
     }
 
-    save(){
+    save() {
+        if (!this.designedForm) {
+            console.log(this.constructor.name + ".save(): нет designedForm");
+            return;
+        }
+        let e = new EmittedCode();
+        this.designedForm.emitCode(e);
+        //console.log(e.getDeclaresCode());
+        //console.log(e.getInitsCode());
+
+        let codeLines = this.codeEditor.code.split("\n");
+        let empty: string[] = [];
+        let beforeDecl: string[] = [];
+        let afterDeclBeforeInit: string[] = [];
+        let afterInit: string[] = [];
+
+        let newCode = beforeDecl;
+        for (let line of codeLines) {
+            if (line.indexOf("//=== BEGIN-DESIGNER-DECLARE-CODE ===//") > 0) {
+                newCode.push(line);
+                newCode.push(e.getDeclaresCode());
+                newCode=empty;
+                continue;
+            }
+            if (line.indexOf("//=== END-DESIGNER-DECLARE-CODE ===//") > 0) {
+                newCode=afterDeclBeforeInit;
+            }
+            if (line.indexOf("//=== BEGIN-DESIGNER-INIT-CODE ===//") > 0) {
+                newCode.push(line);
+                newCode.push(e.getInitsCode());
+                newCode=empty;
+                continue;
+            }
+            if (line.indexOf("//=== END-DESIGNER-INIT-CODE ===//") > 0) {
+                newCode=afterInit;
+            }
+            newCode.push(line);
+
+        }
+
+        let code=beforeDecl.join("\n")+"\n"+afterDeclBeforeInit.join("\n")+"\n"+afterInit.join("\n")+"\n";
+        console.log(code);
+
 
     }
 }
