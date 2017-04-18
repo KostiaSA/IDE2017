@@ -20,27 +20,52 @@ export class ТестоваяФормаДляДизайнера extends Window {
         this.height=400;
         this.width=300;
         this.кнопка123.text="это кнопка 1";
-        this.кнопка123.top=35;
-        this.кнопка123.left=70;
-        this.кнопка123.height=316;
+        this.кнопка123.top=20;
+        this.кнопка123.left=25;
+        this.кнопка123.height=36;
         this.кнопка123.width=89;
         this.childrenAdd(this.кнопка123);
         this.кнопка2.text="это кнопка 2";
-        this.кнопка2.top=65;
-        this.кнопка2.left=185;
+        this.кнопка2.top=95;
+        this.кнопка2.left=190;
         this.childrenAdd(this.кнопка2);
         this.edit1.bindProperty="text";
-        this.edit1.top=180;
-        this.edit1.left=85;
-        this.edit1.height=13;
+        this.edit1.top=95;
+        this.edit1.left=25;
+        this.edit1.height=98;
+        this.edit1.width=140;
         this.childrenAdd(this.edit1);
         //=== END-DESIGNER-INIT-CODE ===//
     }
 
     кнопка123456_Click(args: IEventArgs) {
+        alert("222222222222");
+        //sss223=qq.qq();
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -13,7 +13,7 @@ import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
 import {appState} from "../platform/AppState";
 import {CodeEditor} from "../platform/components/gui/CodeEditor";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
-import {CompilerOptions, JsxEmit, ScriptTarget} from "typescript";
+import {CompilerOptions, DiagnosticCategory, JsxEmit, ScriptTarget} from "typescript";
 import {replaceAll} from "../platform/utils/replaceAll";
 
 export class FormDesigner_Window extends Window implements IDesigner {
@@ -192,6 +192,12 @@ export class FormDesigner_Window extends Window implements IDesigner {
     }
 
     testRun() {
+        this.save();
+        let form = require("../" + this.designedFormPath.replace(".ts", ".js"));
+        let formClassName = path.basename(this.designedFormPath, ".ts");
+        //console.log("form", form[formClassName]);
+        let testform = new form[formClassName]() as Window;
+        testform.render();
 
     }
 
@@ -206,16 +212,10 @@ export class FormDesigner_Window extends Window implements IDesigner {
         }
         let e = new EmittedCode();
         this.designedForm.emitCode(e);
-        //console.log(e.getDeclaresCode());
-        //console.log(e.getInitsCode());
 
         let codeLines: string[];
-        //if (this.codeEditor.code) {
         codeLines = this.codeEditor.code.split("\n");
-        //}
-        //else {
-//            codeLines = fs.readFileSync(this._designedFormPath, "utf8").split("\n");
-//        }
+
         let empty: string[] = [];
         let beforeDecl: string[] = [];
         let afterDeclBeforeInit: string[] = [];
@@ -278,17 +278,35 @@ export class FormDesigner_Window extends Window implements IDesigner {
             skipLibCheck: true
         };
 
-        let res = ts.transpileModule(code, {compilerOptions: compilerOptions, fileName: this.designedFormPath});
-        fs.writeFileSync(jsFileName, res.outputText);
+        let res = ts.transpileModule(code, {
+            reportDiagnostics: true,
+            compilerOptions: compilerOptions,
+            fileName: this.designedFormPath
+        });
+
+        // let xxx=eval(res.outputText);
+        // console.log("xxx",xxx);
+        //
+        console.log(res.diagnostics);
+        let errors: string[] = [];
+        for (let diag of res.diagnostics) {
+            if (diag.category === DiagnosticCategory.Error) {
+                errors.push("ошибка!  " + diag.messageText);
+            }
+        }
+        if (errors.length > 0) {
+            alert(errors.join("\n"));
+        }
+        else
+            fs.writeFileSync(jsFileName, res.outputText);
 
         console.log(res.outputText);
 
-        // reload
-
+        // reload module
         Object.keys(require.cache).forEach(module => {
             if (replaceAll(module, "\\", "/").indexOf(jsFileName) >= 0) {
                 delete require.cache[module];
-                console.log(module);
+                console.log("module reloaded-> " + module);
             }
         });
 
