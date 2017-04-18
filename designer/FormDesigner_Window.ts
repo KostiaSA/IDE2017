@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import {Window} from "../platform/components/gui/Window";
 import {Button} from "../platform/components/gui/Button";
 import {SplitPanel} from "../platform/components/gui/SplitPanel";
@@ -83,6 +85,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
     onBeforeActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => boolean)[] = [];
     onAfterActiveComponentChanged: ((newActiveComponent: Component, oldActiveComponent: Component) => void)[] = [];
 
+    //=== BEGIN-DESIGNER-DECLARE-CODE ===//
     splitPanel1: SplitPanel = new SplitPanel();
     splitPanelLeft: SplitPanelItem = new SplitPanelItem();
     splitPanelRight: SplitPanelItem = new SplitPanelItem();
@@ -96,15 +99,13 @@ export class FormDesigner_Window extends Window implements IDesigner {
     rightTabsPanel: TabsPanel = new TabsPanel();
     propertyEditorTab: Tab = new Tab();
     formExplorerTab: Tab = new Tab();
+    //=== END-DESIGNER-DECLARE-CODE ===//
 
-//    кнопка123: Button = new Button();
-//    кнопкаPanel123: Button = new Button();
-//    кнопкаPanel1232: Button = new Button();
 
     init() {
         super.init();
 
-        //=== код дизайнера (конструктор начало) ===//
+        //=== BEGIN-DESIGNER-INIT-CODE ===//
         this.top = 100;
         this.left = 10;
         this.height = 800;
@@ -145,6 +146,15 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.splitPanelRight.childrenAdd(this.rightTabsPanel);
         this.rightTabsPanel.childrenAdd(this.propertyEditorTab);
         this.rightTabsPanel.childrenAdd(this.formExplorerTab);
+        //=== END-DESIGNER-INIT-CODE ===//
+
+
+        this.codeEditor.code = fs.readFileSync(this._designedFormPath, "utf8");
+
+        let form = require("../" + this.designedFormPath.replace(".ts", ".js"));
+        let formClassName = path.basename(this.designedFormPath, ".ts");
+        //console.log("form", form[formClassName]);
+        this.designedForm = new form[formClassName]();
 
     }
 
@@ -197,7 +207,13 @@ export class FormDesigner_Window extends Window implements IDesigner {
         //console.log(e.getDeclaresCode());
         //console.log(e.getInitsCode());
 
-        let codeLines = this.codeEditor.code.split("\n");
+        let codeLines: string[];
+        //if (this.codeEditor.code) {
+        codeLines = this.codeEditor.code.split("\n");
+        //}
+        //else {
+//            codeLines = fs.readFileSync(this._designedFormPath, "utf8").split("\n");
+//        }
         let empty: string[] = [];
         let beforeDecl: string[] = [];
         let afterDeclBeforeInit: string[] = [];
@@ -208,26 +224,35 @@ export class FormDesigner_Window extends Window implements IDesigner {
             if (line.indexOf("//=== BEGIN-DESIGNER-DECLARE-CODE ===//") > 0) {
                 newCode.push(line);
                 newCode.push(e.getDeclaresCode());
-                newCode=empty;
+                newCode = empty;
                 continue;
             }
             if (line.indexOf("//=== END-DESIGNER-DECLARE-CODE ===//") > 0) {
-                newCode=afterDeclBeforeInit;
+                newCode = afterDeclBeforeInit;
             }
             if (line.indexOf("//=== BEGIN-DESIGNER-INIT-CODE ===//") > 0) {
                 newCode.push(line);
                 newCode.push(e.getInitsCode());
-                newCode=empty;
+                newCode = empty;
                 continue;
             }
             if (line.indexOf("//=== END-DESIGNER-INIT-CODE ===//") > 0) {
-                newCode=afterInit;
+                newCode = afterInit;
             }
             newCode.push(line);
 
         }
 
-        let code=beforeDecl.join("\n")+"\n"+afterDeclBeforeInit.join("\n")+"\n"+afterInit.join("\n")+"\n";
+        let code = beforeDecl.join("\n") + "\n" + afterDeclBeforeInit.join("\n") + "\n" + afterInit.join("\n") + "\n";
+        this.codeEditor.code = code;
+
+        let p = path.parse(this.designedFormPath);
+        let bakFileName = p.dir + "/" + p.name + ".bak";
+
+        console.log(this.designedFormPath, bakFileName);
+        fs.renameSync(this.designedFormPath, bakFileName);
+        fs.writeFileSync(this.designedFormPath,code);
+
         console.log(code);
 
 

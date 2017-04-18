@@ -1,4 +1,4 @@
-import * as fs from "fs";
+//import * as fs from "fs";
 import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
@@ -223,7 +223,8 @@ export class CodeEditor extends Component {
 
     getMonacoEditorOptions(): IEditorConstructionOptions {
         return {
-            value: fs.readFileSync("application/test/ТестоваяФормаДляДизайнера.ts", "utf8"),
+            //value: fs.readFileSync("application/test/ТестоваяФормаДляДизайнера.ts", "utf8"),
+            value: this._code,
             fontSize: 13,
             automaticLayout: true,
             folding: true,

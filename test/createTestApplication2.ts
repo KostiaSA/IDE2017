@@ -212,7 +212,8 @@ export class TestWindow111 extends Window {
 export function createTestApplication2() {
 
     let w = new FormDesigner_Window();
-    w.designedForm=new TestWindow111();
+    w.designedFormPath="application/test/ТестоваяФормаДляДизайнера.ts";
+    //w.designedForm=new TestWindow111();
     //w.designedForm.init();
 
     appState.desktop.windows.push(w);
