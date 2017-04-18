@@ -4,6 +4,10 @@ import {Control} from "../platform/components/gui/Control";
 import {appState} from "../platform/AppState";
 import jqxWidgetOptions = jqwidgets.PanelOptions;
 import {PanelDock} from "../platform/components/gui/SplitPanel";
+import {getAllObjectProps} from "../platform/utils/getAllObjectProps";
+import {PropertyEditor} from "./PropertyEditor";
+import {getRandomId} from "../app/utils/getRandomId";
+import {escapeHtml} from "../platform/utils/escapeHtml";
 
 
 export class PropertiesEditor extends Control {
@@ -25,6 +29,8 @@ export class PropertiesEditor extends Control {
 
     set editedObject(value: Component) {
         this._editedObject = value;
+        if (this.$)
+            this.renderEditors();
     }
 
 
@@ -167,6 +173,28 @@ export class PropertiesEditor extends Control {
     renderBody() {
 //        this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
         this.$ = $("<table id='" + this.$id + "' style='border:1px solid green; width:100%;border-spacing:0;'></table>").appendTo(this.parent.$childrenContainer);
+
+    }
+
+    renderEditors() {
+
+        let propEditors: PropertyEditor[] = [];
+
+        for (let propName of getAllObjectProps(this.editedObject)) {
+            if (propName.startsWith("__getPropertyEditor_")) {
+                let pe = ((this.editedObject as any)[propName]).call(this);
+                pe.component = this.editedObject;
+                propEditors.push(pe);
+            }
+        }
+
+        for (let pe of propEditors) {
+            let $peId = getRandomId();
+            let $pe = $("<tr id='" + $peId + "'><td>" + escapeHtml((pe.title || pe.propertyName).toString()) + "</td> <td id='" + $peId + "-input'></td></tr>").appendTo(this.$.find("body").first());
+            pe.render($("#"+$peId + "-input"));
+        }
+
+        console.log("propEditors", propEditors);
 
     }
 

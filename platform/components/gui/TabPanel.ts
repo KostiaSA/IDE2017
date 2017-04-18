@@ -203,6 +203,7 @@ export class TabsPanel extends Component {
     }
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
+        opt.keyboardNavigation=false;
         //opt.panels = this.getPanelsLayout();
         //opt.TabsBarSize = 3;
     }

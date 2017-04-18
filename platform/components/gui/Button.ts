@@ -6,6 +6,8 @@ import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.ButtonOptions;
 import {ToolButton} from "./toolbar/ToolButton";
 import {getRandomId} from "../../../app/utils/getRandomId";
+import {PropertyEditor} from "../../../designer/PropertyEditor";
+import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 
 
 export class Button extends Component {
@@ -80,6 +82,13 @@ export class Button extends Component {
         this.top = this._top;
     }
 
+    private __getPropertyEditor_top():PropertyEditor {
+        let pe=new NumberPropertyEditor();
+        pe.propertyName="top";
+        pe.category="Размер и положение";
+        return pe;
+    }
+
 
     // ------------------------------ left ------------------------------
     _left: number;
@@ -101,6 +110,13 @@ export class Button extends Component {
 
     private __setOptions_left() {
         this.left = this._left;
+    }
+
+    private __getPropertyEditor_left():PropertyEditor {
+        let pe=new NumberPropertyEditor();
+        pe.propertyName="left";
+        pe.category="Размер и положение";
+        return pe;
     }
 
     // ------------------------------ height ------------------------------
