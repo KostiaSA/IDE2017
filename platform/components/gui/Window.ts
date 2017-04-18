@@ -176,4 +176,14 @@ export class Window extends Component {
         else
             this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
     }
+
+    fillJqxWidgetOptions(opt: jqxWidgetOptions) {
+        if (!this._designer) {
+            opt.minHeight = 100;
+            opt.minWidth = 100;
+            opt.maxHeight = 5000;
+            opt.maxWidth = 5000;
+        }
+    }
+
 }

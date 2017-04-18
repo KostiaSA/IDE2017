@@ -10,4 +10,5 @@ vendor
 *.zip
 !main.js
 *.pdf
+!node_modules/@types/monaco-editor/monaco.d.ts
 

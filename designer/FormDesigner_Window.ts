@@ -144,6 +144,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
     }
 
+
     // кнопка123456_Click(args: IEventArgs) {
     //     this.tabs.tabsPosition="bottom";
     // }
@@ -152,6 +153,9 @@ export class FormDesigner_Window extends Window implements IDesigner {
         let saveButton: ToolButton = new ToolButton();
         saveButton.group="form-designer";
         saveButton.image="vendor/fugue/icons/disk.png";
+        saveButton.onClick=(sender)=>{
+            this.save();
+        };
         appState.toolbar.childrenAdd(saveButton);
 
         let runButton: ToolButton = new ToolButton();
@@ -162,10 +166,24 @@ export class FormDesigner_Window extends Window implements IDesigner {
         };
         appState.toolbar.childrenAdd(runButton);
 
+        let compileButton: ToolButton = new ToolButton();
+        compileButton.group="form-designer";
+        compileButton.image="vendor/fugue/icons/compile.png";
+        compileButton.onClick=(sender)=>{
+            this.compile();
+        };
+        appState.toolbar.childrenAdd(compileButton);
     }
 
     testRun(){
 
     }
 
+    compile(){
+
+    }
+
+    save(){
+
+    }
 }

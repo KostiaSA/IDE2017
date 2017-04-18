@@ -21,13 +21,16 @@ export class CodeEditor extends Component {
     // ------------------------------ code ------------------------------
     _code: string;
     get code(): string {
-        return this._code;
+        if (this.monacoEditor)
+            return this.monacoEditor.getValue();
+        else
+            return this._code;
     }
 
     set code(value: string) {
         this._code = value;
-        //if (this.$)
-        //  this.$.code(this.code);
+        if (this.monacoEditor)
+            this.monacoEditor.setValue(value);
     }
 
     // private __emitCode_code(code: EmittedCode) {
@@ -212,7 +215,7 @@ export class CodeEditor extends Component {
         //this.renderBody();
 //        this.$ = $("<div data-component='" + this.constructor.name + "' style='border: 0px solid red; height: 100%;width: 100%'></div>").appendTo(this.parent.$childrenContainer);
         this.$ = this.parent.$childrenContainer;
-        this.$.css("overflow","hidden");
+        this.$.css("overflow", "hidden");
 
 
     }
@@ -221,9 +224,9 @@ export class CodeEditor extends Component {
     getMonacoEditorOptions(): IEditorConstructionOptions {
         return {
             value: fs.readFileSync("application/test/ТестоваяФормаДляДизайнера.ts", "utf8"),
-            fontSize:13,
-            automaticLayout:true,
-            folding:true,
+            fontSize: 13,
+            automaticLayout: true,
+            folding: true,
             language: 'typescript'
 
         }
