@@ -1,0 +1,173 @@
+import {Component, IEvent, IEventArgs} from "../platform/components/Component";
+import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
+import {Control} from "../platform/components/gui/Control";
+import {appState} from "../platform/AppState";
+import jqxWidgetOptions = jqwidgets.PanelOptions;
+import {PanelDock} from "../platform/components/gui/SplitPanel";
+
+
+export class PropertiesEditor extends Control {
+
+    constructor() {
+        super();
+        this.renderJqxWidgetAfterChildren = true;
+    }
+
+    jqxWidget(...args: any[]): Function {
+        return this.$.jqxPanel(...args);
+    };
+
+    // ------------------------------ editedObject ------------------------------
+    _editedObject: Component;
+    get editedObject(): Component {
+        return this._editedObject;
+    }
+
+    set editedObject(value: Component) {
+        this._editedObject = value;
+    }
+
+
+    // ------------------------------ dock ------------------------------
+    _dock: PanelDock = "none";
+    get dock(): PanelDock {
+        return this._dock;
+    }
+
+    set dock(value: PanelDock) {
+        let needRefresh = this._dock !== value;
+        this._dock = value;
+        if (this.$ && needRefresh) {
+            this.top = this._top;
+            this.left = this._left;
+            this.width = this._width;
+            this.height = this._height;
+        }
+    }
+
+    private __emitCode_dock(code: EmittedCode) {
+        code.emitStringValue(this, "dock", "none");
+    }
+
+    private __setOptions_dock() {
+        this.dock = this._dock;
+    }
+
+    // ------------------------------ top ------------------------------
+    _top: number;
+    get top(): number {
+        return this._top;
+    }
+
+    set top(value: number) {
+        this._top = value;
+        if (this.$ && value) {
+            if (this.dock === "fill") {
+                this.$.css("top", "0px");
+            }
+            else {
+                this.$.css("top", value + "px");
+                this.$.css("position", "absolute");
+            }
+        }
+    }
+
+    private __emitCode_top(code: EmittedCode) {
+        code.emitNumberValue(this, "top");
+    }
+
+    private __setOptions_top() {
+        this.top = this._top;
+    }
+
+
+    // ------------------------------ left ------------------------------
+    _left: number;
+    get left(): number {
+        return this._left;
+    }
+
+    set left(value: number) {
+        this._left = value;
+        if (this.$ && value) {
+            if (this.dock === "fill") {
+                this.$.css("left", "0px");
+            }
+            else {
+                this.$.css("left", value + "px");
+                this.$.css("position", "absolute");
+            }
+        }
+    }
+
+    private __emitCode_left(code: EmittedCode) {
+        code.emitNumberValue(this, "left");
+    }
+
+    private __setOptions_left() {
+        this.left = this._left;
+    }
+
+    // ------------------------------ height ------------------------------
+    _height: number;
+    get height(): number {
+        return this._height;
+    }
+
+    set height(value: number) {
+        this._height = value;
+        if (this.$ && value)
+            if (this.dock === "fill") {
+                this.jqxWidget({height: "100%"} as jqxWidgetOptions);
+            }
+            else {
+                this.jqxWidget({height: value} as jqxWidgetOptions);
+            }
+    }
+
+    private __emitCode_height(code: EmittedCode) {
+        code.emitNumberValue(this, "height");
+    }
+
+    private __fillOptions_height(opt: jqxWidgetOptions) {
+        if (this.dock === "fill")
+            opt.height = "100%";
+        else
+            opt.height = this.height;
+    }
+
+    // ------------------------------ width ------------------------------
+    _width: number;
+    get width(): number {
+        return this._width;
+    }
+
+    set width(value: number) {
+        this._width = value;
+        if (this.$ && value)
+            if (this.dock === "fill") {
+                this.jqxWidget({width: "100%"} as jqxWidgetOptions);
+            }
+            else {
+                this.jqxWidget({width: value} as jqxWidgetOptions);
+            }
+    }
+
+    private __emitCode_width(code: EmittedCode) {
+        code.emitNumberValue(this, "width");
+    }
+
+    private __fillOptions_width(opt: jqxWidgetOptions) {
+        if (this.dock === "fill")
+            opt.width = "100%";
+        else
+            opt.width = this.width;
+    }
+
+    renderBody() {
+//        this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<table id='" + this.$id + "' style='border:1px solid green; width:100%;border-spacing:0;'></table>").appendTo(this.parent.$childrenContainer);
+
+    }
+
+}

@@ -15,6 +15,7 @@ import {CodeEditor} from "../platform/components/gui/CodeEditor";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {CompilerOptions, DiagnosticCategory, JsxEmit, ScriptTarget} from "typescript";
 import {replaceAll} from "../platform/utils/replaceAll";
+import {PropertiesEditor} from "./PropertiesEditor";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
@@ -73,6 +74,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
 
         appState.activeComponent = this.activeComponent;
+        this.propertyEditor.editedObject=this.activeComponent;
 
         for (let func of this.onAfterActiveComponentChanged) {
             func(value, savedOld);
@@ -101,6 +103,8 @@ export class FormDesigner_Window extends Window implements IDesigner {
     rightTabsPanel: TabsPanel = new TabsPanel();
     propertyEditorTab: Tab = new Tab();
     formExplorerTab: Tab = new Tab();
+
+    propertyEditor: PropertiesEditor = new PropertiesEditor();
     //=== END-DESIGNER-DECLARE-CODE ===//
 
 
@@ -142,28 +146,30 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
         this.rightTabsPanel.tabsPosition = "bottom";
         this.rightTabsPanel.dock = "fill";
+
         this.propertyEditorTab.title = "Свойства";
+        this.rightTabsPanel.childrenAdd(this.propertyEditorTab);
+
+        this.propertyEditor.dock="fill";
+        this.propertyEditorTab.childrenAdd(this.propertyEditor);
+
+
+
         this.formExplorerTab.title = "Структура";
 
         this.splitPanelRight.childrenAdd(this.rightTabsPanel);
-        this.rightTabsPanel.childrenAdd(this.propertyEditorTab);
         this.rightTabsPanel.childrenAdd(this.formExplorerTab);
         //=== END-DESIGNER-INIT-CODE ===//
 
 
         this.codeEditor.code = fs.readFileSync(this._designedFormPath, "utf8");
 
-        let form = require("../" + this.designedFormPath.replace(".ts", ".js"));
+        let formModule = require("../" + this.designedFormPath.replace(".ts", ".js"));
         let formClassName = path.basename(this.designedFormPath, ".ts");
-        //console.log("form", form[formClassName]);
-        this.designedForm = new form[formClassName]();
+        this.designedForm = new formModule[formClassName]();
 
     }
 
-
-    // кнопка123456_Click(args: IEventArgs) {
-    //     this.tabs.tabsPosition="bottom";
-    // }
 
     createAppToolBar() {
         let saveButton: ToolButton = new ToolButton();
@@ -193,10 +199,9 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
     testRun() {
         this.save();
-        let form = require("../" + this.designedFormPath.replace(".ts", ".js"));
+        let formModule = require("../" + this.designedFormPath.replace(".ts", ".js"));
         let formClassName = path.basename(this.designedFormPath, ".ts");
-        //console.log("form", form[formClassName]);
-        let testform = new form[formClassName]() as Window;
+        let testform = new formModule[formClassName]() as Window;
         testform.render();
 
     }
@@ -287,7 +292,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         // let xxx=eval(res.outputText);
         // console.log("xxx",xxx);
         //
-        console.log(res.diagnostics);
+        //console.log(res.diagnostics);
         let errors: string[] = [];
         for (let diag of res.diagnostics) {
             if (diag.category === DiagnosticCategory.Error) {

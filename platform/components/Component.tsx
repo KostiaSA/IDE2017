@@ -35,8 +35,12 @@ export class Component {
     }
 
     // для рендеринга children
+    _$childrenContainer:JQuery;
     get $childrenContainer(): JQuery {
-        return this.$;
+        return  this._$childrenContainer || this.$;
+    }
+    set $childrenContainer(value: JQuery) {
+        this._$childrenContainer = value;
     }
 
 
