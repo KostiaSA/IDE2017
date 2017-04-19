@@ -19,10 +19,10 @@ export class ТестоваяФормаДляДизайнера extends Window {
         this.left=10;
         this.height=400;
         this.width=300;
-        this.кнопка123.text="это кнопка 1";
-        this.кнопка123.top=20;
-        this.кнопка123.left=25;
-        this.кнопка123.height=36;
+        this.кнопка123.text="это кноп";
+        this.кнопка123.top=255;
+        this.кнопка123.left=35;
+        this.кнопка123.height=46;
         this.кнопка123.width=89;
         this.childrenAdd(this.кнопка123);
         this.кнопка2.text="это кнопка 2";
@@ -33,7 +33,7 @@ export class ТестоваяФормаДляДизайнера extends Window {
         this.edit1.top=95;
         this.edit1.left=25;
         this.edit1.height=98;
-        this.edit1.width=140;
+        this.edit1.width=110;
         this.childrenAdd(this.edit1);
         //=== END-DESIGNER-INIT-CODE ===//
     }
@@ -44,6 +44,9 @@ export class ТестоваяФормаДляДизайнера extends Window {
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
+
+
 
 
 

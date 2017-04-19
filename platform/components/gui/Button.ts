@@ -8,6 +8,7 @@ import {ToolButton} from "./toolbar/ToolButton";
 import {getRandomId} from "../../../app/utils/getRandomId";
 import {PropertyEditor} from "../../../designer/PropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
+import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
 
 export class Button extends Component {
@@ -28,8 +29,9 @@ export class Button extends Component {
 
     set text(value: string) {
         this._text = value;
-        if (this.$)
+        if (this.$) {
             this.$.text(this.text);
+        }
     }
 
     private __emitCode_text(code: EmittedCode) {
@@ -38,6 +40,13 @@ export class Button extends Component {
 
     private __setOptions_text() {
         this.text = this._text;
+    }
+
+    private __getPropertyEditor_text():PropertyEditor {
+        let pe=new StringPropertyEditor();
+        pe.propertyName="text";
+        pe.category="Содержимое";
+        return pe;
     }
 
     // ------------------------------ image ------------------------------

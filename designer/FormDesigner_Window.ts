@@ -61,6 +61,15 @@ export class FormDesigner_Window extends Window implements IDesigner {
         let savedOld = this._activeComponent;
         this._activeComponent = value;
 
+
+
+        appState.activeComponent = this.activeComponent;
+        this.propertyEditor.editedObject=this.activeComponent;
+
+        for (let func of this.onAfterActiveComponentChanged) {
+            func(value, savedOld);
+        }
+
         let frame = this._activeComponent.$;
         frame.$$savedBorder = frame.css("outline");
         frame.css("outline", "solid 2px deepskyblue");
@@ -71,15 +80,6 @@ export class FormDesigner_Window extends Window implements IDesigner {
             (this._activeComponent as any).width = ui.size.width;
             (this._activeComponent as any).height = ui.size.height;
         });
-
-
-        appState.activeComponent = this.activeComponent;
-        this.propertyEditor.editedObject=this.activeComponent;
-
-        for (let func of this.onAfterActiveComponentChanged) {
-            func(value, savedOld);
-        }
-
 
         //console.log("new active", value);
     }

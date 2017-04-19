@@ -32,7 +32,8 @@ export class Input extends Component {
                 this.$.text("[" + this._bindProperty + "]");
             }
             else {
-                this.$.val(this.bindObject[this.bindProperty]);
+                if (this.$.val() !== this.bindObject[this.bindProperty])
+                    this.$.val(this.bindObject[this.bindProperty]);
             }
         }
 
@@ -59,7 +60,8 @@ export class Input extends Component {
                 this.$.text("[" + this._bindProperty + "]");
             }
             else {
-                this.$.val(this.bindObject[this.bindProperty]);
+                if (this.$.val() !== this.bindObject[this.bindProperty])
+                    this.$.val(this.bindObject[this.bindProperty]);
             }
         }
     }
@@ -212,7 +214,9 @@ export class Input extends Component {
             setInterval(() => {
                 if (!this._designer && this.$ && this.bindObject && this.$lastPropValue !== this.bindObject[this.bindProperty]) {
                     this.$lastPropValue = this.bindObject[this.bindProperty];
-                    this.$.jqxInput("val", this.$lastPropValue);
+                    if (this.$lastPropValue !== this.$.jqxInput("val")) {
+                        this.$.jqxInput("val", this.$lastPropValue);
+                    }
                 }
             }, 50);
         }
