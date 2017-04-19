@@ -124,7 +124,7 @@ export class PropertiesEditor extends Control {
         this._height = value;
         if (this.$ && value)
             if (this.dock === "fill") {
-                this.jqxWidget({height: "100%"} as jqxWidgetOptions);
+                this.jqxWidget({height: "98%"} as jqxWidgetOptions);
             }
             else {
                 this.jqxWidget({height: value} as jqxWidgetOptions);
@@ -137,7 +137,7 @@ export class PropertiesEditor extends Control {
 
     private __fillOptions_height(opt: jqxWidgetOptions) {
         if (this.dock === "fill")
-            opt.height = "100%";
+            opt.height = "98%";
         else
             opt.height = this.height;
     }
@@ -152,7 +152,7 @@ export class PropertiesEditor extends Control {
         this._width = value;
         if (this.$ && value)
             if (this.dock === "fill") {
-                this.jqxWidget({width: "100%"} as jqxWidgetOptions);
+                this.jqxWidget({width: "98%"} as jqxWidgetOptions);
             }
             else {
                 this.jqxWidget({width: value} as jqxWidgetOptions);
@@ -165,14 +165,14 @@ export class PropertiesEditor extends Control {
 
     private __fillOptions_width(opt: jqxWidgetOptions) {
         if (this.dock === "fill")
-            opt.width = "100%";
+            opt.width = "98%";
         else
             opt.width = this.width;
     }
 
     renderBody() {
 //        this.$ = $("<div style='border: 1px solid green' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-        this.$ = $("<table id='" + this.$id + "' style='border:1px solid green; width:100%;border-spacing:0;'></table>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='width:100px;height: 100px; border: 0px solid red'><table id='" + this.$id + "' style='border:0px solid green; width:95%;border-spacing:0;'></table></div>").appendTo(this.parent.$childrenContainer);
 
     }
 
@@ -188,9 +188,12 @@ export class PropertiesEditor extends Control {
             }
         }
 
+        $("#"+this.$id).empty();
+
         for (let pe of propEditors) {
             let $peId = getRandomId();
-            let $pe = $("<tr id='" + $peId + "'><td>" + escapeHtml((pe.title || pe.propertyName).toString()) + "</td> <td id='" + $peId + "-input'></td></tr>").appendTo(this.$.find("body").first());
+            let $tr = $("<tr id='" + $peId + "'><td style='min-width: 50px;padding-left: 5px;padding-right: 5px'>" + escapeHtml((pe.title || pe.propertyName).toString()) + "</td> <td id='" + $peId + "-input'></td></tr>");
+            $tr.appendTo($("#"+this.$id));
             pe.render($("#"+$peId + "-input"));
         }
 

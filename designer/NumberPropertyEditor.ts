@@ -11,6 +11,7 @@ export class NumberPropertyEditor extends PropertyEditor {
 
     render(parent: JQuery) {
         let input = new Input();
+        input.width="97%";
         input.bindObject=this.component;
         input.bindProperty=this.propertyName;
         input.parent = {} as Component;

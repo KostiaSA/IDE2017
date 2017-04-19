@@ -28,7 +28,7 @@ export class Input extends Component {
     set bindObject(value: any) {
         this._bindObject = value;
         //if (this.$)
-          //  this.$.bindObject(this.bindObject);
+        //  this.$.bindObject(this.bindObject);
     }
 
     private __emitCode_bindObject(code: EmittedCode) {
@@ -49,7 +49,7 @@ export class Input extends Component {
         this._bindProperty = value;
         if (this.$) {
             if (this._designer)
-                this.$.text("["+this._bindProperty+"]");
+                this.$.text("[" + this._bindProperty + "]");
             //  this.$.bindProperty(this.bindProperty);
         }
     }
@@ -129,12 +129,12 @@ export class Input extends Component {
     }
 
     // ------------------------------ width ------------------------------
-    _width: number = 200;
-    get width(): number {
+    _width: number | string = 200;
+    get width(): number | string {
         return this._width;
     }
 
-    set width(value: number) {
+    set width(value: number | string) {
         this._width = value;
         if (this.$ && value)
             this.jqxWidget({width: value} as jqxWidgetOptions);
@@ -184,16 +184,28 @@ export class Input extends Component {
             this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
             this.$.on("mousedown", this.designModeOnMouseDown);
         }
-        else
+        else {
             this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
 
-        setInterval(() => {
-            if (!this._designer && this.$ && this.bindObject && this.$lastPropValue !== this.bindObject[this.bindProperty]) {
-                this.$lastPropValue = this.bindObject[this.bindProperty];
-                this.$.jqxInput("val", this.$lastPropValue);
-            }
-        }, 50);
+            if (this.bindObject[this.bindProperty])
+                this.$.val(this.bindObject[this.bindProperty]);
 
+            this.$.on('change', (event: any) => {
+                //var type = event.args.type; // keyboard, mouse or null depending on how the value was changed.
+                var value = this.$.val();
+                this.bindObject[this.bindProperty] = value;
+                //console.log(value);
+
+            });
+
+
+            setInterval(() => {
+                if (!this._designer && this.$ && this.bindObject && this.$lastPropValue !== this.bindObject[this.bindProperty]) {
+                    this.$lastPropValue = this.bindObject[this.bindProperty];
+                    this.$.jqxInput("val", this.$lastPropValue);
+                }
+            }, 50);
+        }
     }
 
     //
