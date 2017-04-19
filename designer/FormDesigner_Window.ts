@@ -165,6 +165,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.rightTabsPanel.childrenAdd(this.componentsTab);
 
         this.componentsListBox.dock="fill";
+        this.componentsListBox.allowDrag=true;
         this.componentsTab.childrenAdd(this.componentsListBox);
 
 

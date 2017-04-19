@@ -166,8 +166,9 @@ export class Component {
 
     }
 
-    designModeOnMouseDown = () => {
+    designModeOnMouseDown = (e:any) => {
         this._designer!.activeComponent = this;
+        e.stopPropagation();
     };
 
     createJqxWidget() {
@@ -189,10 +190,6 @@ export class Component {
                     (this._designer!.activeComponent as any).top = this.$.position().top;
                 },
             });
-            //     this.$.resizable({
-            //         grid: 5,
-            //     });
-            //
         }
     }
 

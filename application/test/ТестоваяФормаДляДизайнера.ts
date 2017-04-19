@@ -15,25 +15,27 @@ export class ТестоваяФормаДляДизайнера extends Window {
         super.init();
 
         //=== BEGIN-DESIGNER-INIT-CODE ===//
-        this.top=10;
-        this.left=10;
-        this.height=400;
-        this.width=300;
+        this.top=15;
+        this.left=20;
+        this.height=580;
+        this.width=560;
         this.кнопка123.text="это кноп";
         this.кнопка123.top=255;
         this.кнопка123.left=35;
-        this.кнопка123.height=46;
+        this.кнопка123.height=86;
         this.кнопка123.width=89;
         this.childrenAdd(this.кнопка123);
         this.кнопка2.text="это кнопка 2888";
-        this.кнопка2.top=55;
-        this.кнопка2.left=165;
+        this.кнопка2.top=50;
+        this.кнопка2.left=335;
+        this.кнопка2.height=76;
+        this.кнопка2.width=95;
         this.childrenAdd(this.кнопка2);
         this.edit1.bindProperty="text";
-        this.edit1.top=95;
-        this.edit1.left=25;
+        this.edit1.top=100;
+        this.edit1.left=35;
         this.edit1.height=98;
-        this.edit1.width=110;
+        this.edit1.width=265;
         this.childrenAdd(this.edit1);
         //=== END-DESIGNER-INIT-CODE ===//
     }
@@ -44,6 +46,7 @@ export class ТестоваяФормаДляДизайнера extends Window {
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
 
 
 

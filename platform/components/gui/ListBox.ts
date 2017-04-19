@@ -43,6 +43,47 @@ export class ListBox extends Component {
         return this.$.jqxListBox(...args);
     };
 
+    // ------------------------------ allowDrag ------------------------------
+    private _allowDrag: boolean = false;
+    get allowDrag(): boolean {
+        return this._allowDrag;
+    }
+
+    set allowDrag(value: boolean) {
+        this._allowDrag = value;
+        if (this.$) {
+            this.jqxWidget({allowDrag: this._allowDrag});
+        }
+    }
+
+    emitCode_allowDrag(code: EmittedCode) {
+        code.emitBooleanValue(this, "allowDrag", false);
+    }
+
+    private __setOptions_allowDrag() {
+        this.allowDrag = this._allowDrag;
+    }
+
+    // ------------------------------ allowDrop ------------------------------
+    private _allowDrop: boolean = false;
+    get allowDrop(): boolean {
+        return this._allowDrop;
+    }
+
+    set allowDrop(value: boolean) {
+        this._allowDrop = value;
+        if (this.$) {
+            this.jqxWidget({allowDrop: this._allowDrop});
+        }
+    }
+
+    emitCode_allowDrop(code: EmittedCode) {
+        code.emitBooleanValue(this, "allowDrop", false);
+    }
+
+    private __setOptions_allowDrop() {
+        this.allowDrop = this._allowDrop;
+    }
 
     // ------------------------------ dock ------------------------------
     _dock: PanelDock = "none";

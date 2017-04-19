@@ -168,13 +168,14 @@ export class Window extends Component {
         //this._width = this._width || 500;
         if (this._designer) {
             this.$ = $("<div id='" + this.$id + "' style='position: relative; padding: 10px'></div>").appendTo(this.parent.$childrenContainer);
+            this.$.on("mousedown", this.designModeOnMouseDown);
             this.$.resizable({
                 grid: 1,
             });
-
         }
         else
             this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
+
     }
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
