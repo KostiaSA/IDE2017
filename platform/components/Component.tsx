@@ -3,6 +3,7 @@ import {getObjectConstructorName} from "../utils/getObjectConstructorName";
 import {IDesigner} from "../designer/IDesigner";
 import {appState} from "../AppState";
 import {getAllObjectProps} from "../utils/getAllObjectProps";
+import {getRandomId} from "../../app/utils/getRandomId";
 
 export interface IEventArgs {
     sender: Component;
@@ -41,6 +42,9 @@ export class Component {
         throw "abstract error Component.jqxWidget() for " + this.constructor.name;
     };
 
+    get allowChildren(): boolean {
+        return true;
+    }
 
     // --- parent ---
     protected _parent: Component;
@@ -137,7 +141,7 @@ export class Component {
 
     render(designer?: IDesigner) {// this._parentId = parentId;
         this._designer = designer;
-        this._$id = "a" + Math.random().toString(36).slice(2, 21);
+        this._$id = getRandomId();
         this.init();
         this.renderBody();
         if (this.renderJqxWidgetAfterChildren) {
@@ -159,14 +163,10 @@ export class Component {
     }
 
     renderBody() {
-        this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
-        if (this._designer) {
-            this.$.on("mousedown", this.designModeOnMouseDown);
-        }
-
+        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
-    designModeOnMouseDown = (e:any) => {
+    designModeOnMouseDown = (e: any) => {
         this._designer!.activeComponent = this;
         e.stopPropagation();
     };
@@ -181,8 +181,21 @@ export class Component {
         this.fillJqxWidgetOptions(opt);
         this.jqxWidget(opt);
         if (this._designer) {
-            //     this.$.css("outline", "solid 2px deepskyblue");
-            //
+
+            this.$.on("mousedown", this.designModeOnMouseDown);
+            if (!this.allowChildren) {
+                //this.$.droppable({disabled: true});
+            }
+            else {
+                console.log("dropped", this.$);
+                this.$.droppable({
+                    greedy: true,
+                    hoverClass: "form-designer-drop-hover",
+                    drop: function () {
+                        alert("dropped");
+                    }
+                });
+            }
             this.$.draggable({
                 grid: [5, 5],
                 drag: () => {

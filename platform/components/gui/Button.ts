@@ -28,6 +28,10 @@ export class Button extends Component {
         super();
     }
 
+    get allowChildren(): boolean {
+        return false;
+    }
+
     jqxWidget(...args: any[]): Function {
         return this.$.jqxButton(...args);
     };
