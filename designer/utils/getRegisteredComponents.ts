@@ -21,7 +21,6 @@ export function getRegisteredComponents(): IComponentRegistration[] {
                 let module=require(modulePath);
                 if (module.__registerBuhtaComponent__) {
                     ret.push(module.__registerBuhtaComponent__());
-                    console.log(fileName, module);
                 }
             }
         }

@@ -32,11 +32,11 @@ export class FormDesigner_Panel extends Component {
         //this._$id = "a" + Math.random().toString(36).slice(2, 21);
         this.$ = $("<div style='background-color: #efefef;height: 100%'></div>").appendTo(this.parent.$childrenContainer);
 
-        console.log(this.designer);
-        console.log(this.designedForm);
+        //console.log(this.designer);
+        //console.log(this.designedForm);
         if (this.designedForm) {
             this.designedForm.parent=this;
-            console.log(this.designedForm);
+            //console.log(this.designedForm);
             this.designedForm.render(this.designer);
         }
 
