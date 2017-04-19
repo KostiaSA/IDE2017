@@ -27,8 +27,15 @@ export class Input extends Component {
 
     set bindObject(value: any) {
         this._bindObject = value;
-        //if (this.$)
-        //  this.$.bindObject(this.bindObject);
+        if (this.$) {
+            if (this._designer) {
+                this.$.text("[" + this._bindProperty + "]");
+            }
+            else {
+                this.$.val(this.bindObject[this.bindProperty]);
+            }
+        }
+
     }
 
     private __emitCode_bindObject(code: EmittedCode) {
@@ -36,7 +43,7 @@ export class Input extends Component {
     }
 
     private __setOptions_bindObject() {
-        //this.bindObject = this._bindObject;
+        this.bindObject = this._bindObject;
     }
 
     // ------------------------------ bindProperty ------------------------------
@@ -48,9 +55,12 @@ export class Input extends Component {
     set bindProperty(value: string) {
         this._bindProperty = value;
         if (this.$) {
-            if (this._designer)
+            if (this._designer) {
                 this.$.text("[" + this._bindProperty + "]");
-            //  this.$.bindProperty(this.bindProperty);
+            }
+            else {
+                this.$.val(this.bindObject[this.bindProperty]);
+            }
         }
     }
 
