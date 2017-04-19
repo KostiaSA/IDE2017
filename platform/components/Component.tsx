@@ -204,7 +204,7 @@ export class Component {
                     greedy: true,
                     hoverClass: "form-designer-drop-hover",
                     drop: function () {
-                        alert("dropped");
+                        //alert("dropped");
                     }
                 });
             }

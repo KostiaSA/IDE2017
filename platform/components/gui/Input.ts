@@ -4,7 +4,11 @@ import {Control} from "./Control";
 import {appState} from "../../AppState";
 
 import jqxWidgetOptions = jqwidgets.InputOptions;
+import {PropertyEditor, Категория_РазмерПозиция, Категория_Содержимое} from "../../../designer/PropertyEditor";
+import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 
+export type InputValueType = "auto" | "string" | "number" | "boolean";
 
 export class Input extends Component {
 
@@ -18,6 +22,36 @@ export class Input extends Component {
         else
             return this.$.jqxInput(...args);
     };
+
+    // ------------------------------ valueType ------------------------------
+    _valueType: InputValueType = "auto";
+    get valueType(): InputValueType {
+        return this._valueType;
+    }
+
+    set valueType(value: InputValueType) {
+        let needReloadPropertyEditor = this._valueType !== value;
+        this._valueType = value;
+        if (this.$ && needReloadPropertyEditor && this._designer) {
+            this._designer.reloadPropertyEditor();
+        }
+    }
+
+    private __emitCode_valueType(code: EmittedCode) {
+        code.emitStringValue(this, "valueType", "auto");
+    }
+
+    private __setOptions_valueType() {
+        this.valueType = this._valueType;
+    }
+
+    private __getPropertyEditor_valueType(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "valueType";
+        pe.category = Категория_Содержимое;
+        return pe;
+    }
+
 
     // ------------------------------ bindObject ------------------------------
     _bindObject: any;
@@ -97,6 +131,14 @@ export class Input extends Component {
         this.top = this._top;
     }
 
+    private __getPropertyEditor_top(): PropertyEditor {
+        let pe = new NumberPropertyEditor();
+        pe.propertyName = "top";
+        pe.category = Категория_РазмерПозиция;
+       // pe.visible = () => pe.component.valueType === "auto";
+        return pe;
+    }
+
 
     // ------------------------------ left ------------------------------
     _left: number;
@@ -118,6 +160,13 @@ export class Input extends Component {
 
     private __setOptions_left() {
         this.left = this._left;
+    }
+
+    private __getPropertyEditor_left(): PropertyEditor {
+        let pe = new NumberPropertyEditor();
+        pe.propertyName = "left";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
     }
 
     // ------------------------------ height ------------------------------

@@ -190,9 +190,11 @@ export class PropertiesEditor extends Component {
             if (propName.startsWith("__getPropertyEditor_")) {
                 let pe = ((this.editedObject as any)[propName]).call(this);
                 pe.component = this.editedObject;
-                allCategories.push(pe.category);
-                categories.push(pe.category);
-                propEditors.push(pe);
+                if (pe.visible()) {
+                    allCategories.push(pe.category);
+                    categories.push(pe.category);
+                    propEditors.push(pe);
+                }
             }
         }
 

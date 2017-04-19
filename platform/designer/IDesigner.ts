@@ -1,6 +1,7 @@
 import {Component} from "../components/Component";
 
-export interface IDesigner{
+export interface IDesigner {
     designedForm: Component;
-    activeComponent:Component;
+    activeComponent: Component;
+    reloadPropertyEditor(): void;
 }

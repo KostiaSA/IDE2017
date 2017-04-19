@@ -20,4 +20,6 @@ export class PropertyEditor {
     render(parent: JQuery) {
         throw "PropertyEditor.render(): abstract error";
     }
+
+    visible: () => boolean = () => true;
 }

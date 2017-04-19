@@ -184,6 +184,10 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.loadRegisteredComponents();
     }
 
+    reloadPropertyEditor() {
+        if (this.propertyEditor)
+            this.propertyEditor.renderEditors();
+    }
 
     componentsListBox_DblClick(eventArgs: IListBoxDblClickEventArgs) {
         console.log(eventArgs.item.value);
@@ -202,6 +206,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         }
         throw "ошибка getComponentNewName()";
     }
+
 
     addNewComponent(component: Component) {
         let parent = this.designedForm;
