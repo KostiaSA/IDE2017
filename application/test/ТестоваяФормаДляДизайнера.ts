@@ -9,6 +9,9 @@ export class ТестоваяФормаДляДизайнера extends Window {
     кнопка123:Button = new Button();
     кнопка2:Button = new Button();
     edit1:Input = new Input();
+    Button0:Button = new Button();
+    Button2:Button = new Button();
+    Button3:Button = new Button();
     //=== END-DESIGNER-DECLARE-CODE ===//
 
     init() {
@@ -37,6 +40,18 @@ export class ТестоваяФормаДляДизайнера extends Window {
         this.edit1.height=98;
         this.edit1.width=265;
         this.childrenAdd(this.edit1);
+        this.Button0.text="Новая кнопка old";
+        this.Button0.top=40;
+        this.Button0.left=205;
+        this.childrenAdd(this.Button0);
+        this.Button2.text="Новая кнопка 33333333";
+        this.Button2.top=340;
+        this.Button2.left=285;
+        this.childrenAdd(this.Button2);
+        this.Button3.text="Новая кнопка";
+        this.Button3.top=50;
+        this.Button3.left=75;
+        this.childrenAdd(this.Button3);
         //=== END-DESIGNER-INIT-CODE ===//
     }
 
@@ -46,6 +61,11 @@ export class ТестоваяФормаДляДизайнера extends Window {
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
+
+
+
+
 
 
 

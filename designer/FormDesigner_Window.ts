@@ -7,7 +7,7 @@ import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
 import {Tab} from "../platform/components/gui/Tab";
 import {FormDesigner_Panel} from "./FormDesigner_Panel";
-import {Component} from "../platform/components/Component";
+import {Component, IComponentRegistration} from "../platform/components/Component";
 import {IDesigner} from "../platform/designer/IDesigner";
 import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
 import {appState} from "../platform/AppState";
@@ -16,7 +16,7 @@ import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {CompilerOptions, DiagnosticCategory, JsxEmit, ScriptTarget} from "typescript";
 import {replaceAll} from "../platform/utils/replaceAll";
 import {PropertiesEditor} from "./PropertiesEditor";
-import {IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
+import {IListBoxDblClickEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
 import {getRegisteredComponents} from "./utils/getRegisteredComponents";
 
 export class FormDesigner_Window extends Window implements IDesigner {
@@ -164,8 +164,9 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.componentsTab.title = "Компоненты";
         this.rightTabsPanel.childrenAdd(this.componentsTab);
 
-        this.componentsListBox.dock="fill";
-        this.componentsListBox.allowDrag=true;
+        this.componentsListBox.dock = "fill";
+        //this.componentsListBox.allowDrag=true;
+        this.componentsListBox.onDblClick = this.componentsListBox_DblClick;
         this.componentsTab.childrenAdd(this.componentsListBox);
 
 
@@ -183,13 +184,47 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.loadRegisteredComponents();
     }
 
+
+    componentsListBox_DblClick(eventArgs: IListBoxDblClickEventArgs) {
+        console.log(eventArgs.item.value);
+        let compRegInfo = eventArgs.item.value as IComponentRegistration;
+        let newComponent = new (compRegInfo.componentClass as any)();
+        this.addNewComponent(newComponent);
+    }
+
+    getComponentNewName(component: Component): string {
+        let compClassName = component.constructor.name;
+        for (let i = 0; i < 10000; i++) {
+            let newName = compClassName + i.toString();
+            if (!this.designedForm[newName]) {
+                return newName;
+            }
+        }
+        throw "ошибка getComponentNewName()";
+    }
+
+    addNewComponent(component: Component) {
+        let parent = this.designedForm;
+        if (this.activeComponent && this.activeComponent.allowChildren)
+            parent = this.activeComponent;
+        let compName = this.getComponentNewName(component);
+        component["_left"]=10;
+        component["_top"]=10;
+        component.designModeInitializeNew();
+        this.designedForm[compName] = component;
+        parent.childrenAdd(component);
+        console.log(compName,component);
+        this.formDesignerPanel.reRender();
+    }
+
     loadRegisteredComponents() {
         let items: IListBoxItem[] = [];
 
-        for (let regComp of getRegisteredComponents()){
+        for (let regComp of getRegisteredComponents()) {
             items.push({
-                label: regComp.title+"  (" +regComp.componentClass.name+")",
-                group:regComp.category
+                label: regComp.title + "  (" + regComp.componentClass.name + ")",
+                group: regComp.category,
+                value: regComp
 
             });
         }

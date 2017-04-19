@@ -31,6 +31,9 @@ export function __registerBuhtaComponent__(): IComponentRegistration {
     }
 }
 
+export interface IListBoxDblClickEventArgs extends IEventArgs {
+    item: IListBoxItem;
+}
 
 export class ListBox extends Component {
 
@@ -245,6 +248,35 @@ export class ListBox extends Component {
         this.dataSource = this._dataSource;
     }
 
+    // ------------------------------ onDblClick ------------------------------
+    _onDblClick: IEvent<IListBoxDblClickEventArgs>;
+    get onDblClick(): IEvent<IListBoxDblClickEventArgs> {
+        return this._onDblClick;
+    }
+
+    set onDblClick(value: IEvent<IListBoxDblClickEventArgs>) {
+        this._onDblClick = value;
+        if (this.$ && this._onDblClick) {
+            let __this = this;
+            this.$.find(".jqx-listitem-state-normal").dblclick((event: any) => {
+                console.log("dbl-eventTarget", event.target);
+                let args: IListBoxDblClickEventArgs = {
+                    sender: this,
+                    item: __this.$.jqxListBox("getSelectedItem")
+                };
+                this._onDblClick.call(this._owner, args);
+            })
+        }
+    }
+
+    private __setOptions_onDblClick() {
+        this.onDblClick = this._onDblClick;
+    }
+
+    private __emitCode_onDblClick(code: EmittedCode) {
+        code.emitEventValue(this, "onDblClick");
+    }
+
     // private __getPropertyEditor_dataSource(): PropertyEditor {
     //     let pe = new StringPropertyEditor();
     //     pe.propertyName = "dataSource";
@@ -252,4 +284,8 @@ export class ListBox extends Component {
     //     return pe;
     // }
 
+//     $("#jqxWidget .jqx-listitem-state-normal").dblclick(function (event) {
+//     var item = $(event.target).text();
+//     $("#jqxWidget").jqxListBox("selectItem", item);
+// });
 }

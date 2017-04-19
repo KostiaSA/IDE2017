@@ -211,7 +211,8 @@ export class CodeEditor extends Component {
     render(designer?: IDesigner) {
         this._designer = designer;
         this._$id = getRandomId();
-        this.init();
+        if (!this.initialized)
+            this.init();
         //this.renderBody();
 //        this.$ = $("<div data-component='" + this.constructor.name + "' style='border: 0px solid red; height: 100%;width: 100%'></div>").appendTo(this.parent.$childrenContainer);
         this.$ = this.parent.$childrenContainer;

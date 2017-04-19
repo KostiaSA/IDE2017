@@ -41,6 +41,21 @@ export class FormDesigner_Panel extends Component {
         }
 
     }
+
+    reRender() {// this._parentId = parentId;
+
+        this.$.empty();
+
+        //console.log(this.designer);
+        //console.log(this.designedForm);
+        if (this.designedForm) {
+            this.designedForm.parent=this;
+            //console.log(this.designedForm);
+            this.designedForm.render(this.designer);
+        }
+
+    }
+
 }
 
 

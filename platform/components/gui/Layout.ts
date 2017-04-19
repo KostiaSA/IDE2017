@@ -45,7 +45,8 @@ export class Layout extends Control {
         // this._parentId = parentId;
         this._designer = designer;
         this._$id = "a" + Math.random().toString(36).slice(2, 21);
-        this.init();
+        if (!this.initialized)
+            this.init();
 //        this.$ = $("<div style='border: 1px solid red' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
         this.$ = $("<div style='border: 1px solid red' id='" + this.$id + "'></div>").appendTo($("body"));
         for (let child of this.children) {

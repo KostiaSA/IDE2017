@@ -42,8 +42,14 @@ export class Component {
         throw "abstract error Component.jqxWidget() for " + this.constructor.name;
     };
 
+    [opt: string]: any;
+
     get allowChildren(): boolean {
         return true;
+    }
+
+    designModeInitializeNew() {
+
     }
 
     // --- parent ---
@@ -111,6 +117,8 @@ export class Component {
     children: Component[] = [];
 
     childrenAdd(child: Component) {
+        if (this.children.indexOf(child) > -1)
+            throw "ошибка childrenAdd: двойное добавление";
         child.owner = this.owner;
         child.parent = this;
         this.children.push(child);
@@ -142,7 +150,8 @@ export class Component {
     render(designer?: IDesigner) {// this._parentId = parentId;
         this._designer = designer;
         this._$id = getRandomId();
-        this.init();
+        if (!this.initialized)
+            this.init();
         this.renderBody();
         if (this.renderJqxWidgetAfterChildren) {
             this.renderChildren();
@@ -158,7 +167,10 @@ export class Component {
     }
 
 
+    initialized: boolean;
+
     init() {
+        this.initialized = true;
         //throw "Component.init(): abstract error";
     }
 

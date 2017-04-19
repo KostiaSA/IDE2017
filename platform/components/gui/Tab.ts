@@ -56,7 +56,8 @@ export class Tab extends Component {
     // ------------------------------ render ------------------------------
     $li: JQuery;
     render() {
-        this.init();
+        if (!this.initialized)
+            this.init();
         this.$ = $("<div style='position: relative'></div>").appendTo(this.parent.$childrenContainer);
         this.$li = $("<li>" + escapeHtml(this.title) + "</li>").appendTo(this.parent.$childrenContainer.find("ul").first());
         this.renderChildren();

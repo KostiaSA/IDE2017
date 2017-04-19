@@ -33,7 +33,8 @@ export class SplitPanelItem extends Control {
 
     // ------------------------------ size ------------------------------
     render() {
-        this.init();
+        if (!this.initialized)
+            this.init();
         this.$ = $("<div style='border: 0px solid orange'></div>").appendTo(this.parent.$childrenContainer);
         this.renderChildren();
     }

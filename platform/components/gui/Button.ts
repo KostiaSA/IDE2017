@@ -36,6 +36,10 @@ export class Button extends Component {
         return this.$.jqxButton(...args);
     };
 
+    designModeInitializeNew(){
+        this._text="Новая кнопка";
+    }
+
     // ------------------------------ text ------------------------------
     _text: string;
     get text(): string {
