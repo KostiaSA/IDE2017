@@ -32,7 +32,7 @@ export class Input extends Component {
                 this.$.text("[" + this._bindProperty + "]");
             }
             else {
-                if (this.$.val() !== this.bindObject[this.bindProperty])
+                if (this.bindObject && this.$.val() !== this.bindObject[this.bindProperty])
                     this.$.val(this.bindObject[this.bindProperty]);
             }
         }
@@ -60,7 +60,7 @@ export class Input extends Component {
                 this.$.text("[" + this._bindProperty + "]");
             }
             else {
-                if (this.$.val() !== this.bindObject[this.bindProperty])
+                if (this.bindObject && this.$.val() !== this.bindObject[this.bindProperty])
                     this.$.val(this.bindObject[this.bindProperty]);
             }
         }
@@ -199,7 +199,7 @@ export class Input extends Component {
         else {
             this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
 
-            if (this.bindObject[this.bindProperty])
+            if (this.bindObject && this.bindObject[this.bindProperty])
                 this.$.val(this.bindObject[this.bindProperty]);
 
             this.$.on('change', (event: any) => {

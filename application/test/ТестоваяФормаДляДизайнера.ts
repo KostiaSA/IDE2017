@@ -25,9 +25,9 @@ export class ТестоваяФормаДляДизайнера extends Window {
         this.кнопка123.height=46;
         this.кнопка123.width=89;
         this.childrenAdd(this.кнопка123);
-        this.кнопка2.text="это кнопка 2";
-        this.кнопка2.top=95;
-        this.кнопка2.left=190;
+        this.кнопка2.text="это кнопка 2888";
+        this.кнопка2.top=55;
+        this.кнопка2.left=165;
         this.childrenAdd(this.кнопка2);
         this.edit1.bindProperty="text";
         this.edit1.top=95;
@@ -44,6 +44,9 @@ export class ТестоваяФормаДляДизайнера extends Window {
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
+
+
 
 
 
