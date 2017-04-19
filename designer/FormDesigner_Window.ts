@@ -16,6 +16,8 @@ import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {CompilerOptions, DiagnosticCategory, JsxEmit, ScriptTarget} from "typescript";
 import {replaceAll} from "../platform/utils/replaceAll";
 import {PropertiesEditor} from "./PropertiesEditor";
+import {IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
+import {getRegisteredComponents} from "./utils/getRegisteredComponents";
 
 export class FormDesigner_Window extends Window implements IDesigner {
 
@@ -62,9 +64,8 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this._activeComponent = value;
 
 
-
         appState.activeComponent = this.activeComponent;
-        this.propertyEditor.editedObject=this.activeComponent;
+        this.propertyEditor.editedObject = this.activeComponent;
 
         for (let func of this.onAfterActiveComponentChanged) {
             func(value, savedOld);
@@ -101,10 +102,15 @@ export class FormDesigner_Window extends Window implements IDesigner {
     codeEditor: CodeEditor = new CodeEditor();
 
     rightTabsPanel: TabsPanel = new TabsPanel();
+
     propertyEditorTab: Tab = new Tab();
+    propertyEditor: PropertiesEditor = new PropertiesEditor();
+
+    componentsTab: Tab = new Tab();
+    componentsListBox: ListBox = new ListBox();
+
     formExplorerTab: Tab = new Tab();
 
-    propertyEditor: PropertiesEditor = new PropertiesEditor();
     //=== END-DESIGNER-DECLARE-CODE ===//
 
 
@@ -150,14 +156,19 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.propertyEditorTab.title = "Свойства";
         this.rightTabsPanel.childrenAdd(this.propertyEditorTab);
 
-        this.propertyEditor.dock="fill";
+        this.propertyEditor.dock = "fill";
         this.propertyEditorTab.childrenAdd(this.propertyEditor);
 
+        this.splitPanelRight.childrenAdd(this.rightTabsPanel);
+
+        this.componentsTab.title = "Компоненты";
+        this.rightTabsPanel.childrenAdd(this.componentsTab);
+
+        this.componentsListBox.dock="fill";
+        this.componentsTab.childrenAdd(this.componentsListBox);
 
 
         this.formExplorerTab.title = "Структура";
-
-        this.splitPanelRight.childrenAdd(this.rightTabsPanel);
         this.rightTabsPanel.childrenAdd(this.formExplorerTab);
         //=== END-DESIGNER-INIT-CODE ===//
 
@@ -168,8 +179,23 @@ export class FormDesigner_Window extends Window implements IDesigner {
         let formClassName = path.basename(this.designedFormPath, ".ts");
         this.designedForm = new formModule[formClassName]();
 
+        this.loadRegisteredComponents();
     }
 
+    loadRegisteredComponents() {
+        let items: IListBoxItem[] = [];
+
+        for (let regComp of getRegisteredComponents()){
+            items.push({
+                label: regComp.title+"  (" +regComp.componentClass.name+")",
+                group:regComp.category
+
+            });
+        }
+
+        this.componentsListBox.dataSource = items;
+
+    }
 
     createAppToolBar() {
         let saveButton: ToolButton = new ToolButton();

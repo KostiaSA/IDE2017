@@ -1,17 +1,38 @@
-import {Component, IEvent, IEventArgs} from "../platform/components/Component";
-import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
-import {Control} from "../platform/components/gui/Control";
-import {appState} from "../platform/AppState";
-import jqxWidgetOptions = jqwidgets.PanelOptions;
-import {PanelDock} from "../platform/components/gui/SplitPanel";
-import {getAllObjectProps} from "../platform/utils/getAllObjectProps";
-import {PropertyEditor, PropertyEditorCategories} from "./PropertyEditor";
-import {getRandomId} from "../app/utils/getRandomId";
-import {escapeHtml} from "../platform/utils/escapeHtml";
+import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Списки} from "../Component";
+import {EmittedCode} from "../code-emitter/EmittedCode";
+import {Control} from "./Control";
+import {appState} from "../../AppState";
+import jqxWidgetOptions = jqwidgets.ListBoxOptions;
+import {PanelDock} from "./SplitPanel";
+import {getAllObjectProps} from "../../utils/getAllObjectProps";
+import {PropertyEditor, PropertyEditorCategories} from "../../../designer/PropertyEditor";
+import {getRandomId} from "../../../app/utils/getRandomId";
+import {escapeHtml} from "../../utils/escapeHtml";
 import * as R from "ramda";
+import {isArray} from "util";
 
 
-export class PropertiesEditor extends Component {
+export interface IListBoxItem {
+    label?: string;
+    value?: any;
+    checked?: boolean;
+    disabled?: boolean;
+    group?: string;
+    hasThreeStates?: boolean;
+    html?: string;
+}
+
+export function __registerBuhtaComponent__(): IComponentRegistration {
+    return {
+        category: Компоненты_Списки,
+        componentClass: ListBox,
+        image: "vendor/fugue/icons/ui-list-box-blue.png",
+        title: "список"
+    }
+}
+
+
+export class ListBox extends Component {
 
     constructor() {
         super();
@@ -19,20 +40,8 @@ export class PropertiesEditor extends Component {
     }
 
     jqxWidget(...args: any[]): Function {
-        return this.$.jqxPanel(...args);
+        return this.$.jqxListBox(...args);
     };
-
-    // ------------------------------ editedObject ------------------------------
-    _editedObject: Component;
-    get editedObject(): Component {
-        return this._editedObject;
-    }
-
-    set editedObject(value: Component) {
-        this._editedObject = value;
-        if (this.$)
-            this.renderEditors();
-    }
 
 
     // ------------------------------ dock ------------------------------
@@ -125,7 +134,7 @@ export class PropertiesEditor extends Component {
         this._height = value;
         if (this.$ && value)
             if (this.dock === "fill") {
-                this.jqxWidget({height: "98%"} as jqxWidgetOptions);
+                this.jqxWidget({height: "100%"} as jqxWidgetOptions);
             }
             else {
                 this.jqxWidget({height: value} as jqxWidgetOptions);
@@ -138,7 +147,7 @@ export class PropertiesEditor extends Component {
 
     private __fillOptions_height(opt: jqxWidgetOptions) {
         if (this.dock === "fill")
-            opt.height = "98%";
+            opt.height = "100%";
         else
             opt.height = this.height;
     }
@@ -153,7 +162,7 @@ export class PropertiesEditor extends Component {
         this._width = value;
         if (this.$ && value)
             if (this.dock === "fill") {
-                this.jqxWidget({width: "98%"} as jqxWidgetOptions);
+                this.jqxWidget({width: "100%"} as jqxWidgetOptions);
             }
             else {
                 this.jqxWidget({width: value} as jqxWidgetOptions);
@@ -166,55 +175,40 @@ export class PropertiesEditor extends Component {
 
     private __fillOptions_width(opt: jqxWidgetOptions) {
         if (this.dock === "fill")
-            opt.width = "98%";
+            opt.width = "100%";
         else
             opt.width = this.width;
     }
 
-    renderBody() {
-
-        this.$ = $("<div style='width:100px;height: 100px; border: 0px solid red'><table id='" + this.$id + "' style='border:0px solid green; width:95%;border-spacing:0;'></table></div>").appendTo(this.parent.$childrenContainer);
-
+    // ------------------------------ dataSource ------------------------------
+    _dataSource: Component | IListBoxItem[];
+    get dataSource(): Component | IListBoxItem[] {
+        return this._dataSource;
     }
 
-    renderEditors() {
-
-        $("#"+this.$id).empty();
-
-        let allCategories:string[]=R.clone(PropertyEditorCategories);
-        let categories:string[]=[];
-
-        let propEditors: PropertyEditor[] = [];
-
-        for (let propName of getAllObjectProps(this.editedObject)) {
-            if (propName.startsWith("__getPropertyEditor_")) {
-                let pe = ((this.editedObject as any)[propName]).call(this);
-                pe.component = this.editedObject;
-                allCategories.push(pe.category);
-                categories.push(pe.category);
-                propEditors.push(pe);
-            }
+    set dataSource(value: Component | IListBoxItem[]) {
+        this._dataSource = value;
+        if (this.$) {
+            if (!value || isArray(value))
+                this.$.jqxListBox({source: this.dataSource});
+            else
+                throw "не реализовано";
         }
-
-        allCategories=R.uniq(allCategories);
-
-        for (let category of allCategories) {
-
-            if (R.contains(category,categories)) {
-                let $catagoryTr = $("<tr><td colspan='2' style='text-align: right; font-weight: bold; font-size: 11px; padding-top: 7px; padding-bottom: 5px;  padding-left: 5px;padding-right: 5px'>" + escapeHtml(category) + "</td><td></td></tr>");
-                $catagoryTr.appendTo($("#" + this.$id));
-
-                for (let pe of propEditors) {
-                    if (pe.category === category) {
-                        let $peId = getRandomId();
-                        let $tr = $("<tr id='" + $peId + "'><td style='min-width: 50px; padding-left: 5px;padding-right: 5px'>" + escapeHtml((pe.title || pe.propertyName).toString()) + "</td> <td id='" + $peId + "-input'></td></tr>");
-                        $tr.appendTo($("#" + this.$id));
-                        pe.render($("#" + $peId + "-input"));
-                    }
-                }
-            }
-        }
-
     }
+
+    private __emitCode_dataSource(code: EmittedCode) {
+        code.emitStringValue(this, "dataSource");
+    }
+
+    private __setOptions_dataSource() {
+        this.dataSource = this._dataSource;
+    }
+
+    // private __getPropertyEditor_dataSource(): PropertyEditor {
+    //     let pe = new StringPropertyEditor();
+    //     pe.propertyName = "dataSource";
+    //     pe.category = Категория_Содержимое;
+    //     return pe;
+    // }
 
 }

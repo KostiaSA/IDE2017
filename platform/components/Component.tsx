@@ -12,6 +12,24 @@ export interface IEvent<TArgs extends IEventArgs> {
     (args: TArgs): void;
 }
 
+export const Компоненты_Кнопки = "Кнопки";
+export const Компоненты_Данные = "Данные";
+export const Компоненты_Панели = "Панели";
+export const Компоненты_Списки = "Списки";
+
+export const ComponentCategories = [
+    Компоненты_Кнопки,
+    Компоненты_Данные,
+    Компоненты_Панели
+];
+
+export interface IComponentRegistration {
+    category: string;
+    componentClass: Function;
+    image?: string;
+    title?: string;
+}
+
 export class Component {
 
     constructor() {
@@ -35,10 +53,11 @@ export class Component {
     }
 
     // для рендеринга children
-    _$childrenContainer:JQuery;
+    _$childrenContainer: JQuery;
     get $childrenContainer(): JQuery {
-        return  this._$childrenContainer || this.$;
+        return this._$childrenContainer || this.$;
     }
+
     set $childrenContainer(value: JQuery) {
         this._$childrenContainer = value;
     }
@@ -160,21 +179,21 @@ export class Component {
         }
         this.fillJqxWidgetOptions(opt);
         this.jqxWidget(opt);
-         if (this._designer) {
-        //     this.$.css("outline", "solid 2px deepskyblue");
-        //
-             this.$.draggable({
+        if (this._designer) {
+            //     this.$.css("outline", "solid 2px deepskyblue");
+            //
+            this.$.draggable({
                 grid: [5, 5],
                 drag: () => {
                     (this._designer!.activeComponent as any).left = this.$.position().left;
                     (this._designer!.activeComponent as any).top = this.$.position().top;
                 },
-             });
-        //     this.$.resizable({
-        //         grid: 5,
-        //     });
-        //
-         }
+            });
+            //     this.$.resizable({
+            //         grid: 5,
+            //     });
+            //
+        }
     }
 
     fillJqxWidgetOptions(opt: any) {
@@ -194,11 +213,11 @@ export class Component {
         }
     }
 
-    afterRender(){
+    afterRender() {
 
     }
 
-    createAppToolBar(){
+    createAppToolBar() {
 
     }
 

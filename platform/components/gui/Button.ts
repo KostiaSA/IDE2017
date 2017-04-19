@@ -1,4 +1,4 @@
-import {Component, IEvent, IEventArgs} from "../Component";
+import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Кнопки} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
@@ -11,7 +11,18 @@ import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
 
+export function __registerBuhtaComponent__(): IComponentRegistration {
+    return {
+        category: Компоненты_Кнопки,
+        componentClass: Button,
+        image: "vendor/fugue/icons/ui-button.png",
+        title: "кнопка"
+    }
+}
+
+
 export class Button extends Component {
+
 
     constructor() {
         super();
@@ -42,10 +53,10 @@ export class Button extends Component {
         this.text = this._text;
     }
 
-    private __getPropertyEditor_text():PropertyEditor {
-        let pe=new StringPropertyEditor();
-        pe.propertyName="text";
-        pe.category=Категория_Содержимое;
+    private __getPropertyEditor_text(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "text";
+        pe.category = Категория_Содержимое;
         return pe;
     }
 
@@ -91,10 +102,10 @@ export class Button extends Component {
         this.top = this._top;
     }
 
-    private __getPropertyEditor_top():PropertyEditor {
-        let pe=new NumberPropertyEditor();
-        pe.propertyName="top";
-        pe.category=Категория_РазмерПозиция;
+    private __getPropertyEditor_top(): PropertyEditor {
+        let pe = new NumberPropertyEditor();
+        pe.propertyName = "top";
+        pe.category = Категория_РазмерПозиция;
         return pe;
     }
 
@@ -121,10 +132,10 @@ export class Button extends Component {
         this.left = this._left;
     }
 
-    private __getPropertyEditor_left():PropertyEditor {
-        let pe=new NumberPropertyEditor();
-        pe.propertyName="left";
-        pe.category=Категория_РазмерПозиция;
+    private __getPropertyEditor_left(): PropertyEditor {
+        let pe = new NumberPropertyEditor();
+        pe.propertyName = "left";
+        pe.category = Категория_РазмерПозиция;
         return pe;
     }
 
@@ -194,10 +205,10 @@ export class Button extends Component {
         code.emitEventValue(this, "onClick");
     }
 
-    createAppToolBar(){
+    createAppToolBar() {
         let saveButton: ToolButton = new ToolButton();
-        saveButton.group="form-designer";
-        saveButton.text=getRandomId();
+        saveButton.group = "form-designer";
+        saveButton.text = getRandomId();
         appState.toolbar.childrenAdd(saveButton);
 
     }
