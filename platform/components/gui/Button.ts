@@ -6,7 +6,7 @@ import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.ButtonOptions;
 import {ToolButton} from "./toolbar/ToolButton";
 import {getRandomId} from "../../../app/utils/getRandomId";
-import {PropertyEditor} from "../../../designer/PropertyEditor";
+import {PropertyEditor, Категория_РазмерПозиция, Категория_Содержимое} from "../../../designer/PropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
@@ -45,7 +45,7 @@ export class Button extends Component {
     private __getPropertyEditor_text():PropertyEditor {
         let pe=new StringPropertyEditor();
         pe.propertyName="text";
-        pe.category="Содержимое";
+        pe.category=Категория_Содержимое;
         return pe;
     }
 
@@ -94,7 +94,7 @@ export class Button extends Component {
     private __getPropertyEditor_top():PropertyEditor {
         let pe=new NumberPropertyEditor();
         pe.propertyName="top";
-        pe.category="Размер и положение";
+        pe.category=Категория_РазмерПозиция;
         return pe;
     }
 
@@ -124,7 +124,7 @@ export class Button extends Component {
     private __getPropertyEditor_left():PropertyEditor {
         let pe=new NumberPropertyEditor();
         pe.propertyName="left";
-        pe.category="Размер и положение";
+        pe.category=Категория_РазмерПозиция;
         return pe;
     }
 
