@@ -18,6 +18,7 @@ export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
         super.init();
 
         //=== BEGIN-DESIGNER-INIT-CODE ===//
+        this.dock = "fill";
 
         this.splitPanel1.dock = "fill";
         this.splitPanel1.orientation = "horizontal";

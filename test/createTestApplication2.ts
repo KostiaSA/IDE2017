@@ -1,5 +1,5 @@
 import {appState} from "../platform/AppState";
-import {ComponentDesignerWindow} from "../app/designer/ComponentDesignerWindow";
+//import {ComponentDesignerWindow} from "../app/designer/ComponentDesignerWindow";
 import {IProxyExecuteSqlRequest, IProxyExecuteSqlAnswer, executeSql} from "../app/sql/executeSql";
 import {Window} from "../platform/components/gui/Window";
 import {Button} from "../platform/components/gui/Button";
