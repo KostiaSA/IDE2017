@@ -1,4 +1,4 @@
-import {Component, IEvent, IEventArgs} from "../Component";
+import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import SplitterPanel = jqwidgets.SplitterPanel;
 import {SplitPanelItem} from "./SplitPaneltem";
@@ -7,6 +7,15 @@ import jqxWidgetOptions = jqwidgets.SplitterOptions;
 
 export type SplitPanelOrientation = "vertical" | "horizontal";
 export type PanelDock = "none" | "fill";
+
+export function __registerBuhtaComponent__(): IComponentRegistration {
+    return {
+        category: Компоненты_Панели,
+        componentClass: SplitPanel,
+        image: "vendor/fugue/icons/ui-split-panel.png",
+        title: "панель с разделителем"
+    }
+}
 
 export class SplitPanel extends Component {
 

@@ -17,11 +17,15 @@ export const Компоненты_Кнопки = "Кнопки";
 export const Компоненты_Данные = "Данные";
 export const Компоненты_Панели = "Панели";
 export const Компоненты_Списки = "Списки";
+export const Компоненты_Редакторы = "Редакторы";
 
 export const ComponentCategories = [
     Компоненты_Кнопки,
     Компоненты_Данные,
-    Компоненты_Панели
+    Компоненты_Панели,
+    Компоненты_Списки,
+    Компоненты_Редакторы,
+
 ];
 
 export interface IComponentRegistration {

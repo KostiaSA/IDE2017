@@ -1,4 +1,4 @@
-import {Component, IEvent, IEventArgs} from "../Component";
+import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import Tabs = jqwidgets.jqxTabs;
 import {Tab} from "./Tab";
@@ -7,6 +7,16 @@ import jqxWidgetOptions = jqwidgets.TabsOptions;
 import {PanelDock} from "./SplitPanel";
 
 export type TabsPosition = "top" | "bottom";
+
+export function __registerBuhtaComponent__(): IComponentRegistration {
+    return {
+        category: Компоненты_Панели,
+        componentClass: TabsPanel,
+        image: "vendor/fugue/icons/ui-tab-content.png",
+        title: "панель с закладками"
+    }
+}
+
 
 export class TabsPanel extends Component {
 

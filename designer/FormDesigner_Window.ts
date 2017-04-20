@@ -227,7 +227,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
         for (let regComp of getRegisteredComponents()) {
             items.push({
-                label: regComp.title + "  (" + regComp.componentClass.name + ")",
+                label: regComp.componentClass.name + "  (" + regComp.title + ")",
                 group: regComp.category,
                 value: regComp,
                 image: regComp.image

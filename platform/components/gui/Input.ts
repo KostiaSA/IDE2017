@@ -1,4 +1,7 @@
-import {Component, IEvent, IEventArgs} from "../Component";
+import {
+    Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Редакторы,
+    Компоненты_Списки
+} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
@@ -14,6 +17,16 @@ import {isBoolean, isNumber, isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
 
 export type InputValueType = "auto" | "string" | "number" | "boolean";
+
+export function __registerBuhtaComponent__(): IComponentRegistration {
+    return {
+        category: Компоненты_Редакторы,
+        componentClass: Input,
+        image: "vendor/fugue/icons/ui-text-field.png",
+        title: "поле ввода"
+    }
+}
+
 
 export class Input extends Component {
 

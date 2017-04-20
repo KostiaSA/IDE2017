@@ -1,9 +1,19 @@
-import {Component, IEvent, IEventArgs} from "../Component";
+import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
 import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.PanelOptions;
 import {PanelDock} from "./SplitPanel";
+
+
+export function __registerBuhtaComponent__(): IComponentRegistration {
+    return {
+        category: Компоненты_Панели,
+        componentClass: Panel,
+        image: "vendor/fugue/icons/ui-panel.png",
+        title: "панель"
+    }
+}
 
 export class Panel extends Control {
 
