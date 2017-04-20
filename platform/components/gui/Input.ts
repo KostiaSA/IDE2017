@@ -17,6 +17,7 @@ import {isBoolean, isNumber, isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
 
 export type InputValueType = "auto" | "string" | "number" | "boolean";
+export type InputComboType = "none" | "array" | "sql" | "function" | "system";
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
@@ -38,7 +39,9 @@ export class Input extends Component {
         if (this._designer)
             return this.$.jqxButton(...args);
         else {
-            if (this.actualValueType === "string")
+            if (this.comboType !== "none")
+                return this.$.jqxComboBox(...args);
+            else if (this.actualValueType === "string")
                 return this.$.jqxInput(...args);
             else if (this.actualValueType === "number")
                 return this.$.jqxInput(...args);
@@ -96,6 +99,35 @@ export class Input extends Component {
     private __getPropertyEditor_valueType(): PropertyEditor {
         let pe = new StringPropertyEditor();
         pe.propertyName = "valueType";
+        pe.category = Категория_ПривязкаДанных;
+        return pe;
+    }
+
+    // ------------------------------ comboType ------------------------------
+    _comboType: InputComboType = "none";
+    get comboType(): InputComboType {
+        return this._comboType;
+    }
+
+    set comboType(value: InputComboType) {
+        let needReloadPropertyEditor = this._comboType !== value;
+        this._comboType = value;
+        if (this.$ && needReloadPropertyEditor && this._designer) {
+            this._designer.reloadPropertyEditor();
+        }
+    }
+
+    private __emitCode_comboType(code: EmittedCode) {
+        code.emitStringValue(this, "comboType", "none");
+    }
+
+    private __setOptions_comboType() {
+        this.comboType = this._comboType;
+    }
+
+    private __getPropertyEditor_comboType(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "comboType";
         pe.category = Категория_ПривязкаДанных;
         return pe;
     }
@@ -335,7 +367,7 @@ export class Input extends Component {
             else if (this.actualValueType === "boolean") {
                 this.$ = $("<div data-component='" + this.constructor.name + "'><span style='margin-left: 5px'>" + escapeHtml(this.title || this.bindProperty) + "</span></div>").appendTo(this.parent.$childrenContainer);
                 this.jqxWidget({animationShowDelay: 0, animationHideDelay: 0});
-                this.$.children().first().css("margin-left",0);
+                this.$.children().first().css("margin-left", 0);
             }
             else
                 throw "Input.renderBody(): неизвестный тип переменной '" + this.actualValueType + "' для '" + this.bindProperty + "'";
