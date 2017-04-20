@@ -4,6 +4,7 @@ import {IDesigner} from "../designer/IDesigner";
 import {appState} from "../AppState";
 import {getAllObjectProps} from "../utils/getAllObjectProps";
 import {getRandomId} from "../../app/utils/getRandomId";
+import {BaseDesigner_Panel} from "../../designer/BaseDesigner_Panel";
 
 export interface IEventArgs {
     sender: Component;
@@ -46,10 +47,14 @@ export class Component {
         throw "abstract error Component.jqxWidget() for " + this.constructor.name;
     };
 
-    [opt: string]: any;
+    //[opt: string]: any;
 
     get allowChildren(): boolean {
         return true;
+    }
+
+    getDesignerPanel():BaseDesigner_Panel {
+        throw "дизайнер не определен для компонента " + this.constructor.name;
     }
 
     designModeInitializeNew() {
@@ -57,7 +62,7 @@ export class Component {
     }
 
     // --- parent ---
-    protected _parent: Component;
+    _parent: Component;
     get parent(): Component {
         return this._parent;
     }

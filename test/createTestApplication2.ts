@@ -12,7 +12,7 @@ import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
 import {Tab} from "../platform/components/gui/Tab";
-import {FormDesigner_Window} from "../designer/FormDesigner_Window";
+import {ComponentDesigner_Window} from "../designer/ComponentDesigner_Window";
 import {Input} from "../platform/components/gui/Input";
 
 export class TestWindow0 extends Window {
@@ -211,8 +211,9 @@ export class TestWindow111 extends Window {
 
 export function createTestApplication2() {
 
-    let w = new FormDesigner_Window();
-    w.designedFormPath="application/test/ТестоваяФормаДляДизайнера.ts";
+    let w = new ComponentDesigner_Window();
+    //w.designedComponentPath="application/test/ТестоваяФормаДляДизайнера.ts";
+    w.designedComponentPath="application/test/Организация_SqlTable.ts";
     //w.designedForm=new TestWindow111();
     //w.designedForm.init();
 

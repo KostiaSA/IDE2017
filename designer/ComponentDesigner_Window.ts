@@ -6,7 +6,7 @@ import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
 import {Tab} from "../platform/components/gui/Tab";
-import {FormDesigner_Panel} from "./FormDesigner_Panel";
+import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
 import {Component, IComponentRegistration} from "../platform/components/Component";
 import {IDesigner} from "../platform/designer/IDesigner";
 import {ToolButton} from "../platform/components/gui/toolbar/ToolButton";
@@ -18,17 +18,18 @@ import {replaceAll} from "../platform/utils/replaceAll";
 import {PropertiesEditor} from "./PropertiesEditor";
 import {IListBoxDblClickEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
 import {getRegisteredComponents} from "./utils/getRegisteredComponents";
+import {FormDesigner_Panel} from "./FormDesigner_Panel";
 
-export class FormDesigner_Window extends Window implements IDesigner {
+export class ComponentDesigner_Window extends Window implements IDesigner {
 
-    // ------------------------------ designedFormPath ------------------------------
-    _designedFormPath: string;
-    get designedFormPath(): string {
-        return this._designedFormPath;
+    // ------------------------------ designedComponentPath ------------------------------
+    _designedComponentPath: string;
+    get designedComponentPath(): string {
+        return this._designedComponentPath;
     }
 
-    set designedFormPath(value: string) {
-        this._designedFormPath = value;
+    set designedComponentPath(value: string) {
+        this._designedComponentPath = value;
     }
 
     // ------------------------------ designedForm ------------------------------
@@ -98,7 +99,6 @@ export class FormDesigner_Window extends Window implements IDesigner {
     leftTabsPanel: TabsPanel = new TabsPanel();
     formTab: Tab = new Tab();
     codeTab: Tab = new Tab();
-    formDesignerPanel: FormDesigner_Panel = new FormDesigner_Panel();
     codeEditor: CodeEditor = new CodeEditor();
 
     rightTabsPanel: TabsPanel = new TabsPanel();
@@ -113,6 +113,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
     //=== END-DESIGNER-DECLARE-CODE ===//
 
+    designerPanel: BaseDesigner_Panel;
 
     init() {
         super.init();
@@ -138,8 +139,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         this.leftTabsPanel.dock = "fill";
 
         this.leftTabsPanel.childrenAdd(this.formTab);
-        this.formTab.title = "Форма";
-        this.formTab.childrenAdd(this.formDesignerPanel);
+        this.formTab.title = "Дизайнер";
 
         this.codeTab.title = "Код";
         this.codeTab.onSelect = () => {
@@ -175,11 +175,37 @@ export class FormDesigner_Window extends Window implements IDesigner {
         //=== END-DESIGNER-INIT-CODE ===//
 
 
-        this.codeEditor.code = fs.readFileSync(this._designedFormPath, "utf8");
+        this.codeEditor.code = fs.readFileSync(this.designedComponentPath, "utf8");
 
-        let formModule = require("../" + this.designedFormPath.replace(".ts", ".js"));
-        let formClassName = path.basename(this.designedFormPath, ".ts");
-        this.designedForm = new formModule[formClassName]();
+        let formModule = require("../" + this.designedComponentPath.replace(".ts", ".js"));
+
+
+        let formClassName: string = "";
+        // ищем объект дизайнера - это первый class, который наследован от Component
+        for (let moduleClass of Object.keys(formModule)) {
+            if (Component.isPrototypeOf(formModule[moduleClass])) {
+                formClassName = moduleClass;
+            }
+        }
+        if (formClassName === "") {
+            throw  "Не найден объект для дизайна в файле '" + this.designedComponentPath + "'";
+        }
+
+        // let ccc = new Component();
+        // (window as any).ccc = Component;
+        // (window as any).formModule = formModule;
+        // console.log("formModule", formModule);
+        //
+        //
+        // //let formClassName = path.basename(this.designedComponentPath, ".ts");
+        // console.log("prot", formModule[formClassName].isPrototypeOf(Component));
+        // console.log("prot2", Component.isPrototypeOf(formModule[formClassName]));
+
+        this.designedForm = new formModule[formClassName]() as Component;
+
+        this.designerPanel = this.designedForm.getDesignerPanel();
+        this.formTab.childrenAdd(this.designerPanel);
+
 
         this.loadRegisteredComponents();
     }
@@ -200,7 +226,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         let compClassName = component.constructor.name;
         for (let i = 0; i < 10000; i++) {
             let newName = compClassName + i.toString();
-            if (!this.designedForm[newName]) {
+            if (!(this.designedForm as any)[newName]) {
                 return newName;
             }
         }
@@ -213,13 +239,13 @@ export class FormDesigner_Window extends Window implements IDesigner {
         if (this.activeComponent && this.activeComponent.allowChildren)
             parent = this.activeComponent;
         let compName = this.getComponentNewName(component);
-        component["_left"] = 10;
-        component["_top"] = 10;
+        (component as any)._left = 10;
+        (component as any)._top = 10;
         component.designModeInitializeNew();
-        this.designedForm[compName] = component;
+        (this.designedForm as any)[compName] = component;
         parent.childrenAdd(component);
         console.log(compName, component);
-        this.formDesignerPanel.reRender();
+        this.designerPanel.reRender();
     }
 
     loadRegisteredComponents() {
@@ -266,8 +292,8 @@ export class FormDesigner_Window extends Window implements IDesigner {
 
     testRun() {
         this.save();
-        let formModule = require("../" + this.designedFormPath.replace(".ts", ".js"));
-        let formClassName = path.basename(this.designedFormPath, ".ts");
+        let formModule = require("../" + this.designedComponentPath.replace(".ts", ".js"));
+        let formClassName = path.basename(this.designedComponentPath, ".ts");
         let testform = new formModule[formClassName]() as Window;
         testform.render();
 
@@ -320,13 +346,13 @@ export class FormDesigner_Window extends Window implements IDesigner {
         let code = beforeDecl.join("\n") + "\n" + afterDeclBeforeInit.join("\n") + "\n" + afterInit.join("\n") + "\n";
         this.codeEditor.code = code;
 
-        let p = path.parse(this.designedFormPath);
+        let p = path.parse(this.designedComponentPath);
         let bakFileName = p.dir + "/" + p.name + ".bak";
         let jsFileName = p.dir + "/" + p.name + ".js";
 
-        console.log(this.designedFormPath, bakFileName);
-        fs.renameSync(this.designedFormPath, bakFileName);
-        fs.writeFileSync(this.designedFormPath, code);
+        console.log(this.designedComponentPath, bakFileName);
+        fs.renameSync(this.designedComponentPath, bakFileName);
+        fs.writeFileSync(this.designedComponentPath, code);
 
         console.log(code);
 
@@ -353,7 +379,7 @@ export class FormDesigner_Window extends Window implements IDesigner {
         let res = ts.transpileModule(code, {
             reportDiagnostics: true,
             compilerOptions: compilerOptions,
-            fileName: this.designedFormPath
+            fileName: this.designedComponentPath
         });
 
         // let xxx=eval(res.outputText);

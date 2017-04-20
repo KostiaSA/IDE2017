@@ -2,6 +2,8 @@ import {Component} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {IDesigner} from "../../designer/IDesigner";
 import jqxWidgetOptions = jqwidgets.WindowOptions;
+import {BaseDesigner_Panel} from "../../../designer/BaseDesigner_Panel";
+import {FormDesigner_Panel} from "../../../designer/FormDesigner_Panel";
 
 
 export class Window extends Component {
@@ -15,6 +17,10 @@ export class Window extends Component {
         else
             return this.$.jqxWindow(...args);
     };
+
+    getDesignerPanel(): BaseDesigner_Panel {
+        return new FormDesigner_Panel();
+    }
 
     // ------------------------------ top ------------------------------
     _top: number;
@@ -168,7 +174,7 @@ export class Window extends Component {
         //this._width = this._width || 500;
         if (this._designer) {
             this.$ = $("<div id='" + this.$id + "' style='position: relative; padding: 10px'></div>").appendTo(this.parent.$childrenContainer);
-           // this.$.on("mousedown", this.designModeOnMouseDown);
+            // this.$.on("mousedown", this.designModeOnMouseDown);
             this.$.resizable({
                 grid: 1,
             });

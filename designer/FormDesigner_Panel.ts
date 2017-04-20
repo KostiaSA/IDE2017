@@ -1,27 +1,28 @@
 
 import {Component} from "../platform/components/Component";
-import {FormDesigner_Window} from "./FormDesigner_Window";
+import {ComponentDesigner_Window} from "./ComponentDesigner_Window";
 import {IDesigner} from "../platform/designer/IDesigner";
+import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
 
-export class FormDesigner_Panel extends Component {
+export class FormDesigner_Panel extends BaseDesigner_Panel {
 
-    get designer():FormDesigner_Window{
-        return this.owner as FormDesigner_Window;
-    }
-
-    _designedForm:Component;
-    get designedForm(): Component {
-        return this.designer.designedForm;
-    }
-
-    _activeComponent:Component;
-    get activeComponent(): Component {
-        return this.designer.activeComponent;
-    }
-
-    set activeComponent(value: Component) {
-        this.designer.activeComponent = value;
-    }
+    // get designer():ComponentDesigner_Window{
+    //     return this.owner as ComponentDesigner_Window;
+    // }
+    //
+    // _designedForm:Component;
+    // get designedForm(): Component {
+    //     return this.designer.designedForm;
+    // }
+    //
+    // _activeComponent:Component;
+    // get activeComponent(): Component {
+    //     return this.designer.activeComponent;
+    // }
+    //
+    // set activeComponent(value: Component) {
+    //     this.designer.activeComponent = value;
+    // }
 
     // get $childrenContainer(): JQuery {
     //     return this.$;
