@@ -13,7 +13,7 @@ import {
 } from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
-import {isBoolean, isNumber, isString} from "util";
+import {isArray, isBoolean, isNumber, isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
 
 export type InputValueType = "auto" | "string" | "number" | "boolean";
@@ -28,6 +28,16 @@ export function __registerBuhtaComponent__(): IComponentRegistration {
     }
 }
 
+export interface IComboBoxItem {
+    label?: string;
+    value?: any;
+    checked?: boolean;
+    disabled?: boolean;
+    group?: string;
+    hasThreeStates?: boolean;
+    html?: string;
+    image?: string;
+}
 
 export class Input extends Component {
 
@@ -99,6 +109,8 @@ export class Input extends Component {
     private __getPropertyEditor_valueType(): PropertyEditor {
         let pe = new StringPropertyEditor();
         pe.propertyName = "valueType";
+        pe.comboType = "array";
+        pe.comboItemsArray = ["auto", "string", "number", "boolean"];
         pe.category = Категория_ПривязкаДанных;
         return pe;
     }
@@ -112,6 +124,12 @@ export class Input extends Component {
     set comboType(value: InputComboType) {
         let needReloadPropertyEditor = this._comboType !== value;
         this._comboType = value;
+
+        if (this.$ && needReloadPropertyEditor) {
+            if (this.comboType === "array")
+                this.comboItemsArray = this._comboItemsArray;
+        }
+
         if (this.$ && needReloadPropertyEditor && this._designer) {
             this._designer.reloadPropertyEditor();
         }
@@ -127,10 +145,55 @@ export class Input extends Component {
 
     private __getPropertyEditor_comboType(): PropertyEditor {
         let pe = new StringPropertyEditor();
+        pe.comboType = "array";
+        pe.comboItemsArray = ["none", "array", "sql", "function", "system"];
         pe.propertyName = "comboType";
         pe.category = Категория_ПривязкаДанных;
         return pe;
     }
+
+    // ------------------------------ comboItemsArray ------------------------------
+    _comboItemsArray: any[];
+    get comboItemsArray(): any[] {
+        return this._comboItemsArray;
+    }
+
+    set comboItemsArray(value: any[]) {
+        this._comboItemsArray = value;
+        if (this.$ && this.comboType === "array" && isArray(value)) {
+            let comboSource = [];
+            for (let item of value) {
+                if (isString(item)) {   // массив строк
+                    comboSource.push(item);
+                }
+                else if (isArray(item)) {   // [35,"ООО Удача"] - value,label
+                    let comboItem: IComboBoxItem = {
+                        value: item[0],
+                        label: item[1],
+                    };
+                    comboSource.push(comboItem);
+                }
+                else
+                    comboSource.push(item);  // объект в формате IComboBoxItem
+            }
+            this.jqxWidget({source: comboSource} as jqwidgets.ComboBoxOptions);
+        }
+    }
+
+    // private __emitCode_comboItemsArray(code: EmittedCode) {
+    //     code.emitStringValue(this, "comboItemsArray", "none");
+    // }
+
+    private __setOptions_comboItemsArray() {
+        this.comboItemsArray = this._comboItemsArray;
+    }
+
+    // private __getPropertyEditor_comboItemsArray(): PropertyEditor {
+    //     let pe = new StringPropertyEditor();
+    //     pe.propertyName = "comboItemsArray";
+    //     pe.category = Категория_ПривязкаДанных;
+    //     return pe;
+    // }
 
 
     // ------------------------------ bindObject ------------------------------
@@ -357,8 +420,12 @@ export class Input extends Component {
             this.$.on("mousedown", this.designModeOnMouseDown);
         }
         else {
-
-            if (this.actualValueType === "string") {
+            if (this.comboType !== "none") {
+                this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
+                this.jqxWidget({animationType:"none",autoDropDownHeight:true});
+                this.comboItemsArray=this._comboItemsArray;
+            }
+            else if (this.actualValueType === "string") {
                 this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
             }
             else if (this.actualValueType === "number") {
@@ -373,7 +440,7 @@ export class Input extends Component {
                 throw "Input.renderBody(): неизвестный тип переменной '" + this.actualValueType + "' для '" + this.bindProperty + "'";
 
             if (this.bindObject)
-                this.jqxWidget("val", this.$lastPropValue);
+                this.jqxWidget("val", this.bindObject[this.bindProperty]);
 
             this.$.on('change', (event: any) => {
                 var value = this.$.val();
