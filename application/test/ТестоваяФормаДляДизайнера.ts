@@ -36,6 +36,7 @@ export class ТестоваяФормаДляДизайнера extends Window {
         this.кнопка2.height=26;
         this.кнопка2.width=95;
         this.childrenAdd(this.кнопка2);
+        this.edit1.comboType="array";
         this.edit1.bindProperty="text";
         this.edit1.top=100;
         this.edit1.left=35;
@@ -68,6 +69,7 @@ export class ТестоваяФормаДляДизайнера extends Window {
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
 
 
 

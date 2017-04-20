@@ -8,7 +8,7 @@ import {appState} from "../../AppState";
 
 import jqxWidgetOptions = jqwidgets.InputOptions;
 import {
-    PropertyEditor, Категория_ПривязкаДанных, Категория_РазмерПозиция,
+    PropertyEditor, Категория_ComboBox, Категория_ПривязкаДанных, Категория_РазмерПозиция,
     Категория_Содержимое
 } from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
@@ -148,7 +148,7 @@ export class Input extends Component {
         pe.comboType = "array";
         pe.comboItemsArray = ["none", "array", "sql", "function", "system"];
         pe.propertyName = "comboType";
-        pe.category = Категория_ПривязкаДанных;
+        pe.category = Категория_ComboBox;
         return pe;
     }
 
