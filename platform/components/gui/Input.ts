@@ -4,9 +4,14 @@ import {Control} from "./Control";
 import {appState} from "../../AppState";
 
 import jqxWidgetOptions = jqwidgets.InputOptions;
-import {PropertyEditor, Категория_РазмерПозиция, Категория_Содержимое} from "../../../designer/PropertyEditor";
+import {
+    PropertyEditor, Категория_ПривязкаДанных, Категория_РазмерПозиция,
+    Категория_Содержимое
+} from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
+import {isBoolean, isNumber, isString} from "util";
+import {escapeHtml} from "../../utils/escapeHtml";
 
 export type InputValueType = "auto" | "string" | "number" | "boolean";
 
@@ -19,9 +24,39 @@ export class Input extends Component {
     jqxWidget(...args: any[]): Function {
         if (this._designer)
             return this.$.jqxButton(...args);
-        else
-            return this.$.jqxInput(...args);
+        else {
+            if (this.actualValueType === "string")
+                return this.$.jqxInput(...args);
+            else if (this.actualValueType === "number")
+                return this.$.jqxInput(...args);
+            else if (this.actualValueType === "boolean") {
+                return this.$.jqxCheckBox(...args);
+            }
+            else
+                throw "Input.jqxWidget(): actualValueType '" + this.actualValueType + "'  для '" + this.bindProperty + "'";
+
+        }
     };
+
+    get actualValueType(): InputValueType {
+        if (this.valueType === "auto") {
+            if (this.bindObject && this.bindObject[this.bindProperty] !== undefined) {
+                let value = this.bindObject[this.bindProperty];
+                if (isString(value))
+                    return "string";
+                else if (isNumber(value))
+                    return "number";
+                else if (isBoolean(value))
+                    return "boolean";
+                else
+                    throw "Input.actualValueType(): неизвестный тип переменной '" + this.bindProperty + "'";
+            }
+            else
+                return "string";
+        }
+        else
+            return this.valueType;
+    }
 
     // ------------------------------ valueType ------------------------------
     _valueType: InputValueType = "auto";
@@ -48,7 +83,7 @@ export class Input extends Component {
     private __getPropertyEditor_valueType(): PropertyEditor {
         let pe = new StringPropertyEditor();
         pe.propertyName = "valueType";
-        pe.category = Категория_Содержимое;
+        pe.category = Категория_ПривязкаДанных;
         return pe;
     }
 
@@ -63,7 +98,7 @@ export class Input extends Component {
         this._bindObject = value;
         if (this.$) {
             if (this._designer) {
-                this.$.text("[" + this._bindProperty + "]");
+                this.$.text("[" + this._bindProperty + "]:" + this.valueType);
             }
             else {
                 if (this.bindObject && this.$.val() !== this.bindObject[this.bindProperty])
@@ -91,7 +126,7 @@ export class Input extends Component {
         this._bindProperty = value;
         if (this.$) {
             if (this._designer) {
-                this.$.text("[" + this._bindProperty + "]");
+                this.$.text("[" + this._bindProperty + "]:" + this.valueType);
             }
             else {
                 if (this.bindObject && this.$.val() !== this.bindObject[this.bindProperty])
@@ -108,6 +143,37 @@ export class Input extends Component {
         this.bindProperty = this._bindProperty;
     }
 
+    private __getPropertyEditor_bindProperty(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "bindProperty";
+        pe.category = Категория_ПривязкаДанных;
+        return pe;
+    }
+
+    // ------------------------------ title ------------------------------
+    _title: string;
+    get title(): string {
+        return this._title;
+    }
+
+    set title(value: string) {
+        this._title = value;
+    }
+
+    private __emitCode_title(code: EmittedCode) {
+        code.emitStringValue(this, "title");
+    }
+
+    private __setOptions_title() {
+        this.title = this._title;
+    }
+
+    private __getPropertyEditor_title(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "title";
+        pe.category = Категория_ПривязкаДанных;
+        return pe;
+    }
 
     // ------------------------------ top ------------------------------
     _top: number;
@@ -135,7 +201,7 @@ export class Input extends Component {
         let pe = new NumberPropertyEditor();
         pe.propertyName = "top";
         pe.category = Категория_РазмерПозиция;
-       // pe.visible = () => pe.component.valueType === "auto";
+        // pe.visible = () => pe.component.valueType === "auto";
         return pe;
     }
 
@@ -246,17 +312,27 @@ export class Input extends Component {
             this.$.on("mousedown", this.designModeOnMouseDown);
         }
         else {
-            this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
 
-            if (this.bindObject && this.bindObject[this.bindProperty])
-                this.$.val(this.bindObject[this.bindProperty]);
+            if (this.actualValueType === "string") {
+                this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
+            }
+            else if (this.actualValueType === "number") {
+                this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
+            }
+            else if (this.actualValueType === "boolean") {
+                this.$ = $("<div data-component='" + this.constructor.name + "'><span style='margin-left: 5px'>" + escapeHtml(this.title || this.bindProperty) + "</span></div>").appendTo(this.parent.$childrenContainer);
+                this.jqxWidget({animationShowDelay: 0, animationHideDelay: 0});
+                this.$.children().first().css("margin-left",0);
+            }
+            else
+                throw "Input.renderBody(): неизвестный тип переменной '" + this.actualValueType + "' для '" + this.bindProperty + "'";
+
+            if (this.bindObject)
+                this.jqxWidget("val", this.$lastPropValue);
 
             this.$.on('change', (event: any) => {
-                //var type = event.args.type; // keyboard, mouse or null depending on how the value was changed.
                 var value = this.$.val();
                 this.bindObject[this.bindProperty] = value;
-                //console.log(value);
-
             });
 
 
@@ -264,7 +340,7 @@ export class Input extends Component {
                 if (!this._designer && this.$ && this.bindObject && this.$lastPropValue !== this.bindObject[this.bindProperty]) {
                     this.$lastPropValue = this.bindObject[this.bindProperty];
                     if (this.$lastPropValue !== this.$.jqxInput("val")) {
-                        this.$.jqxInput("val", this.$lastPropValue);
+                        this.jqxWidget("val", this.$lastPropValue);
                     }
                 }
             }, 50);

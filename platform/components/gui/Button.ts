@@ -6,9 +6,13 @@ import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.ButtonOptions;
 import {ToolButton} from "./toolbar/ToolButton";
 import {getRandomId} from "../../../app/utils/getRandomId";
-import {PropertyEditor, Категория_РазмерПозиция, Категория_Содержимое} from "../../../designer/PropertyEditor";
+import {
+    PropertyEditor, Категория_DragDrop, Категория_РазмерПозиция,
+    Категория_Содержимое
+} from "../../../designer/PropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -186,6 +190,35 @@ export class Button extends Component {
     private __fillOptions_width(opt: jqxWidgetOptions) {
         opt.width = this.width;
     }
+
+    // ------------------------------ enabled ------------------------------
+    private _enabled: boolean = true;
+    get enabled(): boolean {
+        return this._enabled;
+    }
+
+    set enabled(value: boolean) {
+        this._enabled = value;
+        if (this.$) {
+            this.jqxWidget({disabled: !this._enabled});
+        }
+    }
+
+    emitCode_enabled(code: EmittedCode) {
+        code.emitBooleanValue(this, "enabled", true);
+    }
+
+    private __setOptions_enabled() {
+        this.enabled = this._enabled;
+    }
+
+    private __getPropertyEditor_enabled(): PropertyEditor {
+        let pe = new BooleanPropertyEditor();
+        pe.propertyName = "enabled";
+        pe.category = Категория_DragDrop;
+        return pe;
+    }
+
 
     // ------------------------------ onClick ------------------------------
     _onClick: IEvent<IEventArgs>;

@@ -9,6 +9,7 @@ import {PropertyEditor, PropertyEditorCategories} from "./PropertyEditor";
 import {getRandomId} from "../app/utils/getRandomId";
 import {escapeHtml} from "../platform/utils/escapeHtml";
 import * as R from "ramda";
+import {BooleanPropertyEditor} from "./BooleanPropertyEditor";
 
 
 export class PropertiesEditor extends Component {
@@ -179,10 +180,10 @@ export class PropertiesEditor extends Component {
 
     renderEditors() {
 
-        $("#"+this.$id).empty();
+        $("#" + this.$id).empty();
 
-        let allCategories:string[]=R.clone(PropertyEditorCategories);
-        let categories:string[]=[];
+        let allCategories: string[] = R.clone(PropertyEditorCategories);
+        let categories: string[] = [];
 
         let propEditors: PropertyEditor[] = [];
 
@@ -198,18 +199,23 @@ export class PropertiesEditor extends Component {
             }
         }
 
-        allCategories=R.uniq(allCategories);
+        allCategories = R.uniq(allCategories);
 
         for (let category of allCategories) {
 
-            if (R.contains(category,categories)) {
+            if (R.contains(category, categories)) {
                 let $catagoryTr = $("<tr><td colspan='2' style='text-align: right; font-weight: bold; font-size: 11px; padding-top: 7px; padding-bottom: 5px;  padding-left: 5px;padding-right: 5px'>" + escapeHtml(category) + "</td><td></td></tr>");
                 $catagoryTr.appendTo($("#" + this.$id));
 
                 for (let pe of propEditors) {
                     if (pe.category === category) {
                         let $peId = getRandomId();
-                        let $tr = $("<tr id='" + $peId + "'><td style='min-width: 50px; padding-left: 5px;padding-right: 5px'>" + escapeHtml((pe.title || pe.propertyName).toString()) + "</td> <td id='" + $peId + "-input'></td></tr>");
+
+                        let title = pe.title || pe.propertyName;
+                        if (pe instanceof BooleanPropertyEditor)
+                            title = "";
+
+                        let $tr = $("<tr id='" + $peId + "'><td style='min-width: 50px; padding-left: 5px;padding-right: 5px'>" + escapeHtml(title) + "</td> <td id='" + $peId + "-input'></td></tr>");
                         $tr.appendTo($("#" + this.$id));
                         pe.render($("#" + $peId + "-input"));
                     }

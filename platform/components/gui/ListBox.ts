@@ -5,11 +5,15 @@ import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.ListBoxOptions;
 import {PanelDock} from "./SplitPanel";
 import {getAllObjectProps} from "../../utils/getAllObjectProps";
-import {PropertyEditor, PropertyEditorCategories} from "../../../designer/PropertyEditor";
+import {
+    PropertyEditor, PropertyEditorCategories, Категория_DragDrop,
+    Категория_РазмерПозиция
+} from "../../../designer/PropertyEditor";
 import {getRandomId} from "../../../app/utils/getRandomId";
 import {escapeHtml} from "../../utils/escapeHtml";
 import * as R from "ramda";
 import {isArray} from "util";
+import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 
 
 export interface IListBoxItem {
@@ -67,6 +71,14 @@ export class ListBox extends Component {
         this.allowDrag = this._allowDrag;
     }
 
+    private __getPropertyEditor_allowDrag(): PropertyEditor {
+        let pe = new BooleanPropertyEditor();
+        pe.propertyName = "allowDrag";
+        pe.category = Категория_DragDrop;
+        return pe;
+    }
+
+
     // ------------------------------ allowDrop ------------------------------
     private _allowDrop: boolean = false;
     get allowDrop(): boolean {
@@ -87,6 +99,14 @@ export class ListBox extends Component {
     private __setOptions_allowDrop() {
         this.allowDrop = this._allowDrop;
     }
+
+    private __getPropertyEditor_allowDrop(): PropertyEditor {
+        let pe = new BooleanPropertyEditor();
+        pe.propertyName = "allowDrop";
+        pe.category = Категория_DragDrop;
+        return pe;
+    }
+
 
     // ------------------------------ dock ------------------------------
     _dock: PanelDock = "none";

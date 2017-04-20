@@ -2,11 +2,12 @@ import {Component} from "../platform/components/Component";
 import {PropertyEditor} from "./PropertyEditor";
 import {Input} from "../platform/components/gui/Input";
 
-export class StringPropertyEditor extends PropertyEditor {
+export class BooleanPropertyEditor extends PropertyEditor {
 
     render(parent: JQuery) {
         let input = new Input();
-        input.valueType="string";
+        input.title=this.title;
+        input.valueType="boolean";
         input.width="97%";
         input.bindObject=this.component;
         input.bindProperty=this.propertyName;
