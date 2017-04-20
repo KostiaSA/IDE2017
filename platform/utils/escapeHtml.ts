@@ -1,4 +1,4 @@
-var entityMap:any = {
+var entityMap: any = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
@@ -9,8 +9,11 @@ var entityMap:any = {
     '=': '&#x3D;'
 };
 
-export function escapeHtml (str:string) {
-    return String(str).replace(/[&<>"'`=\/]/g, function (s) {
-        return entityMap[s];
-    });
+export function escapeHtml(str: string) {
+    if (!str)
+        return "";
+    else
+        return String(str).replace(/[&<>"'`=\/]/g, function (s) {
+            return entityMap[s];
+        });
 }

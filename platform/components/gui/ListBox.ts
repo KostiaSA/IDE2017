@@ -24,6 +24,7 @@ export interface IListBoxItem {
     group?: string;
     hasThreeStates?: boolean;
     html?: string;
+    image?: string;
 }
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -253,8 +254,10 @@ export class ListBox extends Component {
     set dataSource(value: Component | IListBoxItem[]) {
         this._dataSource = value;
         if (this.$) {
-            if (!value || isArray(value))
+            if (!value || isArray(value)) {
+                this.prepareDataSource(this.dataSource);
                 this.$.jqxListBox({source: this.dataSource});
+            }
             else
                 throw "не реализовано";
         }
@@ -262,6 +265,19 @@ export class ListBox extends Component {
 
     private __emitCode_dataSource(code: EmittedCode) {
         code.emitStringValue(this, "dataSource");
+    }
+
+    private prepareDataSource(dataSource:Component | IListBoxItem[]){
+        // добавляем иконки
+        if (isArray(dataSource)){
+            for (let item of dataSource as IListBoxItem[]){
+                if (!item.html && item.image){
+                    item.html=`<div><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
+                }
+            }
+        }
+
+
     }
 
     private __setOptions_dataSource() {

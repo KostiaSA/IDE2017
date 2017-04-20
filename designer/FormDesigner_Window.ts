@@ -213,12 +213,12 @@ export class FormDesigner_Window extends Window implements IDesigner {
         if (this.activeComponent && this.activeComponent.allowChildren)
             parent = this.activeComponent;
         let compName = this.getComponentNewName(component);
-        component["_left"]=10;
-        component["_top"]=10;
+        component["_left"] = 10;
+        component["_top"] = 10;
         component.designModeInitializeNew();
         this.designedForm[compName] = component;
         parent.childrenAdd(component);
-        console.log(compName,component);
+        console.log(compName, component);
         this.formDesignerPanel.reRender();
     }
 
@@ -229,8 +229,8 @@ export class FormDesigner_Window extends Window implements IDesigner {
             items.push({
                 label: regComp.title + "  (" + regComp.componentClass.name + ")",
                 group: regComp.category,
-                value: regComp
-
+                value: regComp,
+                image: regComp.image
             });
         }
 
