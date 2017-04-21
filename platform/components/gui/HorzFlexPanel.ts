@@ -9,7 +9,7 @@ export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Панели,
         componentClass: HorzFlexPanel,
-        image: "vendor/fugue/icons/application-dock-90.png",
+        image: "vendor/fugue/icons/application-dock-090.png",
         title: "горизонтальная flex-панель"
     }
 }

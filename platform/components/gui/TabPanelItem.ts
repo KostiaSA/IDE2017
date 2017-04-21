@@ -8,7 +8,7 @@ import {escapeHtml} from "../../utils/escapeHtml";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
-export class Tab extends Component {
+export class TabPanelItem extends Component {
 
     // ------------------------------ padding ------------------------------
     _padding: string | number;

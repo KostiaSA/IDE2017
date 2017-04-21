@@ -11,7 +11,7 @@ import {LayoutPanel} from "../platform/components/gui/LayoutPanel";
 import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
-import {Tab} from "../platform/components/gui/Tab";
+import {TabPanelItem} from "../platform/components/gui/TabPanelItem";
 import {ComponentDesigner_Window} from "../designer/ComponentDesigner_Window";
 import {Input} from "../platform/components/gui/Input";
 import {ProjectExplorer_window} from "../designer/ProjectExplorer_window";
@@ -19,9 +19,9 @@ import {ProjectExplorer_window} from "../designer/ProjectExplorer_window";
 export class TestWindow0 extends Window {
     кнопка123: Button = new Button();
     tabs: TabsPanel = new TabsPanel();
-    tab1: Tab = new Tab();
+    tab1: TabPanelItem = new TabPanelItem();
     кнопкаPanel123: Button = new Button();
-    tab2: Tab = new Tab();
+    tab2: TabPanelItem = new TabPanelItem();
     кнопкаPanel1232: Button = new Button();
 
     init() {

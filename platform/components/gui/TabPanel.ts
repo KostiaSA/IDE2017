@@ -1,7 +1,7 @@
 import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import Tabs = jqwidgets.jqxTabs;
-import {Tab} from "./Tab";
+import {TabPanelItem} from "./TabPanelItem";
 
 import jqxWidgetOptions = jqwidgets.TabsOptions;
 import {PanelDock} from "./SplitPanel";
@@ -204,12 +204,12 @@ export class TabsPanel extends Component {
         });
     };
 
-    getTabByTitle(title: string): Tab {
+    getTabByTitle(title: string): TabPanelItem {
         for (let child of this.children) {
-            if ((child as Tab).title === title)
-                return child as Tab;
+            if ((child as TabPanelItem).title === title)
+                return child as TabPanelItem;
         }
-        throw "TabPanel.getTabByTitle(): не найден Tab '" + title + "'";
+        throw "TabPanel.getTabByTitle(): не найден TabPanelItem '" + title + "'";
     }
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {

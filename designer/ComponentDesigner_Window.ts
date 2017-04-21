@@ -5,7 +5,7 @@ import {Button} from "../platform/components/gui/Button";
 import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
-import {Tab} from "../platform/components/gui/Tab";
+import {TabPanelItem} from "../platform/components/gui/TabPanelItem";
 import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
 import {Component, IComponentRegistration} from "../platform/components/Component";
 import {IDesigner} from "../platform/designer/IDesigner";
@@ -97,19 +97,19 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
     splitPanelRight: SplitPanelItem = new SplitPanelItem();
 
     leftTabsPanel: TabsPanel = new TabsPanel();
-    formTab: Tab = new Tab();
-    codeTab: Tab = new Tab();
+    formTab: TabPanelItem = new TabPanelItem();
+    codeTab: TabPanelItem = new TabPanelItem();
     codeEditor: CodeEditor = new CodeEditor();
 
     rightTabsPanel: TabsPanel = new TabsPanel();
 
-    propertyEditorTab: Tab = new Tab();
+    propertyEditorTab: TabPanelItem = new TabPanelItem();
     propertyEditor: PropertiesEditor = new PropertiesEditor();
 
-    componentsTab: Tab = new Tab();
+    componentsTab: TabPanelItem = new TabPanelItem();
     componentsListBox: ListBox = new ListBox();
 
-    formExplorerTab: Tab = new Tab();
+    formExplorerTab: TabPanelItem = new TabPanelItem();
 
     //=== END-DESIGNER-DECLARE-CODE ===//
 
