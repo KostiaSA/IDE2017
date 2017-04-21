@@ -8,16 +8,16 @@ import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
 import {SqlTableColumn} from "../platform/components/sql/SqlTableColumn";
 import {Button} from "../platform/components/gui/Button";
 import {Window} from "../platform/components/gui/Window";
-import {FlexPanel} from "../platform/components/gui/FlexPanel";
-import {FlexPanelItem} from "../platform/components/gui/FlexPaneltem";
+import {HorzFlexPanel} from "../platform/components/gui/HorzFlexPanel";
+import {HorzFlexPanelItem} from "../platform/components/gui/HorzFlexPaneltem";
 
 export class ProjectExplorer_window extends Window {
 
-    dockPanel1: FlexPanel = new FlexPanel();
+    dockPanel1: HorzFlexPanel = new HorzFlexPanel();
 
-    dockPanelTop: FlexPanelItem = new FlexPanelItem();
-    dockPanelCenter: FlexPanelItem = new FlexPanelItem();
-    dockPanelBottom: FlexPanelItem = new FlexPanelItem();
+    dockPanelTop: HorzFlexPanelItem = new HorzFlexPanelItem();
+    dockPanelCenter: HorzFlexPanelItem = new HorzFlexPanelItem();
+    dockPanelBottom: HorzFlexPanelItem = new HorzFlexPanelItem();
 
     treeList: ListBox = new ListBox();
     addColumnButton: Button = new Button();

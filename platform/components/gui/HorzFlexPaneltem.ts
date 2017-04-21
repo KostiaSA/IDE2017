@@ -12,18 +12,18 @@ import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 
-export type FlexPanelItemType = "top" | "left" | "right" | "bottom" | "fill";
+export type HorzFlexPanelItemType = "top" | "bottom" | "fill";
 
-export class FlexPanelItem extends Control {
+export class HorzFlexPanelItem extends Control {
 
 
     // ------------------------------ dock ------------------------------
-    _dock: FlexPanelItemType = "top";
-    get dock(): FlexPanelItemType {
+    _dock: HorzFlexPanelItemType = "top";
+    get dock(): HorzFlexPanelItemType {
         return this._dock;
     }
 
-    set dock(value: FlexPanelItemType) {
+    set dock(value: HorzFlexPanelItemType) {
         let needReloadPropertyEditor = this._dock !== value;
         this._dock = value;
         if (this.$ && needReloadPropertyEditor && this._designer) {
@@ -43,7 +43,7 @@ export class FlexPanelItem extends Control {
         let pe = new StringPropertyEditor();
         pe.propertyName = "dock";
         pe.comboType = "array";
-        pe.comboItemsArray = ["top", "left", "right", "bottom"];
+        pe.comboItemsArray = ["top", "bottom", "fill"];
         pe.category = Категория_РазмерПозиция;
         return pe;
     }
@@ -140,12 +140,6 @@ export class FlexPanelItem extends Control {
 
         this.beforeRender();
 
-        // let styleStr = "";
-        // if (this.dock === "top" || this.dock === "bottom")
-        //     styleStr = "style='height:" + this.size + "px'";
-        // else if (this.dock === "left" || this.dock === "right")
-        //     styleStr = "style='width:" + this.size + "px'";
-
         this.$ = $("<div style ='border: 0px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
 
         this.__setOptions_padding();
@@ -172,8 +166,6 @@ export class FlexPanelItem extends Control {
             this.$.css("flex", "1 0 auto");
             this.$.css("height", "10px");
         }
-        // else if (this.dock === "left" || this.dock === "right")
-        //     this.$.width(this.size + "px");
 
         this.afterRender();
 

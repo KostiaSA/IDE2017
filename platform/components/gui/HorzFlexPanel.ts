@@ -1,20 +1,20 @@
 import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 //import SplitterPanel = jqwidgets.SplitterPanel;
-import {FlexPanelItem} from "./FlexPaneltem";
+import {HorzFlexPanelItem} from "./HorzFlexPaneltem";
 import {PanelDock} from "./DockPanel";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Панели,
-        componentClass: FlexPanel,
-        image: "vendor/fugue/icons/application-dock-180.png",
-        title: "flex-панель"
+        componentClass: HorzFlexPanel,
+        image: "vendor/fugue/icons/application-dock-90.png",
+        title: "горизонтальная flex-панель"
     }
 }
 
-export class FlexPanel extends Component {
+export class HorzFlexPanel extends Component {
 
     constructor() {
         super();
@@ -172,19 +172,19 @@ export class FlexPanel extends Component {
         this.__setOptions_dock();
 
         for (let child of this.children) {
-            let item = child as FlexPanelItem;
+            let item = child as HorzFlexPanelItem;
             if (item.dock === "top")
                 child.render(this._designer);
         }
 
         for (let child of this.children) {
-            let item = child as FlexPanelItem;
+            let item = child as HorzFlexPanelItem;
             if (item.dock === "fill")
                 child.render(this._designer);
         }
 
         for (let child of this.children) {
-            let item = child as FlexPanelItem;
+            let item = child as HorzFlexPanelItem;
             if (item.dock === "bottom")
                 child.render(this._designer);
         }
