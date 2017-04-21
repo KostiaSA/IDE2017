@@ -213,11 +213,8 @@ export class TestWindow111 extends Window {
 export function createTestApplication2() {
 
     let w = new ComponentDesigner_Window();
-    //w.designedComponentPath="application/test/ТестоваяФормаДляДизайнера.ts";
-    w.designedComponentPath="application/test/Организация_SqlTable.ts";
-    //w.designedForm=new TestWindow111();
-    //w.designedForm.init();
-
+    w.designedComponentPath="application/test/ТестоваяФормаДляДизайнера.ts";
+    //w.designedComponentPath="application/test/Организация_SqlTable.ts";
     appState.desktop.windows.push(w);
 
     let w2 = new ProjectExplorer_window();

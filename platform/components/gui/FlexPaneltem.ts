@@ -1,28 +1,29 @@
 import {Component, IEvent, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {Control} from "./Control";
-import {appState} from "../../AppState";
-import PanelOptions = jqwidgets.PanelOptions;
+
+
 import {isString} from "util";
 import {
-    PropertyEditor, Категория_ПривязкаДанных, Категория_РазмерПозиция,
+    PropertyEditor, Категория_DragDrop, Категория_ПривязкаДанных, Категория_РазмерПозиция,
     Категория_Содержимое
 } from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
+import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 
-export type DockPanelItemType = "top" | "left" | "right" | "bottom" | "fill";
+export type FlexPanelItemType = "top" | "left" | "right" | "bottom" | "fill";
 
-export class DockPanelItem extends Control {
+export class FlexPanelItem extends Control {
 
 
     // ------------------------------ dock ------------------------------
-    _dock: DockPanelItemType = "top";
-    get dock(): DockPanelItemType {
+    _dock: FlexPanelItemType = "top";
+    get dock(): FlexPanelItemType {
         return this._dock;
     }
 
-    set dock(value: DockPanelItemType) {
+    set dock(value: FlexPanelItemType) {
         let needReloadPropertyEditor = this._dock !== value;
         this._dock = value;
         if (this.$ && needReloadPropertyEditor && this._designer) {
@@ -82,7 +83,7 @@ export class DockPanelItem extends Control {
     }
 
     // ------------------------------ size ------------------------------
-    _size: number = 50;
+    _size: number;
     get size(): number {
         return this._size;
     }
@@ -94,12 +95,40 @@ export class DockPanelItem extends Control {
     }
 
     private __emitCode_size(code: EmittedCode) {
-        code.emitNumberValue(this, "size", 50);
+        code.emitNumberValue(this, "size");
     }
 
     private __getPropertyEditor_size(): PropertyEditor {
         let pe = new NumberPropertyEditor();
         pe.propertyName = "size";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
+    }
+
+    // ------------------------------ sizeToContent ------------------------------
+    private _sizeToContent: boolean = false;
+    get sizeToContent(): boolean {
+        return this._sizeToContent;
+    }
+
+    set sizeToContent(value: boolean) {
+        this._sizeToContent = value;
+        if (this.$) {
+            this.jqxWidget({sizeToContent: this._sizeToContent});
+        }
+    }
+
+    emitCode_sizeToContent(code: EmittedCode) {
+        code.emitBooleanValue(this, "sizeToContent", false);
+    }
+
+    private __setOptions_sizeToContent() {
+        this.sizeToContent = this._sizeToContent;
+    }
+
+    private __getPropertyEditor_sizeToContent(): PropertyEditor {
+        let pe = new BooleanPropertyEditor();
+        pe.propertyName = "sizeToContent";
         pe.category = Категория_РазмерПозиция;
         return pe;
     }
@@ -117,22 +146,34 @@ export class DockPanelItem extends Control {
         // else if (this.dock === "left" || this.dock === "right")
         //     styleStr = "style='width:" + this.size + "px'";
 
-        this.$ = $("<div style ='border: 1px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style ='border: 0px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
 
         this.__setOptions_padding();
-
-        this.$.attr("dock", this.dock);
-        if (this.dock === "top" || this.dock === "bottom") {
-            this.$.height(this.size + "px");
-            console.log(this.size + "px");
-        }
-        else if (this.dock === "left" || this.dock === "right")
-            this.$.width(this.size + "px");
-
 
         for (let child of this.children) {
             child.render(this._designer);
         }
+
+        this.$.attr("dock", this.dock);
+        if (this.dock === "top" || this.dock === "bottom") {
+            if (this._designer) {
+                if (this.size)
+                    this.$.height(this.size + "px");
+                else
+                    this.$.height("50px");
+            }
+            else {
+                if (this.size && !this.sizeToContent)
+                    this.$.height(this.size + "px");
+            }
+            this.$.css("flex", "0 auto")
+        }
+        if (this.dock === "fill") {
+            this.$.css("flex", "1 0 auto");
+            this.$.css("height", "10px");
+        }
+        // else if (this.dock === "left" || this.dock === "right")
+        //     this.$.width(this.size + "px");
 
         this.afterRender();
 

@@ -19,7 +19,6 @@ export class Tab extends Component {
     set padding(value: string | number) {
         this._padding = value;
         if (this.$) {
-            console.log("set padding -cccccccccccccccc",this.padding);
             if (isString(value))
                 this.$.css("padding", this.padding);
             else

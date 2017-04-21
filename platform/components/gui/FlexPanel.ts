@@ -1,31 +1,24 @@
 import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 //import SplitterPanel = jqwidgets.SplitterPanel;
-import {DockPanelItem} from "./DockPaneltem";
+import {FlexPanelItem} from "./FlexPaneltem";
+import {PanelDock} from "./DockPanel";
 
-import jqxWidgetOptions = jqwidgets.DockPanelOptions;
-
-export type PanelDock = "none" | "fill";
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Панели,
-        componentClass: DockPanel,
+        componentClass: FlexPanel,
         image: "vendor/fugue/icons/application-dock-180.png",
-        title: "dock-панель"
+        title: "flex-панель"
     }
 }
 
-export class DockPanel extends Component {
+export class FlexPanel extends Component {
 
     constructor() {
         super();
-        this.renderJqxWidgetAfterChildren = true;
     }
-
-    jqxWidget(...args: any[]): Function {
-        return this.$.jqxDockPanel(...args);
-    };
 
     // ------------------------------ dock ------------------------------
     _dock: PanelDock = "none";
@@ -129,7 +122,7 @@ export class DockPanel extends Component {
         code.emitNumberValue(this, "height");
     }
 
-    private __setOptions___emitCode_height() {
+    private __setOptions_height() {
         this.height = this._height;
     }
 
@@ -154,47 +147,50 @@ export class DockPanel extends Component {
         code.emitNumberValue(this, "width");
     }
 
-    private __setOptions___emitCode_width() {
+    private __setOptions__width() {
         this.width = this._width;
     }
 
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: 2px solid green;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-
-        this.$.on("layout", () => {
-            for (let child of this.children) {
-                child.doLayout();
-            }
-        });
 
     }
 
-    doLayout(){
-        if (this.$) {
-            this.$.height(400);
-           // this.jqxWidget("refresh");
-        }
-        super.doLayout();
-    }
+    render() {
+        if (!this.initialized)
+            this.init();
 
-    fillJqxWidgetOptions(opt: jqxWidgetOptions) {
-        opt.lastchildfill = true;
-    }
+        this.beforeRender();
 
-    renderChildren() {
+        this.$ = $("<div style='border: 0px solid green; display: flex; flex-direction: column;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+
+        this.__setOptions_left();
+        this.__setOptions_top();
+        this.__setOptions_height();
+        this.__setOptions__width();
+        this.__setOptions_dock();
+
         for (let child of this.children) {
-            let item = child as DockPanelItem;
-            if (item.dock !== "fill")
+            let item = child as FlexPanelItem;
+            if (item.dock === "top")
                 child.render(this._designer);
         }
+
         for (let child of this.children) {
-            let item = child as DockPanelItem;
+            let item = child as FlexPanelItem;
             if (item.dock === "fill")
                 child.render(this._designer);
         }
-    }
 
+        for (let child of this.children) {
+            let item = child as FlexPanelItem;
+            if (item.dock === "bottom")
+                child.render(this._designer);
+        }
+
+        this.afterRender();
+
+    }
 
 }

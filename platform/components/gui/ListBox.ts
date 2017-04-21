@@ -16,6 +16,7 @@ import {isArray} from "util";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 
 
+
 export interface IListBoxItem {
     label?: string;
     value?: any;
@@ -201,9 +202,12 @@ export class ListBox extends Component {
         if (this.$)
             if (this.dock === "fill") {
                 this.jqxWidget({height: "100%"} as jqxWidgetOptions);
+                this.$.height(300);
+                console.log("hei------22-----")
             }
             else if (value) {
                 this.jqxWidget({height: value} as jqxWidgetOptions);
+                console.log("hei-??????????-----22-----")
             }
     }
 
@@ -226,6 +230,7 @@ export class ListBox extends Component {
         if (this.$)
             if (this.dock === "fill") {
                 this.jqxWidget({width: "100%"} as jqxWidgetOptions);
+
             }
             else if(value){
                 this.jqxWidget({width: value} as jqxWidgetOptions);
@@ -353,7 +358,11 @@ export class ListBox extends Component {
 
     // ------------------------------ render ------------------------------
     renderBody() {
-        this.$ = $("<div data-component='" + this.constructor.name + "' style='border: none;' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div data-component='" + this.constructor.name + "' style='bord22er: 1px solid orange;' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        setTimeout(()=>{
+            if (this.$)
+                this.jqxWidget("refresh");
+        },1);
     }
 
     doLayout(){
@@ -361,10 +370,5 @@ export class ListBox extends Component {
             this.jqxWidget("refresh");
         super.doLayout();
     }
-    // private __getPropertyEditor_dataSource(): PropertyEditor {
-    //     let pe = new StringPropertyEditor();
-    //     pe.propertyName = "dataSource";
-    //     pe.category = Категория_Содержимое;
-    //     return pe;
-    // }
+
 }

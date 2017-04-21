@@ -8,16 +8,16 @@ import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
 import {SqlTableColumn} from "../platform/components/sql/SqlTableColumn";
 import {Button} from "../platform/components/gui/Button";
 import {Window} from "../platform/components/gui/Window";
-import {DockPanel} from "../platform/components/gui/DockPanel";
-import {DockPanelItem} from "../platform/components/gui/DockPaneltem";
+import {FlexPanel} from "../platform/components/gui/FlexPanel";
+import {FlexPanelItem} from "../platform/components/gui/FlexPaneltem";
 
 export class ProjectExplorer_window extends Window {
 
-    dockPanel1: DockPanel = new DockPanel();
+    dockPanel1: FlexPanel = new FlexPanel();
 
-    dockPanelTop: DockPanelItem = new DockPanelItem();
-    dockPanelCenter: DockPanelItem = new DockPanelItem();
-    dockPanelBottom: DockPanelItem = new DockPanelItem();
+    dockPanelTop: FlexPanelItem = new FlexPanelItem();
+    dockPanelCenter: FlexPanelItem = new FlexPanelItem();
+    dockPanelBottom: FlexPanelItem = new FlexPanelItem();
 
     treeList: ListBox = new ListBox();
     addColumnButton: Button = new Button();
@@ -38,23 +38,24 @@ export class ProjectExplorer_window extends Window {
         this.childrenAdd(this.dockPanel1);
 
         this.dockPanelTop.dock = "top";
-        this.dockPanelTop.size = 50;
+        this.dockPanelTop.size = 100;
+        this.dockPanelTop.sizeToContent = true;
+        this.dockPanelTop.padding = "5px";
         this.dockPanel1.childrenAdd(this.dockPanelTop);
 
-        //this.dockPanel1.dock = "fill";
-        //this.dockPanelBottom.childrenAdd(this.dockPanel2);
-
-
-        this.dockPanelBottom.dock="bottom";
-        this.dockPanelBottom.size = 55;
-        this.dockPanel1.childrenAdd(this.dockPanelBottom);
-
         this.dockPanelCenter.dock="fill";
+        this.dockPanelCenter.padding = "5px";
         this.dockPanel1.childrenAdd(this.dockPanelCenter);
 
 
+        this.dockPanelBottom.dock="bottom";
+        this.dockPanelBottom.size = 100;
+        this.dockPanelBottom.padding = "5px";
+        this.dockPanel1.childrenAdd(this.dockPanelBottom);
+
         this.treeList.dock = "fill";
         this.dockPanelCenter.childrenAdd(this.treeList);
+
 
         this.addColumnButton.text="добавить ?";
         this.dockPanelBottom.childrenAdd(this.addColumnButton);
@@ -66,6 +67,12 @@ export class ProjectExplorer_window extends Window {
         this.dockPanelTop.childrenAdd(this.searchButton);
 
         //=== END-DESIGNER-INIT-CODE ===//
+
+        let x=[];
+        for (let i=1000000; i<1000200; i++)
+            x.push(i.toString());
+
+        this.treeList.dataSource=x;
 
     }
 
