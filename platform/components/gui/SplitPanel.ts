@@ -214,7 +214,8 @@ export class SplitPanel extends Component {
         return this.children.map((child: Component) => {
             return {
                 size: (child as SplitPanelItem).size,
-                minSize: (child as SplitPanelItem).minSize
+                min: (child as SplitPanelItem).minSize,
+                collapsible: false
             };
         });
     }

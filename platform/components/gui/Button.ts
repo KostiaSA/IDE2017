@@ -254,6 +254,10 @@ export class Button extends Component {
 
     }
 
+    afterRender(){
+        this.$.css("display","inline-block");
+    }
+
     // // ------------------------------ render ------------------------------
     // renderBody() {
     //     super.renderBody();

@@ -6,6 +6,7 @@ import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {IListBoxEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
 import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
 import {SqlTableColumn} from "../platform/components/sql/SqlTableColumn";
+import {Button} from "../platform/components/gui/Button";
 
 export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
 
@@ -14,6 +15,7 @@ export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
     splitPanelBottom: SplitPanelItem = new SplitPanelItem();
 
     columnsListBox: ListBox = new ListBox();
+    addColumnButton: Button = new Button();
 
     init() {
         super.init();
@@ -23,18 +25,21 @@ export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
 
         this.splitPanel1.dock = "fill";
         this.splitPanel1.orientation = "horizontal";
+        this.splitPanel1.splitterVisible=false;
         this.childrenAdd(this.splitPanel1);
 
         this.splitPanelTop.size = "95%";
         this.splitPanel1.childrenAdd(this.splitPanelTop);
 
-        this.splitPanelBottom.size = "5%";
-        this.splitPanelBottom.minSize = "100px";
+        //this.splitPanelBottom.size = 200;
+        this.splitPanelBottom.minSize = 100;
         this.splitPanel1.childrenAdd(this.splitPanelBottom);
 
         this.columnsListBox.dock = "fill";
         this.splitPanelTop.childrenAdd(this.columnsListBox);
 
+        this.addColumnButton.text="добавить колонку";
+        this.splitPanelBottom.childrenAdd(this.addColumnButton);
 
         //=== END-DESIGNER-INIT-CODE ===//
 

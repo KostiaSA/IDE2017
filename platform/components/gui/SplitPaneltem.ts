@@ -6,6 +6,7 @@ import PanelOptions = jqwidgets.PanelOptions;
 import {isString} from "util";
 import {PropertyEditor, Категория_РазмерПозиция, Категория_Содержимое} from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 
 export class SplitPanelItem extends Control {
 
@@ -40,22 +41,19 @@ export class SplitPanelItem extends Control {
     }
 
     // ------------------------------ minSize ------------------------------
-    _minSize: string | number;
-    get minSize(): string | number {
+    _minSize: number;
+    get minSize(): number {
         return this._minSize;
     }
 
-    set minSize(value: string | number) {
+    set minSize(value: number) {
         this._minSize = value;
         //if (this.$)
         //  this.$.minSize(this.minSize);
     }
 
     private __emitCode_minSize(code: EmittedCode) {
-        if (isString(this.minSize))
-            code.emitStringValue(this, "minSize");
-        else
-            code.emitNumberValue(this, "minSize");
+        code.emitNumberValue(this, "minSize");
     }
 
     private __setOptions_minSize() {
@@ -63,7 +61,7 @@ export class SplitPanelItem extends Control {
     }
 
     private __getPropertyEditor_minSize(): PropertyEditor {
-        let pe = new StringPropertyEditor();
+        let pe = new NumberPropertyEditor();
         pe.propertyName = "minSize";
         pe.category = Категория_РазмерПозиция;
         return pe;
