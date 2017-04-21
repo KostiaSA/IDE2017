@@ -6,3 +6,13 @@
 .jqx-button {
     padding: 4px;
 }
+
+.jqx-window.jqx-widget-content {
+    border-color: rgba(33, 115, 70, 0.60);
+    box-shadow: 6px 6px 10px 0px rgba(0,0,0,0.14);
+}
+
+.jqx-window-header {
+    border-color: rgba(33, 115, 70, 0.60);
+    background: rgba(33, 115, 70, 0.11);
+}

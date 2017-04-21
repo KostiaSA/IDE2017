@@ -207,7 +207,7 @@ export class SplitPanel extends Component {
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: 0px solid orange' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: none;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     getPanelsLayout(): SplitterPanel[] {
@@ -224,6 +224,12 @@ export class SplitPanel extends Component {
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
         opt.panels = this.getPanelsLayout();
         opt.splitBarSize = 3;
+    }
+
+    refresh() {
+        if (this.$)
+            this.jqxWidget("refresh");
+
     }
 
     // renderChildren() {

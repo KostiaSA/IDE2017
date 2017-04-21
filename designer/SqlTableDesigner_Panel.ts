@@ -16,6 +16,7 @@ export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
 
     columnsListBox: ListBox = new ListBox();
     addColumnButton: Button = new Button();
+    addIndexButton: Button = new Button();
 
     init() {
         super.init();
@@ -41,6 +42,8 @@ export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
         this.addColumnButton.text="добавить колонку";
         this.splitPanelBottom.childrenAdd(this.addColumnButton);
 
+        this.addIndexButton.text="добавить индекс";
+        this.splitPanelBottom.childrenAdd(this.addIndexButton);
         //=== END-DESIGNER-INIT-CODE ===//
 
     }

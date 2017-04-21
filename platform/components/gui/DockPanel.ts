@@ -1,24 +1,22 @@
 import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
-import Tabs = jqwidgets.jqxTabs;
-import {Tab} from "./Tab";
+//import SplitterPanel = jqwidgets.SplitterPanel;
+import {DockPanelItem} from "./DockPaneltem";
 
-import jqxWidgetOptions = jqwidgets.TabsOptions;
-import {PanelDock} from "./SplitPanel";
+import jqxWidgetOptions = jqwidgets.DockPanelOptions;
 
-export type TabsPosition = "top" | "bottom";
+export type PanelDock = "none" | "fill";
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Панели,
-        componentClass: TabsPanel,
-        image: "vendor/fugue/icons/ui-tab-content.png",
-        title: "панель с закладками"
+        componentClass: DockPanel,
+        image: "vendor/fugue/icons/application-dock-180.png",
+        title: "dock-панель"
     }
 }
 
-
-export class TabsPanel extends Component {
+export class DockPanel extends Component {
 
     constructor() {
         super();
@@ -26,7 +24,7 @@ export class TabsPanel extends Component {
     }
 
     jqxWidget(...args: any[]): Function {
-        return this.$.jqxTabs(...args);
+        return this.$.jqxDockPanel(...args);
     };
 
     // ------------------------------ dock ------------------------------
@@ -62,13 +60,14 @@ export class TabsPanel extends Component {
 
     set top(value: number) {
         this._top = value;
-        if (this.$ && value) {
+        if (this.$) {
             if (this.dock === "fill") {
                 this.$.css("top", "0px");
             }
-            else {
+            else if (value) {
                 this.$.css("top", value + "px");
                 this.$.css("position", "absolute");
+
             }
         }
     }
@@ -90,11 +89,11 @@ export class TabsPanel extends Component {
 
     set left(value: number) {
         this._left = value;
-        if (this.$ && value) {
+        if (this.$) {
             if (this.dock === "fill") {
                 this.$.css("left", "0px");
             }
-            else {
+            else if (value) {
                 this.$.css("left", value + "px");
                 this.$.css("position", "absolute");
             }
@@ -117,12 +116,12 @@ export class TabsPanel extends Component {
 
     set height(value: number) {
         this._height = value;
-        if (this.$ && value)
+        if (this.$)
             if (this.dock === "fill") {
-                this.jqxWidget({height: "100%"} as jqxWidgetOptions);
+                this.$.height("100%");
             }
-            else {
-                this.jqxWidget({height: value} as jqxWidgetOptions);
+            else if (value) {
+                this.$.height(value);
             }
     }
 
@@ -130,11 +129,8 @@ export class TabsPanel extends Component {
         code.emitNumberValue(this, "height");
     }
 
-    private __fillOptions_height(opt: jqxWidgetOptions) {
-        if (this.dock === "fill")
-            opt.height = "100%";
-        else
-            opt.height = this.height;
+    private __setOptions___emitCode_height() {
+        this.height = this._height;
     }
 
     // ------------------------------ width ------------------------------
@@ -145,12 +141,12 @@ export class TabsPanel extends Component {
 
     set width(value: number) {
         this._width = value;
-        if (this.$ && value)
+        if (this.$)
             if (this.dock === "fill") {
-                this.jqxWidget({width: "100%"} as jqxWidgetOptions);
+                this.$.width("100%");
             }
-            else {
-                this.jqxWidget({width: value} as jqxWidgetOptions);
+            else if (value) {
+                this.$.width(value);
             }
     }
 
@@ -158,64 +154,45 @@ export class TabsPanel extends Component {
         code.emitNumberValue(this, "width");
     }
 
-    private __fillOptions_width(opt: jqxWidgetOptions) {
-        if (this.dock === "fill")
-            opt.width = "100%";
-        else
-            opt.width = this.width;
-    }
-
-    // ------------------------------ tabsPosition ------------------------------
-    _tabsPosition: TabsPosition = "top";
-    get tabsPosition(): TabsPosition {
-        return this._tabsPosition;
-    }
-
-    set tabsPosition(value: TabsPosition) {
-        this._tabsPosition = value;
-        if (this.$) {
-            this.jqxWidget({position: this.tabsPosition} as jqxWidgetOptions);
-        }
-    }
-
-    private __emitCode_tabsPosition(code: EmittedCode) {
-        code.emitStringValue(this, "tabsPosition", "top");
-    }
-
-    private __fillOptions_tabsPosition(opt: jqxWidgetOptions) {
-        opt.position = this.tabsPosition;
+    private __setOptions___emitCode_width() {
+        this.width = this._width;
     }
 
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: none;' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: none;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+
+        this.$.on("layout", () => {
+            for (let child of this.children) {
+                child.doLayout();
+            }
+        });
+
     }
 
-    afterRender() {
-        this.$.on("selected", (event: any) => {
-            var selectedTab = event.args.item;
-            let title = this.jqxWidget("getTitleAt", selectedTab).toString();
-            let tab = this.getTabByTitle(title);
-            if (tab.onSelect) {
-                tab.onSelect.call(tab, tab);
-            }
-            //console.log("selectedTab", selectedTab, title);
-        });
-    };
-
-    getTabByTitle(title: string): Tab {
-        for (let child of this.children) {
-            if ((child as Tab).title === title)
-                return child as Tab;
-        }
-        throw "TabPanel.getTabByTitle(): не найден Tab '" + title + "'";
+    doLayout(){
+        if (this.$)
+            this.jqxWidget("refresh");
+        super.doLayout();
     }
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
-        opt.keyboardNavigation=false;
-        //opt.panels = this.getPanelsLayout();
-        //opt.TabsBarSize = 3;
+        opt.lastchildfill = true;
     }
+
+    renderChildren() {
+        for (let child of this.children) {
+            let item = child as DockPanelItem;
+            if (item.dock !== "fill")
+                child.render(this._designer);
+        }
+        for (let child of this.children) {
+            let item = child as DockPanelItem;
+            if (item.dock === "fill")
+                child.render(this._designer);
+        }
+    }
+
 
 }

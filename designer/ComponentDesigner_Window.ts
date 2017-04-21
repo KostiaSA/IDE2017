@@ -137,9 +137,10 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
 
 
         this.leftTabsPanel.dock = "fill";
-
         this.leftTabsPanel.childrenAdd(this.formTab);
         this.formTab.title = "Дизайнер";
+        this.formTab.padding = "5px";
+
 
         this.codeTab.title = "Код";
         this.codeTab.onSelect = () => {
@@ -162,6 +163,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         this.splitPanelRight.childrenAdd(this.rightTabsPanel);
 
         this.componentsTab.title = "Компоненты";
+        this.componentsTab.padding = "5px";
         this.rightTabsPanel.childrenAdd(this.componentsTab);
 
         this.componentsListBox.dock = "fill";

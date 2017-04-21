@@ -270,4 +270,10 @@ export class Component {
 
     }
 
+    doLayout(){
+        console.log("doLayout "+this.constructor.name);
+        for (let child of this.children) {
+            child.doLayout();
+        }
+    }
 }

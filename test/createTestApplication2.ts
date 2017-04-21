@@ -14,6 +14,7 @@ import {TabsPanel} from "../platform/components/gui/TabPanel";
 import {Tab} from "../platform/components/gui/Tab";
 import {ComponentDesigner_Window} from "../designer/ComponentDesigner_Window";
 import {Input} from "../platform/components/gui/Input";
+import {ProjectExplorer_window} from "../designer/ProjectExplorer_window";
 
 export class TestWindow0 extends Window {
     кнопка123: Button = new Button();
@@ -218,6 +219,9 @@ export function createTestApplication2() {
     //w.designedForm.init();
 
     appState.desktop.windows.push(w);
+
+    let w2 = new ProjectExplorer_window();
+    appState.desktop.windows.push(w2);
 
     // setTimeout(() => {
     //     console.log("time");

@@ -256,6 +256,8 @@ export class Button extends Component {
 
     afterRender(){
         this.$.css("display","inline-block");
+        this.$.css("margin-right","5px");
+        this.$.css("margin-bottom","5px");
     }
 
     // // ------------------------------ render ------------------------------

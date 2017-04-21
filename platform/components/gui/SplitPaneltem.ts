@@ -10,6 +10,40 @@ import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 
 export class SplitPanelItem extends Control {
 
+    // ------------------------------ padding ------------------------------
+    _padding: string | number;
+    get padding(): string | number {
+        return this._padding;
+    }
+
+    set padding(value: string | number) {
+        this._padding = value;
+        if (this.$) {
+            if (isString(value))
+                this.$.css("padding", this.padding);
+            else
+                this.$.css("padding", this.padding + "px");
+        }
+    }
+
+    private __emitCode_padding(code: EmittedCode) {
+        if (isString(this.padding))
+            code.emitStringValue(this, "padding");
+        else
+            code.emitNumberValue(this, "padding");
+    }
+
+    private __setOptions_padding() {
+        this.padding = this._padding;
+    }
+
+    private __getPropertyEditor_padding(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "padding";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
+    }
+
     // ------------------------------ size ------------------------------
     _size: string | number;
     get size(): string | number {
@@ -72,7 +106,8 @@ export class SplitPanelItem extends Control {
     render() {
         if (!this.initialized)
             this.init();
-        this.$ = $("<div style='border: 0px solid orange'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div></div>").appendTo(this.parent.$childrenContainer);
+        this.__setOptions_padding();
         this.renderChildren();
     }
 

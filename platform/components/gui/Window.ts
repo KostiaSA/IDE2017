@@ -179,8 +179,13 @@ export class Window extends Component {
                 grid: 1,
             });
         }
-        else
-            this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "' style='position: relative'></div></div>").appendTo($("#content"));
+        else {
+            this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "'  style='border-color:red; padding: 0; position: relative'></div></div>").appendTo($("#content"));
+            this.$.on("resizing", () => {
+                this.doLayout();
+            });
+
+        }
 
     }
 

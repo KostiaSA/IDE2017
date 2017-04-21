@@ -142,13 +142,14 @@ export class ListBox extends Component {
 
     set top(value: number) {
         this._top = value;
-        if (this.$ && value) {
+        if (this.$) {
             if (this.dock === "fill") {
                 this.$.css("top", "0px");
             }
-            else {
+            else if (value) {
                 this.$.css("top", value + "px");
                 this.$.css("position", "absolute");
+
             }
         }
     }
@@ -170,11 +171,11 @@ export class ListBox extends Component {
 
     set left(value: number) {
         this._left = value;
-        if (this.$ && value) {
+        if (this.$) {
             if (this.dock === "fill") {
                 this.$.css("left", "0px");
             }
-            else {
+            else if (value) {
                 this.$.css("left", value + "px");
                 this.$.css("position", "absolute");
             }
@@ -197,11 +198,11 @@ export class ListBox extends Component {
 
     set height(value: number) {
         this._height = value;
-        if (this.$ && value)
+        if (this.$)
             if (this.dock === "fill") {
                 this.jqxWidget({height: "100%"} as jqxWidgetOptions);
             }
-            else {
+            else if (value) {
                 this.jqxWidget({height: value} as jqxWidgetOptions);
             }
     }
@@ -210,11 +211,8 @@ export class ListBox extends Component {
         code.emitNumberValue(this, "height");
     }
 
-    private __fillOptions_height(opt: jqxWidgetOptions) {
-        if (this.dock === "fill")
-            opt.height = "100%";
-        else
-            opt.height = this.height;
+    private __setOptions___emitCode_height() {
+        this.height = this._height;
     }
 
     // ------------------------------ width ------------------------------
@@ -225,11 +223,11 @@ export class ListBox extends Component {
 
     set width(value: number) {
         this._width = value;
-        if (this.$ && value)
+        if (this.$)
             if (this.dock === "fill") {
                 this.jqxWidget({width: "100%"} as jqxWidgetOptions);
             }
-            else {
+            else if(value){
                 this.jqxWidget({width: value} as jqxWidgetOptions);
             }
     }
@@ -238,12 +236,10 @@ export class ListBox extends Component {
         code.emitNumberValue(this, "width");
     }
 
-    private __fillOptions_width(opt: jqxWidgetOptions) {
-        if (this.dock === "fill")
-            opt.width = "100%";
-        else
-            opt.width = this.width;
+    private __setOptions___emitCode_width() {
+        this.width = this._width;
     }
+
 
     // ------------------------------ dataSource ------------------------------
     _dataSource: Component | IListBoxItem[];
@@ -355,6 +351,16 @@ export class ListBox extends Component {
         code.emitEventValue(this, "onChange");
     }
 
+    // ------------------------------ render ------------------------------
+    renderBody() {
+        this.$ = $("<div data-component='" + this.constructor.name + "' style='border: none;' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
+    }
+
+    doLayout(){
+        if (this.$)
+            this.jqxWidget("refresh");
+        super.doLayout();
+    }
     // private __getPropertyEditor_dataSource(): PropertyEditor {
     //     let pe = new StringPropertyEditor();
     //     pe.propertyName = "dataSource";
