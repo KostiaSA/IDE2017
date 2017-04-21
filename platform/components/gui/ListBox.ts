@@ -7,14 +7,13 @@ import {PanelDock} from "./SplitPanel";
 import {getAllObjectProps} from "../../utils/getAllObjectProps";
 import {
     PropertyEditor, PropertyEditorCategories, Категория_DragDrop,
-    Категория_РазмерПозиция
+    Категория_РазмерПозиция, Категория_Стиль
 } from "../../../designer/PropertyEditor";
 import {getRandomId} from "../../../app/utils/getRandomId";
 import {escapeHtml} from "../../utils/escapeHtml";
 import * as R from "ramda";
 import {isArray} from "util";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
-
 
 
 export interface IListBoxItem {
@@ -232,7 +231,7 @@ export class ListBox extends Component {
                 this.jqxWidget({width: "100%"} as jqxWidgetOptions);
 
             }
-            else if(value){
+            else if (value) {
                 this.jqxWidget({width: value} as jqxWidgetOptions);
             }
     }
@@ -245,6 +244,36 @@ export class ListBox extends Component {
         this.width = this._width;
     }
 
+    // ------------------------------ noBorder ------------------------------
+    private _noBorder: boolean = false;
+    get noBorder(): boolean {
+        return this._noBorder;
+    }
+
+    set noBorder(value: boolean) {
+        this._noBorder = value;
+        if (this.$) {
+            if (this._noBorder && !this._designer)
+                this.$.css("border", "none");
+            else
+                this.$.css("border", "");
+        }
+    }
+
+    emitCode_noBorder(code: EmittedCode) {
+        code.emitBooleanValue(this, "noBorder", false);
+    }
+
+    private __setOptions_noBorder() {
+        this.noBorder = this._noBorder;
+    }
+
+    private __getPropertyEditor_noBorder(): PropertyEditor {
+        let pe = new BooleanPropertyEditor();
+        pe.propertyName = "noBorder";
+        pe.category = Категория_Стиль;
+        return pe;
+    }
 
     // ------------------------------ dataSource ------------------------------
     _dataSource: Component | IListBoxItem[];
@@ -359,13 +388,13 @@ export class ListBox extends Component {
     // ------------------------------ render ------------------------------
     renderBody() {
         this.$ = $("<div data-component='" + this.constructor.name + "' style='bord22er: 1px solid orange;' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
-        setTimeout(()=>{
+        setTimeout(() => {
             if (this.$)
                 this.jqxWidget("refresh");
-        },1);
+        }, 1);
     }
 
-    doLayout(){
+    doLayout() {
         if (this.$)
             this.jqxWidget("refresh");
         super.doLayout();

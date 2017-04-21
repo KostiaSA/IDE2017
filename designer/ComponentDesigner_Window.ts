@@ -167,7 +167,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         this.rightTabsPanel.childrenAdd(this.componentsTab);
 
         this.componentsListBox.dock = "fill";
-        //this.componentsListBox.allowDrag=true;
+        this.componentsListBox.noBorder=true;
         this.componentsListBox.onDblClick = this.componentsListBox_DblClick;
         this.componentsTab.childrenAdd(this.componentsListBox);
 
