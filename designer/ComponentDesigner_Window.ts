@@ -16,7 +16,7 @@ import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {CompilerOptions, DiagnosticCategory, JsxEmit, ScriptTarget} from "typescript";
 import {replaceAll} from "../platform/utils/replaceAll";
 import {PropertiesEditor} from "./PropertiesEditor";
-import {IListBoxDblClickEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
+import {IListBoxEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
 import {getRegisteredComponents} from "./utils/getRegisteredComponents";
 import {FormDesigner_Panel} from "./FormDesigner_Panel";
 
@@ -202,6 +202,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         // console.log("prot2", Component.isPrototypeOf(formModule[formClassName]));
 
         this.designedForm = new formModule[formClassName]() as Component;
+        this.designedForm.init();
 
         this.designerPanel = this.designedForm.getDesignerPanel();
         this.formTab.childrenAdd(this.designerPanel);
@@ -215,7 +216,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
             this.propertyEditor.renderEditors();
     }
 
-    componentsListBox_DblClick(eventArgs: IListBoxDblClickEventArgs) {
+    componentsListBox_DblClick(eventArgs: IListBoxEventArgs) {
         console.log(eventArgs.item.value);
         let compRegInfo = eventArgs.item.value as IComponentRegistration;
         let newComponent = new (compRegInfo.componentClass as any)();

@@ -36,7 +36,7 @@ export function __registerBuhtaComponent__(): IComponentRegistration {
     }
 }
 
-export interface IListBoxDblClickEventArgs extends IEventArgs {
+export interface IListBoxEventArgs extends IEventArgs {
     item: IListBoxItem;
 }
 
@@ -258,8 +258,15 @@ export class ListBox extends Component {
                 this.prepareDataSource(this.dataSource);
                 this.$.jqxListBox({source: this.dataSource});
             }
-            else
+            else if ((value as any).bindDownloadComplete && (value as any).buildHierarchy) { // это jqx.dataAdapter
+                this.prepareDataSource((value as any)._source);
+                this.$.jqxListBox({source: value});
+            }
+            else {
+                //(window as any)["xxx"]=value; bindDownloadComplete
+                //console.log(value);
                 throw "не реализовано";
+            }
         }
     }
 
@@ -267,36 +274,34 @@ export class ListBox extends Component {
         code.emitStringValue(this, "dataSource");
     }
 
-    private prepareDataSource(dataSource:Component | IListBoxItem[]){
-        // добавляем иконки
-        if (isArray(dataSource)){
-            for (let item of dataSource as IListBoxItem[]){
-                if (!item.html && item.image){
-                    item.html=`<div><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
-                }
-            }
-        }
-
-
-    }
-
     private __setOptions_dataSource() {
         this.dataSource = this._dataSource;
     }
 
+    private prepareDataSource(dataSource: Component | IListBoxItem[]) {
+        // добавляем иконки
+        if (isArray(dataSource)) {
+            for (let item of dataSource as IListBoxItem[]) {
+                if (!item.html && item.image) {
+                    item.html = `<div><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
+                }
+            }
+        }
+    }
+
     // ------------------------------ onDblClick ------------------------------
-    _onDblClick: IEvent<IListBoxDblClickEventArgs>;
-    get onDblClick(): IEvent<IListBoxDblClickEventArgs> {
+    _onDblClick: IEvent<IListBoxEventArgs>;
+    get onDblClick(): IEvent<IListBoxEventArgs> {
         return this._onDblClick;
     }
 
-    set onDblClick(value: IEvent<IListBoxDblClickEventArgs>) {
+    set onDblClick(value: IEvent<IListBoxEventArgs>) {
         this._onDblClick = value;
         if (this.$ && this._onDblClick) {
             let __this = this;
             this.$.find(".jqx-listitem-state-normal").dblclick((event: any) => {
                 console.log("dbl-eventTarget", event.target);
-                let args: IListBoxDblClickEventArgs = {
+                let args: IListBoxEventArgs = {
                     sender: this,
                     item: __this.$.jqxListBox("getSelectedItem")
                 };
@@ -320,8 +325,40 @@ export class ListBox extends Component {
     //     return pe;
     // }
 
-//     $("#jqxWidget .jqx-listitem-state-normal").dblclick(function (event) {
-//     var item = $(event.target).text();
-//     $("#jqxWidget").jqxListBox("selectItem", item);
-// });
+
+    // ------------------------------ onChange ------------------------------
+    _onChange: IEvent<IListBoxEventArgs>;
+    get onChange(): IEvent<IListBoxEventArgs> {
+        return this._onChange;
+    }
+
+    set onChange(value: IEvent<IListBoxEventArgs>) {
+        this._onChange = value;
+        if (this.$ && this._onChange) {
+            let __this = this;
+            this.$.on("change", (event: any) => {
+                console.log("change-event.args.item", event.args.item);
+                let args: IListBoxEventArgs = {
+                    sender: __this,
+                    item: event.args.item
+                };
+                this._onChange.call(this._owner, args);
+            })
+        }
+    }
+
+    private __setOptions_onChange() {
+        this.onChange = this._onChange;
+    }
+
+    private __emitCode_onChange(code: EmittedCode) {
+        code.emitEventValue(this, "onChange");
+    }
+
+    // private __getPropertyEditor_dataSource(): PropertyEditor {
+    //     let pe = new StringPropertyEditor();
+    //     pe.propertyName = "dataSource";
+    //     pe.category = Категория_Содержимое;
+    //     return pe;
+    // }
 }

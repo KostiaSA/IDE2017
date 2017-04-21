@@ -11,6 +11,18 @@ export class SqlTable extends Component {
         return new SqlTableDesigner_Panel();
     }
 
+    getDesignerLabel():string {
+        return this.name;
+    }
+
+    getDesignerImage():string {
+        return "vendor/fugue/icons/table.png";
+    }
+
+    getDesignerCategory():string {
+        return "ТАБЛИЦА";
+    }
+
 
     // ------------------------------ name ------------------------------
     _name: string;

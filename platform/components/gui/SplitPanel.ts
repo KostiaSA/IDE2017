@@ -212,7 +212,10 @@ export class SplitPanel extends Component {
 
     getPanelsLayout(): SplitterPanel[] {
         return this.children.map((child: Component) => {
-            return {size: (child as SplitPanelItem).size};
+            return {
+                size: (child as SplitPanelItem).size,
+                minSize: (child as SplitPanelItem).minSize
+            };
         });
     }
 

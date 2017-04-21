@@ -57,6 +57,19 @@ export class Component {
         throw "дизайнер не определен для компонента " + this.constructor.name;
     }
 
+    getDesignerLabel():string {
+        return this.constructor.name;
+    }
+
+    getDesignerImage():string {
+        return "vendor/fugue/icons/puzzle.png";
+    }
+
+    getDesignerCategory():string {
+        return "КОМПОНЕНТЫ";
+    }
+
+
     designModeInitializeNew() {
 
     }
@@ -161,6 +174,7 @@ export class Component {
         this._$id = getRandomId();
         if (!this.initialized)
             this.init();
+        this.beforeRender();
         this.renderBody();
         if (this.renderJqxWidgetAfterChildren) {
             this.renderChildren();
@@ -245,6 +259,10 @@ export class Component {
     }
 
     afterRender() {
+
+    }
+
+    beforeRender() {
 
     }
 

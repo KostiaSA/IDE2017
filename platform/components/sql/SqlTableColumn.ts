@@ -5,6 +5,19 @@ import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
 export class SqlTableColumn extends Component {
 
+    getDesignerLabel():string {
+        return this.name;
+    }
+
+    getDesignerImage():string {
+        return "vendor/fugue/icons/table-join-column.png";
+    }
+
+    getDesignerCategory():string {
+        return "КОЛОНКИ";
+    }
+
+
     // ------------------------------ name ------------------------------
     _name: string;
     get name(): string {
