@@ -68,7 +68,10 @@ export class ProjectExplorer_window extends Window {
         this.dockPanelCenter.childrenAdd(this.treeList);
 
 
+        //this.addColumnButton.height = 23;
+        //this.addColumnButton.width = 150;
         this.addColumnButton.text = "добавить ?";
+        this.addColumnButton.icon="vendor/fugue/icons/application-blue.png";
         this.dockPanelBottom.childrenAdd(this.addColumnButton);
 
         this.addIndexButton.text = "добавить ??";

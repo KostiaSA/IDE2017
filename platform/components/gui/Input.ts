@@ -416,20 +416,20 @@ export class Input extends Component {
     renderBody() {
 
         if (this._designer) {
-            this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
+            this.$ = $("<div id='" + this.$id + "' data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
             this.$.on("mousedown", this.designModeOnMouseDown);
         }
         else {
             if (this.comboType !== "none") {
-                this.$ = $("<div data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
+                this.$ = $("<div id='" + this.$id + "' data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
                 this.jqxWidget({animationType:"none",autoDropDownHeight:true});
                 this.comboItemsArray=this._comboItemsArray;
             }
             else if (this.actualValueType === "string") {
-                this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
+                this.$ = $("<input  id='" + this.$id + "'  data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
             }
             else if (this.actualValueType === "number") {
-                this.$ = $("<input data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
+                this.$ = $("<input  id='" + this.$id + "'  data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
             }
             else if (this.actualValueType === "boolean") {
                 this.$ = $("<div data-component='" + this.constructor.name + "'><span style='margin-left: 5px'>" + escapeHtml(this.title || this.bindProperty) + "</span></div>").appendTo(this.parent.$childrenContainer);

@@ -217,7 +217,7 @@ export class Component {
         this.jqxWidget(opt);
         if (this._designer) {
 
-            this.$.on("mousedown", this.designModeOnMouseDown);
+            $("#"+this._$id).on("mousedown", this.designModeOnMouseDown);
             if (!this.allowChildren) {
                 //this.$.droppable({disabled: true});
             }
