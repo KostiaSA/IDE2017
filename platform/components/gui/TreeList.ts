@@ -15,14 +15,29 @@ import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 export interface ITreeListItem {
     label?: string;
     value?: any;
+    id?:string | number;
     checked?: boolean;
     disabled?: boolean;
-    group?: string;
-    hasThreeStates?: boolean;
+    expanded?: boolean;
+    selected?: boolean;
+    items?:ITreeListItem[];
     html?: string;
-    image?: string;
+    icon?: string;
+    iconSize?: number;
 }
-
+/*
+ label - sets the item's label.
+ value - sets the item's value.
+ html - item's html. The html to be displayed in the item.
+ id - sets the item's id.
+ disabled - sets whether the item is enabled/disabled.
+ checked - sets whether the item is checked/unchecked(when checkboxes are enabled).
+ expanded - sets whether the item is expanded or collapsed.
+ selected - sets whether the item is selected.
+ items - sets an array of sub items.
+ icon - sets the item's icon(url is expected).
+ iconsize - sets the size of the item's icon.
+ */
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Списки,
@@ -279,8 +294,7 @@ export class TreeList extends Component {
         if (this.$) {
             if (!value || isArray(value)) {
                 //this.prepareDataSource(this.dataSource);
-                console.log(value);
-                this.$.jqxTree({source: this.dataSource, height:"80%"});
+                this.$.jqxTree({source: this.dataSource, height:"100%"});
             }
             else if ((value as any).bindDownloadComplete && (value as any).buildHierarchy) { // это jqx.dataAdapter
                 //this.prepareDataSource((value as any)._source);
@@ -323,11 +337,11 @@ export class TreeList extends Component {
         this._onDblClick = value;
         if (this.$ && this._onDblClick) {
             let __this = this;
-            this.$.find(".jqx-listitem-state-normal").dblclick((event: any) => {
+            this.$.find(".jqx-tree-item").dblclick((event: any) => {
                 console.log("dbl-eventTarget", event.target);
                 let args: ITreeListEventArgs = {
                     sender: this,
-                    item: __this.$.jqxTreeList("getSelectedItem")
+                    item: __this.$.jqxTree("getSelectedItem").value
                 };
                 this._onDblClick.call(this._owner, args);
             })
@@ -374,11 +388,8 @@ export class TreeList extends Component {
 
     // ------------------------------ render ------------------------------
     renderBody() {
-        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
-        setTimeout(() => {
-            if (this.$)
-                this.jqxWidget("refresh");
-        }, 1);
+        // не убирать style='height: 100%'
+        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "' style='height: 100%'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     doLayout() {

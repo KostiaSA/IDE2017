@@ -2,7 +2,7 @@ import * as React from "react";
 import * as  ReactDOM from "react-dom";
 import {App} from "../app/App";
 import {createTestApplication2} from "../test/createTestApplication2";
-import {Desktop} from "./Desktop";
+import {Desktop} from "./components/gui/Desktop";
 import {ToolBar} from "./components/gui/toolbar/ToolBar";
 import {AppToolBar} from "./components/gui/AppToolBar";
 import {Component} from "./components/Component";
