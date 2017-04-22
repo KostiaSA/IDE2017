@@ -138,7 +138,7 @@ export class Window extends Component {
     set title(value: string) {
         this._title = value;
         if (this.$ && !this._designer)
-            $("#" + this.$titleId).text(this.title);
+            this.jqxWidget({title: value} as jqxWidgetOptions);
     }
 
     private __setOptions_title() {
@@ -184,6 +184,9 @@ export class Window extends Component {
             this.$.on("resizing", () => {
                 this.doLayout();
             });
+            this.$.on("close", () => {
+                this.jqxWidget("destroy");
+            });
 
         }
 
@@ -195,6 +198,9 @@ export class Window extends Component {
             opt.minWidth = 100;
             opt.maxHeight = 5000;
             opt.maxWidth = 5000;
+            opt.showCloseButton = true;
+            opt.animationType = "none";
+            opt.keyboardCloseKey = 0;
         }
     }
 
