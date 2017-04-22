@@ -16,3 +16,9 @@
     border-color: rgba(33, 115, 70, 0.60);
     background: rgba(33, 115, 70, 0.11);
 }
+
+.jqx-tree-item {
+    padding-bottom: 0px;
+    padding-top: 1px;
+}
+
