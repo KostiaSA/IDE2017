@@ -211,7 +211,7 @@ export class ListBox extends Component {
         code.emitNumberValue(this, "height");
     }
 
-    private __setOptions___emitCode_height() {
+    private __setOptions_height() {
         this.height = this._height;
     }
 
@@ -237,7 +237,7 @@ export class ListBox extends Component {
         code.emitNumberValue(this, "width");
     }
 
-    private __setOptions___emitCode_width() {
+    private __setOptions_width() {
         this.width = this._width;
     }
 
@@ -283,11 +283,11 @@ export class ListBox extends Component {
         if (this.$) {
             if (!value || isArray(value)) {
                 this.prepareDataSource(this.dataSource);
-                this.$.jqxListBox({source: this.dataSource});
+                this.$.jqxListBox({source: this.dataSource,equalItemsWidth:true});
             }
             else if ((value as any).bindDownloadComplete && (value as any).buildHierarchy) { // это jqx.dataAdapter
                 this.prepareDataSource((value as any)._source);
-                this.$.jqxListBox({source: value});
+                this.$.jqxListBox({source: value,equalItemsWidth:true});
             }
             else {
                 //(window as any)["xxx"]=value; bindDownloadComplete
@@ -310,7 +310,7 @@ export class ListBox extends Component {
         if (isArray(dataSource)) {
             for (let item of dataSource as IListBoxItem[]) {
                 if (!item.html && item.image) {
-                    item.html = `<div><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
+                    item.html = `<div style="width: 100px"><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
                 }
             }
         }
@@ -384,7 +384,7 @@ export class ListBox extends Component {
 
     // ------------------------------ render ------------------------------
     renderBody() {
-        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "' style='width: 100%'></div>").appendTo(this.parent.$childrenContainer);
         setTimeout(() => {
             if (this.$)
                 this.jqxWidget("refresh");
@@ -392,9 +392,17 @@ export class ListBox extends Component {
     }
 
     doLayout() {
-        if (this.$)
+        if (this.$) {
             this.jqxWidget("refresh");
+            console.log("refresh");
+
+        }
         super.doLayout();
+    }
+
+    afterRender(){
+ //       this.jqxWidget({equalItemsWidth:false});
+
     }
 
 }

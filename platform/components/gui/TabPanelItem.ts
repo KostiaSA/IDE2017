@@ -95,10 +95,10 @@ export class TabPanelItem extends Component {
     render() {
         if (!this.initialized)
             this.init();
-        this.$ = $("<div style='border: none; padding: 0px; position: relative'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: none; padding: 0px; position: relative; width:100%'></div>").appendTo(this.parent.$childrenContainer);
         this.$li = $("<li>" + escapeHtml(this.title) + "</li>").appendTo(this.parent.$childrenContainer.find("ul").first());
-        this.__setOptions_padding();
-        this.renderChildren();
+        this.setJqxWidgetOptions();
+        //this.renderChildren();
     }
 
 }

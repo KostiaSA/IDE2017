@@ -200,7 +200,7 @@ export class TabsPanel extends Component {
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: none;' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='width:100%; border: none;' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
     }
 
     afterRender() {
@@ -225,6 +225,10 @@ export class TabsPanel extends Component {
 
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
         opt.keyboardNavigation=false;
+        opt.initTabContent=(tab:any)=>{
+            console.log(tab);
+            this.children[tab].renderChildren();
+        };
         //opt.panels = this.getPanelsLayout();
         //opt.TabsBarSize = 3;
     }
