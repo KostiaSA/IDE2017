@@ -57,7 +57,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         }
 
         if (this._activeComponent && this._activeComponent.$) {
-            let frame = this._activeComponent.$;
+            let frame = $("#"+this._activeComponent.$id);
             frame.css("outline", frame.$$savedBorder);
             frame.resizable("destroy");
         }
@@ -72,7 +72,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
             func(value, savedOld);
         }
 
-        let frame = this._activeComponent.$;
+        let frame = $("#"+this._activeComponent.$id);
         frame.$$savedBorder = frame.css("outline");
         frame.css("outline", "solid 2px deepskyblue");
         frame.resizable({

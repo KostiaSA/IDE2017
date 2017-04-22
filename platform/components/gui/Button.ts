@@ -14,6 +14,7 @@ import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 import {IconPropertyEditor} from "../../../designer/IconPropertyEditor";
+import {isString} from "util";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -85,8 +86,8 @@ export class Button extends Component {
 
     set icon(value: string) {
         this._icon = value;
-        //if (this.$ && this._icon)
-          //  this.jqxWidget({imgSrc: this._icon});
+        if (this.$ && this._icon)
+            this.jqxWidget({imgSrc: this._icon, imgPosition: "left", textImageRelation: "imageBeforeText"});
     }
 
     private __emitCode_icon(code: EmittedCode) {
@@ -98,7 +99,11 @@ export class Button extends Component {
     }
 
     private __fillOptions_icon(opt: jqxWidgetOptions) {
-        //opt.imgSrc = this.icon;
+        if (this.icon) {
+            opt.imgSrc = this.icon;
+            opt.imgPosition = "left";
+            opt.textImageRelation = "imageBeforeText";
+        }
     }
 
     private __getPropertyEditor_icon(): PropertyEditor {
@@ -117,8 +122,8 @@ export class Button extends Component {
     set top(value: number) {
         this._top = value;
         if (this.$ && value) {
-            $("#"+this._$id).css("top", value + "px");
-            $("#"+this._$id).css("position", "absolute");
+            $("#" + this._$id).css("top", value + "px");
+            $("#" + this._$id).css("position", "absolute");
             //this.$.css("top", value + "px");
             //this.$.css("position", "absolute");
         }
@@ -149,8 +154,8 @@ export class Button extends Component {
     set left(value: number) {
         this._left = value;
         if (this.$ && value) {
-            $("#"+this._$id).css("left", value + "px");
-            $("#"+this._$id).css("position", "absolute");
+            $("#" + this._$id).css("left", value + "px");
+            $("#" + this._$id).css("position", "absolute");
         }
     }
 
@@ -170,23 +175,35 @@ export class Button extends Component {
     }
 
     // ------------------------------ height ------------------------------
-    _height: number;
-    get height(): number {
+    _height: number | string = 28;
+    get height(): number | string {
         return this._height;
     }
 
-    set height(value: number) {
+    set height(value: number | string) {
         this._height = value;
-        if (this.$ && value)
-            this.jqxWidget({height: value} as jqxWidgetOptions);
+        if (this.$ && value) {
+            if (value !== "auto")
+                this.jqxWidget({height: value} as jqxWidgetOptions);
+        }
     }
 
     private __emitCode_height(code: EmittedCode) {
-        code.emitNumberValue(this, "height");
+        if (isString(this.height))
+            code.emitStringValue(this, "height");
+        else
+            code.emitNumberValue(this, "height", 28);
     }
 
     private __fillOptions_height(opt: jqxWidgetOptions) {
-        //opt.height = this.height;
+        opt.height = this.height;
+    }
+
+    private __getPropertyEditor_height(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "height";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
     }
 
     // ------------------------------ width ------------------------------
@@ -247,7 +264,7 @@ export class Button extends Component {
     set onClick(value: IEvent<IEventArgs>) {
         this._onClick = value;
         if (this.$ && this._onClick) {
-            $("#"+this._$id).on("click", () => {
+            $("#" + this._$id).on("click", () => {
                 let args: IEventArgs = {
                     sender: this
                 };

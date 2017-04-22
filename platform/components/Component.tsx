@@ -222,8 +222,8 @@ export class Component {
                 //this.$.droppable({disabled: true});
             }
             else {
-                console.log("dropped", this.$);
-                this.$.droppable({
+                //console.log("dropped", this.$);
+                $("#"+this._$id).droppable({
                     greedy: true,
                     hoverClass: "form-designer-drop-hover",
                     drop: function () {
@@ -231,11 +231,11 @@ export class Component {
                     }
                 });
             }
-            this.$.draggable({
+            $("#"+this._$id).draggable({
                 grid: [5, 5],
                 drag: () => {
-                    (this._designer!.activeComponent as any).left = this.$.position().left;
-                    (this._designer!.activeComponent as any).top = this.$.position().top;
+                    (this._designer!.activeComponent as any).left = $("#"+this._$id).position().left;
+                    (this._designer!.activeComponent as any).top = $("#"+this._$id).position().top;
                 },
             });
         }
