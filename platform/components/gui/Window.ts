@@ -6,6 +6,8 @@ import {BaseDesigner_Panel} from "../../../designer/BaseDesigner_Panel";
 import {FormDesigner_Panel} from "../../../designer/FormDesigner_Panel";
 import {appState} from "../../AppState";
 import {Button} from "./Button";
+import {PropertyEditor, Категория_Содержимое} from "../../../designer/PropertyEditor";
+import {IconPropertyEditor} from "../../../designer/IconPropertyEditor";
 
 
 export class Window extends Component {
@@ -139,8 +141,12 @@ export class Window extends Component {
 
     set title(value: string) {
         this._title = value;
-        if (this.$ && !this._designer)
-            this.jqxWidget({title: value} as jqxWidgetOptions);
+        if (this.$ && !this._designer) {
+            $("#" + this.$titleId).text(this.title);
+            this.taskbarButtton.text = this.title;
+        }
+        // if (this.$ && !this._designer)
+        //     this.jqxWidget({title: value} as jqxWidgetOptions);
     }
 
     private __setOptions_title() {
@@ -152,6 +158,35 @@ export class Window extends Component {
         code.emitStringValue(this, "title", "окно");
     }
 
+    // ------------------------------ icon ------------------------------
+    _icon: string = "vendor/fugue/icons/application-blue.png";
+    get icon(): string {
+        return this._icon;
+    }
+
+    set icon(value: string) {
+        this._icon = value;
+        if (this.$ && this._icon) {
+            $("#" + this.$iconId).attr("src", this.icon);
+            this.taskbarButtton.icon = this.icon;
+
+        }
+    }
+
+    private __emitCode_icon(code: EmittedCode) {
+        code.emitStringValue(this, "icon", "vendor/fugue/icons/application-blue.png");
+    }
+
+    private __setOptions_icon() {
+        this.icon = this._icon;
+    }
+
+    private __getPropertyEditor_icon(): PropertyEditor {
+        let pe = new IconPropertyEditor();
+        pe.propertyName = "icon";
+        pe.category = Категория_Содержимое;
+        return pe;
+    }
 
     // ------------------------------ render ------------------------------
     get $titleId(): string {
@@ -160,6 +195,10 @@ export class Window extends Component {
 
     get $contentId(): string {
         return this.$id + "-content";
+    }
+
+    get $iconId(): string {
+        return this.$id + "-title-icon";
     }
 
     get $childrenContainer(): JQuery {
@@ -182,7 +221,21 @@ export class Window extends Component {
             });
         }
         else {
-            this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'>.</div><div id='" + this.$contentId + "'  style='border-color:red; padding: 0; position: relative'></div></div>").appendTo($("#content"));
+            //this.$ = $("<div id='" + this.$id + "'><div id='" + this.$titleId + "'><span><img id='" + this.$titleId + "' src='vendor/fugue/icons/application-blue.png' style='vertical-align: middle; margin-right: 5px' />XXX</span></div><div id='" + this.$contentId + "'  style='padding: 0; position: relative'></div></div>").appendTo($("#content"));
+
+            let html = `
+                <div id='` + this.$id + `'>
+                  <div >
+                    <span>
+                       <img id='` + this.$iconId + `' src='${this.icon}' style='vertical-align: middle; margin-right: 5px'/>
+                       <span id='` + this.$titleId + `'>XXXXXX</span>  
+                    </span>
+                  </div>
+                  <div id='` + this.$contentId + `'  style='padding: 0; position: relative'></div>
+                </div>
+                `;
+
+            this.$ = $(html).appendTo($(`#content`));
             this.$.on("resizing", () => {
                 this.doLayout();
             });
@@ -215,6 +268,7 @@ export class Window extends Component {
         if (!this._taskbarButtton) {
             this._taskbarButtton = new Button();
             this._taskbarButtton.text = this.title;
+            this._taskbarButtton.icon = this.icon;
             this._taskbarButtton.onClick = (args: IEventArgs) => {
                 this.bringToFront();
             };

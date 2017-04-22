@@ -13,6 +13,7 @@ import {
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
+import {IconPropertyEditor} from "../../../designer/IconPropertyEditor";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -72,24 +73,31 @@ export class Button extends Component {
         return pe;
     }
 
-    // ------------------------------ image ------------------------------
-    _image: string;
-    get image(): string {
-        return this._image;
+    // ------------------------------ icon ------------------------------
+    _icon: string;
+    get icon(): string {
+        return this._icon;
     }
 
-    set image(value: string) {
-        this._image = value;
-        if (this.$ && this._image)
-            this.jqxWidget({imgSrc: this._image});
+    set icon(value: string) {
+        this._icon = value;
+        if (this.$ && this._icon)
+            this.jqxWidget({imgSrc: this._icon});
     }
 
-    private __emitCode_image(code: EmittedCode) {
-        code.emitStringValue(this, "image");
+    private __emitCode_icon(code: EmittedCode) {
+        code.emitStringValue(this, "icon");
     }
 
-    private __setOptions_image() {
-        this.image = this._image;
+    private __setOptions_icon() {
+        this.icon = this._icon;
+    }
+
+    private __getPropertyEditor_icon(): PropertyEditor {
+        let pe = new IconPropertyEditor();
+        pe.propertyName = "icon";
+        pe.category = Категория_Содержимое;
+        return pe;
     }
 
     // ------------------------------ top ------------------------------
