@@ -4,6 +4,8 @@ import {EmittedCode} from "../code-emitter/EmittedCode";
 import {DockPanelItem} from "./DockPaneltem";
 
 import jqxWidgetOptions = jqwidgets.DockPanelOptions;
+import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
+import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
 export type PanelDock = "none" | "fill";
 
@@ -50,6 +52,15 @@ export class DockPanel extends Component {
 
     private __setOptions_dock() {
         this.dock = this._dock;
+    }
+
+    private __getPropertyEditor__dock(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.comboType = "array";
+        pe.comboItemsArray = ["none", "fill"];
+        pe.propertyName = "comboType";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
     }
 
     // ------------------------------ top ------------------------------

@@ -3,6 +3,8 @@ import {EmittedCode} from "../code-emitter/EmittedCode";
 //import SplitterPanel = jqwidgets.SplitterPanel;
 import {HorzFlexPanelItem} from "./HorzFlexPaneltem";
 import {PanelDock} from "./DockPanel";
+import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
+import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -43,6 +45,15 @@ export class HorzFlexPanel extends Component {
 
     private __setOptions_dock() {
         this.dock = this._dock;
+    }
+
+    private __getPropertyEditor__dock(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.comboType = "array";
+        pe.comboItemsArray = ["none", "fill"];
+        pe.propertyName = "comboType";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
     }
 
     // ------------------------------ top ------------------------------

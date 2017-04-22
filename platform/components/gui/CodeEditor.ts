@@ -10,6 +10,8 @@ import {PanelDock} from "./SplitPanel";
 import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
 import IEditorOptions = monaco.editor.IEditorOptions;
 import IEditorConstructionOptions = monaco.editor.IEditorConstructionOptions;
+import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
+import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 
 
 export class CodeEditor extends Component {
@@ -65,6 +67,16 @@ export class CodeEditor extends Component {
     private __setOptions_dock() {
         this.dock = this._dock;
     }
+
+    private __getPropertyEditor__dock(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.comboType = "array";
+        pe.comboItemsArray = ["none", "fill"];
+        pe.propertyName = "comboType";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
+    }
+
 
     // ------------------------------ top ------------------------------
     _top: number;

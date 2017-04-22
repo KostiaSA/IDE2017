@@ -4,6 +4,9 @@ import {Control} from "./Control";
 import {appState} from "../../AppState";
 import jqxWidgetOptions = jqwidgets.PanelOptions;
 import {PanelDock} from "./SplitPanel";
+import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
+import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {isString} from "util";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -67,6 +70,49 @@ export class Panel extends Control {
 
     private __setOptions_dock() {
         this.dock = this._dock;
+    }
+
+    private __getPropertyEditor__dock(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.comboType = "array";
+        pe.comboItemsArray = ["none", "fill"];
+        pe.propertyName = "comboType";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
+    }
+
+    // ------------------------------ padding ------------------------------
+    _padding: string | number;
+    get padding(): string | number {
+        return this._padding;
+    }
+
+    set padding(value: string | number) {
+        this._padding = value;
+        if (this.$) {
+            if (isString(value))
+                this.$.css("padding", this.padding);
+            else
+                this.$.css("padding", this.padding + "px");
+        }
+    }
+
+    private __emitCode_padding(code: EmittedCode) {
+        if (isString(this.padding))
+            code.emitStringValue(this, "padding");
+        else
+            code.emitNumberValue(this, "padding");
+    }
+
+    private __setOptions_padding() {
+        this.padding = this._padding;
+    }
+
+    private __getPropertyEditor_padding(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "padding";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
     }
 
     // ------------------------------ top ------------------------------

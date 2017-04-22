@@ -1,9 +1,11 @@
-import {Component} from "../Component";
+import {Component, IEventArgs} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
 import {IDesigner} from "../../designer/IDesigner";
 import jqxWidgetOptions = jqwidgets.WindowOptions;
 import {BaseDesigner_Panel} from "../../../designer/BaseDesigner_Panel";
 import {FormDesigner_Panel} from "../../../designer/FormDesigner_Panel";
+import {appState} from "../../AppState";
+import {Button} from "./Button";
 
 
 export class Window extends Component {
@@ -186,6 +188,10 @@ export class Window extends Component {
             });
             this.$.on("close", () => {
                 this.jqxWidget("destroy");
+                appState.desktop.removeWindowAfterClose(this);
+            });
+            this.$.on("click", () => {
+                this.bringToFront();
             });
 
         }
@@ -202,6 +208,23 @@ export class Window extends Component {
             opt.animationType = "none";
             opt.keyboardCloseKey = 0;
         }
+    }
+
+    private _taskbarButtton: Button;
+    get taskbarButtton(): Button {
+        if (!this._taskbarButtton) {
+            this._taskbarButtton = new Button();
+            this._taskbarButtton.text = this.title;
+            this._taskbarButtton.onClick = (args: IEventArgs) => {
+                this.bringToFront();
+            };
+        }
+        return this._taskbarButtton;
+    }
+
+    bringToFront() {
+        if (this.$)
+            this.jqxWidget("bringToFront");
     }
 
 }

@@ -1,35 +1,28 @@
 import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Панели} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
-import Tabs = jqwidgets.jqxTabs;
-import {TabPanelItem} from "./TabPanelItem";
-
-import jqxWidgetOptions = jqwidgets.TabsOptions;
+import jqxWidgetOptions = jqwidgets.PanelOptions;
 import {PanelDock} from "./SplitPanel";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {IDesigner} from "../../designer/IDesigner";
+import {getRandomId} from "../../../app/utils/getRandomId";
+import {isString} from "util";
 
-export type TabsPosition = "top" | "bottom";
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Панели,
-        componentClass: TabsPanel,
-        image: "vendor/fugue/icons/ui-tab-content.png",
-        title: "панель с закладками"
+        componentClass: DivPanel,
+        image: "vendor/fugue/icons/ui-panel.png",
+        title: "<div> панель"
     }
 }
 
-
-export class TabsPanel extends Component {
+export class DivPanel extends Component {
 
     constructor() {
         super();
-        this.renderJqxWidgetAfterChildren = true;
     }
-
-    jqxWidget(...args: any[]): Function {
-        return this.$.jqxTabs(...args);
-    };
 
     // ------------------------------ dock ------------------------------
     _dock: PanelDock = "none";
@@ -61,6 +54,40 @@ export class TabsPanel extends Component {
         pe.comboType = "array";
         pe.comboItemsArray = ["none", "fill"];
         pe.propertyName = "comboType";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
+    }
+
+    // ------------------------------ padding ------------------------------
+    _padding: string | number;
+    get padding(): string | number {
+        return this._padding;
+    }
+
+    set padding(value: string | number) {
+        this._padding = value;
+        if (this.$) {
+            if (isString(value))
+                this.$.css("padding", this.padding);
+            else
+                this.$.css("padding", this.padding + "px");
+        }
+    }
+
+    private __emitCode_padding(code: EmittedCode) {
+        if (isString(this.padding))
+            code.emitStringValue(this, "padding");
+        else
+            code.emitNumberValue(this, "padding");
+    }
+
+    private __setOptions_padding() {
+        this.padding = this._padding;
+    }
+
+    private __getPropertyEditor_padding(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "padding";
         pe.category = Категория_РазмерПозиция;
         return pe;
     }
@@ -176,57 +203,21 @@ export class TabsPanel extends Component {
             opt.width = this.width;
     }
 
-    // ------------------------------ tabsPosition ------------------------------
-    _tabsPosition: TabsPosition = "top";
-    get tabsPosition(): TabsPosition {
-        return this._tabsPosition;
+    render(designer?: IDesigner) {
+        this._designer = designer;
+        this._$id = getRandomId();
+        if (!this.initialized)
+            this.init();
+        this.beforeRender();
+        this.$ = $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.renderChildren();
+        this.setJqxWidgetOptions();
+        this.afterRender();
     }
 
-    set tabsPosition(value: TabsPosition) {
-        this._tabsPosition = value;
-        if (this.$) {
-            this.jqxWidget({position: this.tabsPosition} as jqxWidgetOptions);
-        }
-    }
-
-    private __emitCode_tabsPosition(code: EmittedCode) {
-        code.emitStringValue(this, "tabsPosition", "top");
-    }
-
-    private __fillOptions_tabsPosition(opt: jqxWidgetOptions) {
-        opt.position = this.tabsPosition;
-    }
-
-
-    // ------------------------------ renderBody ------------------------------
-    renderBody() {
-        this.$ = $("<div style='border: none;' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
-    }
-
-    afterRender() {
-        this.$.on("selected", (event: any) => {
-            var selectedTab = event.args.item;
-            let title = this.jqxWidget("getTitleAt", selectedTab).toString();
-            let tab = this.getTabByTitle(title);
-            if (tab.onSelect) {
-                tab.onSelect.call(tab, tab);
-            }
-            //console.log("selectedTab", selectedTab, title);
-        });
-    };
-
-    getTabByTitle(title: string): TabPanelItem {
-        for (let child of this.children) {
-            if ((child as TabPanelItem).title === title)
-                return child as TabPanelItem;
-        }
-        throw "TabPanel.getTabByTitle(): не найден TabPanelItem '" + title + "'";
-    }
-
-    fillJqxWidgetOptions(opt: jqxWidgetOptions) {
-        opt.keyboardNavigation=false;
-        //opt.panels = this.getPanelsLayout();
-        //opt.TabsBarSize = 3;
+    reRender() {
+        this.$.empty();
+        this.renderChildren();
     }
 
 }
