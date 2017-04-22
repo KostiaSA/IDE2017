@@ -207,23 +207,33 @@ export class Button extends Component {
     }
 
     // ------------------------------ width ------------------------------
-    _width: number;
-    get width(): number {
+    _width: number | string;
+    get width(): number | string {
         return this._width;
     }
 
-    set width(value: number) {
+    set width(value: number | string) {
         this._width = value;
         if (this.$ && value)
             this.jqxWidget({width: value} as jqxWidgetOptions);
     }
 
     private __emitCode_width(code: EmittedCode) {
-        code.emitNumberValue(this, "width");
+        if (isString(this.width))
+            code.emitStringValue(this, "width");
+        else
+            code.emitNumberValue(this, "width");
     }
 
     private __fillOptions_width(opt: jqxWidgetOptions) {
-        //opt.width = this.width;
+        opt.width = this.width;
+    }
+
+    private __getPropertyEditor_width(): PropertyEditor {
+        let pe = new StringPropertyEditor();
+        pe.propertyName = "width";
+        pe.category = Категория_РазмерПозиция;
+        return pe;
     }
 
     // ------------------------------ enabled ------------------------------

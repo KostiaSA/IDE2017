@@ -58,7 +58,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
 
         if (this._activeComponent && this._activeComponent.$) {
             let frame = $("#"+this._activeComponent.$id);
-            frame.css("outline", frame.$$savedBorder);
+            frame.css("outline", "");
             frame.resizable("destroy");
         }
         let savedOld = this._activeComponent;
@@ -73,7 +73,6 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         }
 
         let frame = $("#"+this._activeComponent.$id);
-        frame.$$savedBorder = frame.css("outline");
         frame.css("outline", "solid 2px deepskyblue");
         frame.resizable({
             grid: 5,
@@ -82,8 +81,6 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
             (this._activeComponent as any).width = ui.size.width;
             (this._activeComponent as any).height = ui.size.height;
         });
-
-        //console.log("new active", value);
     }
 
     // ------------------------------ onClick ------------------------------
