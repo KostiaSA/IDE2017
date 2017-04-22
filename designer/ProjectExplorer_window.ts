@@ -1,15 +1,8 @@
-import {Component} from "../platform/components/Component";
-import {ComponentDesigner_Window} from "./ComponentDesigner_Window";
-import {IDesigner} from "../platform/designer/IDesigner";
-import {SplitPanel} from "../platform/components/gui/SplitPanel";
-import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
-import {IListBoxEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
-import {BaseDesigner_Panel} from "./BaseDesigner_Panel";
-import {SqlTableColumn} from "../platform/components/sql/SqlTableColumn";
 import {Button} from "../platform/components/gui/Button";
 import {Window} from "../platform/components/gui/Window";
 import {HorzFlexPanel} from "../platform/components/gui/HorzFlexPanel";
 import {HorzFlexPanelItem} from "../platform/components/gui/HorzFlexPaneltem";
+import {TreeList} from "../platform/components/gui/TreeList";
 
 export class ProjectExplorer_window extends Window {
 
@@ -19,7 +12,7 @@ export class ProjectExplorer_window extends Window {
     dockPanelCenter: HorzFlexPanelItem = new HorzFlexPanelItem();
     dockPanelBottom: HorzFlexPanelItem = new HorzFlexPanelItem();
 
-    treeList: ListBox = new ListBox();
+    treeList: TreeList = new TreeList();
     addColumnButton: Button = new Button();
     addIndexButton: Button = new Button();
 

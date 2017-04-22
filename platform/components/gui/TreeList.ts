@@ -1,22 +1,18 @@
 import {Component, IComponentRegistration, IEvent, IEventArgs, Компоненты_Списки} from "../Component";
 import {EmittedCode} from "../code-emitter/EmittedCode";
-import {Control} from "./Control";
-import {appState} from "../../AppState";
-import jqxWidgetOptions = jqwidgets.ListBoxOptions;
+
+import jqxWidgetOptions = jqwidgets.TreeOptions;
 import {PanelDock} from "./SplitPanel";
-import {getAllObjectProps} from "../../utils/getAllObjectProps";
 import {
     PropertyEditor, PropertyEditorCategories, Категория_DragDrop,
     Категория_РазмерПозиция, Категория_Стиль
 } from "../../../designer/PropertyEditor";
 import {getRandomId} from "../../../app/utils/getRandomId";
 import {escapeHtml} from "../../utils/escapeHtml";
-import * as R from "ramda";
 import {isArray} from "util";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 
-
-export interface IListBoxItem {
+export interface ITreeListItem {
     label?: string;
     value?: any;
     checked?: boolean;
@@ -30,17 +26,17 @@ export interface IListBoxItem {
 export function __registerBuhtaComponent__(): IComponentRegistration {
     return {
         category: Компоненты_Списки,
-        componentClass: ListBox,
-        image: "vendor/fugue/icons/ui-list-box-blue.png",
-        title: "список"
+        componentClass: TreeList,
+        image: "vendor/fugue/icons/document-tree.png",
+        title: "иерархический список"
     }
 }
 
-export interface IListBoxEventArgs extends IEventArgs {
-    item: IListBoxItem;
+export interface ITreeListEventArgs extends IEventArgs {
+    item: ITreeListItem;
 }
 
-export class ListBox extends Component {
+export class TreeList extends Component {
 
     constructor() {
         super();
@@ -48,7 +44,7 @@ export class ListBox extends Component {
     }
 
     jqxWidget(...args: any[]): Function {
-        return this.$.jqxListBox(...args);
+        return this.$.jqxTree(...args);
     };
 
     // ------------------------------ allowDrag ------------------------------
@@ -273,21 +269,22 @@ export class ListBox extends Component {
     }
 
     // ------------------------------ dataSource ------------------------------
-    _dataSource: Component | IListBoxItem[];
-    get dataSource(): Component | IListBoxItem[] {
+    _dataSource: Component | ITreeListItem[];
+    get dataSource(): Component | ITreeListItem[] {
         return this._dataSource;
     }
 
-    set dataSource(value: Component | IListBoxItem[]) {
+    set dataSource(value: Component | ITreeListItem[]) {
         this._dataSource = value;
         if (this.$) {
             if (!value || isArray(value)) {
-                this.prepareDataSource(this.dataSource);
-                this.$.jqxListBox({source: this.dataSource});
+                //this.prepareDataSource(this.dataSource);
+                console.log(value);
+                this.$.jqxTree({source: this.dataSource, height:"80%"});
             }
             else if ((value as any).bindDownloadComplete && (value as any).buildHierarchy) { // это jqx.dataAdapter
-                this.prepareDataSource((value as any)._source);
-                this.$.jqxListBox({source: value});
+                //this.prepareDataSource((value as any)._source);
+                this.$.jqxTree({source: value});
             }
             else {
                 //(window as any)["xxx"]=value; bindDownloadComplete
@@ -305,32 +302,32 @@ export class ListBox extends Component {
         this.dataSource = this._dataSource;
     }
 
-    private prepareDataSource(dataSource: Component | IListBoxItem[]) {
-        // добавляем иконки
-        if (isArray(dataSource)) {
-            for (let item of dataSource as IListBoxItem[]) {
-                if (!item.html && item.image) {
-                    item.html = `<div><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
-                }
-            }
-        }
-    }
+    // private prepareDataSource(dataSource: Component | ITreeListItem[]) {
+    //     // добавляем иконки
+    //     if (isArray(dataSource)) {
+    //         for (let item of dataSource as ITreeListItem[]) {
+    //             if (!item.html && item.image) {
+    //                 item.html = `<div><img width='16' height='16' style='float: left; margin-top: 1px; margin-right: 5px;' src='${item.image}'/>${escapeHtml(item.label!)}</div>`;
+    //             }
+    //         }
+    //     }
+    // }
 
     // ------------------------------ onDblClick ------------------------------
-    _onDblClick: IEvent<IListBoxEventArgs>;
-    get onDblClick(): IEvent<IListBoxEventArgs> {
+    _onDblClick: IEvent<ITreeListEventArgs>;
+    get onDblClick(): IEvent<ITreeListEventArgs> {
         return this._onDblClick;
     }
 
-    set onDblClick(value: IEvent<IListBoxEventArgs>) {
+    set onDblClick(value: IEvent<ITreeListEventArgs>) {
         this._onDblClick = value;
         if (this.$ && this._onDblClick) {
             let __this = this;
             this.$.find(".jqx-listitem-state-normal").dblclick((event: any) => {
                 console.log("dbl-eventTarget", event.target);
-                let args: IListBoxEventArgs = {
+                let args: ITreeListEventArgs = {
                     sender: this,
-                    item: __this.$.jqxListBox("getSelectedItem")
+                    item: __this.$.jqxTreeList("getSelectedItem")
                 };
                 this._onDblClick.call(this._owner, args);
             })
@@ -345,27 +342,20 @@ export class ListBox extends Component {
         code.emitEventValue(this, "onDblClick");
     }
 
-    // private __getPropertyEditor_dataSource(): PropertyEditor {
-    //     let pe = new StringPropertyEditor();
-    //     pe.propertyName = "dataSource";
-    //     pe.category = Категория_Содержимое;
-    //     return pe;
-    // }
-
 
     // ------------------------------ onChange ------------------------------
-    _onChange: IEvent<IListBoxEventArgs>;
-    get onChange(): IEvent<IListBoxEventArgs> {
+    _onChange: IEvent<ITreeListEventArgs>;
+    get onChange(): IEvent<ITreeListEventArgs> {
         return this._onChange;
     }
 
-    set onChange(value: IEvent<IListBoxEventArgs>) {
+    set onChange(value: IEvent<ITreeListEventArgs>) {
         this._onChange = value;
         if (this.$ && this._onChange) {
             let __this = this;
             this.$.on("change", (event: any) => {
                 console.log("change-event.args.item", event.args.item);
-                let args: IListBoxEventArgs = {
+                let args: ITreeListEventArgs = {
                     sender: __this,
                     item: event.args.item
                 };
