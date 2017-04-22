@@ -56,4 +56,7 @@ export class AppState {
     }
 }
 
+
 export let appState = new AppState();
+
+appState.startApp();

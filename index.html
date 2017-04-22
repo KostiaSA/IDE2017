@@ -81,14 +81,16 @@
   </div>
   <div id="content" style="height: 100%; flex:1 0 auto">
   </div>
-  <div id="taskbar" style="flex1:0 1 auto; ">
+  <div id="taskbar" style="position:fixed; bottom:0px; height:38px; left:0px; right:0px; overflow:hidden;z-index: 1000000;background-color: #d0d0d0;">
   </div>
   <div id="statusbar" style="flex1:0 1 auto; ">
   </div>
 </body>
 
 <script>
-     require('./app/AppEntryPoint.js');
+     //require('./app/AppEntryPoint.js');
+     require('./platform/AppState.js');
+
 
 </script>
 </html>
