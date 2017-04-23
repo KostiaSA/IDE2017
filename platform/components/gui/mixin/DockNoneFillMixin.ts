@@ -2,14 +2,11 @@ import {MixinConstructor} from "./MixinConstructor";
 import {Component} from "../../Component";
 import {EmittedCode} from "../../code-emitter/EmittedCode";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../../designer/PropertyEditor";
-import {NumberPropertyEditor} from "../../../../designer/NumberPropertyEditor";
 import {StringPropertyEditor} from "../../../../designer/StringPropertyEditor";
-import {HeightWidthMixin} from "./HeightWidthMixin";
 
 export type PanelDock = "none" | "fill";
 
 export function DockNoneFillMixin<T extends MixinConstructor<Component>>(Base: T) {
-//export function DockNoneFillMixin<T extends MixinConstructor<Component>>(Base: T) {
     return class extends Base {
         constructor(...args: any[]) {
             super(...args);
