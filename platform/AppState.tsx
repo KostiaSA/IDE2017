@@ -63,7 +63,7 @@ export class AppState {
 
 
 export let appState = new AppState();
-//appState.startApp();
+appState.startApp();
 
 ////////////////////////////////////////////////////
 
@@ -95,7 +95,7 @@ function Point<T extends Constructor<{}>>(Base: T) {
     }
 }
 
-function Person<T extends Constructor<{}>>(Base: T) {
+function Person<T extends Constructor<Component>>(Base: T) {
     return class extends Base {
         lastName: string;
         constructor(...args: any[]) {
@@ -106,7 +106,7 @@ function Person<T extends Constructor<{}>>(Base: T) {
 }
 
 
-export class But extends Person(Point(E)) {
+export class But extends Person(Point(Component)) {
     text: string;
 }
 
@@ -114,6 +114,7 @@ let but=new But();
 but.text="wwwwww";
 but.x=100;
 but.lastName="lastna";
+but.afterRender()
 console.log(but);
 
 //const TaggedPoint = MixOf(Point);

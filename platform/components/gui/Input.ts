@@ -15,6 +15,9 @@ import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {isArray, isBoolean, isNumber, isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
+import {jqxEnabledMixin} from "./mixin/jqxEnabledMixin";
+import {TopLeftMixin} from "./mixin/TopLeftMixin";
+import {jqxHeightWidthMixin} from "./mixin/jqxHeightWidthMixin";
 
 export type InputValueType = "auto" | "string" | "number" | "boolean";
 export type InputComboType = "none" | "array" | "sql" | "function" | "system";
@@ -39,10 +42,18 @@ export interface IComboBoxItem {
     image?: string;
 }
 
-export class Input extends Component {
+export class Input extends jqxEnabledMixin(
+    TopLeftMixin(
+        jqxHeightWidthMixin(
+            Component
+        ))) {
 
     constructor() {
         super();
+    }
+
+    get height_default(): number | string {
+        return 18;
     }
 
     jqxWidget(...args: any[]): Function {
@@ -283,131 +294,6 @@ export class Input extends Component {
         return pe;
     }
 
-    // ------------------------------ top ------------------------------
-    _top: number;
-    get top(): number {
-        return this._top;
-    }
-
-    set top(value: number) {
-        this._top = value;
-        if (this.$ && value) {
-            this.$.css("top", value + "px");
-            this.$.css("position", "absolute");
-        }
-    }
-
-    private __emitCode_top(code: EmittedCode) {
-        code.emitNumberValue(this, "top");
-    }
-
-    private __setOptions_top() {
-        this.top = this._top;
-    }
-
-    private __getPropertyEditor_top(): PropertyEditor {
-        let pe = new NumberPropertyEditor();
-        pe.propertyName = "top";
-        pe.category = Категория_РазмерПозиция;
-        // pe.visible = () => pe.component.valueType === "auto";
-        return pe;
-    }
-
-
-    // ------------------------------ left ------------------------------
-    _left: number;
-    get left(): number {
-        return this._left;
-    }
-
-    set left(value: number) {
-        this._left = value;
-        if (this.$ && value) {
-            this.$.css("left", value + "px");
-            this.$.css("position", "absolute");
-        }
-    }
-
-    private __emitCode_left(code: EmittedCode) {
-        code.emitNumberValue(this, "left");
-    }
-
-    private __setOptions_left() {
-        this.left = this._left;
-    }
-
-    private __getPropertyEditor_left(): PropertyEditor {
-        let pe = new NumberPropertyEditor();
-        pe.propertyName = "left";
-        pe.category = Категория_РазмерПозиция;
-        return pe;
-    }
-
-    // ------------------------------ height ------------------------------
-    _height: number = 18;
-    get height(): number {
-        return this._height;
-    }
-
-    set height(value: number) {
-        this._height = value;
-        if (this.$ && value)
-            this.jqxWidget({height: value} as jqxWidgetOptions);
-    }
-
-    private __emitCode_height(code: EmittedCode) {
-        code.emitNumberValue(this, "height", 18);
-    }
-
-    private __fillOptions_height(opt: jqxWidgetOptions) {
-        opt.height = this.height;
-    }
-
-    // ------------------------------ width ------------------------------
-    _width: number | string = 200;
-    get width(): number | string {
-        return this._width;
-    }
-
-    set width(value: number | string) {
-        this._width = value;
-        if (this.$ && value)
-            this.jqxWidget({width: value} as jqxWidgetOptions);
-    }
-
-    private __emitCode_width(code: EmittedCode) {
-        code.emitNumberValue(this, "width", 200);
-    }
-
-    private __fillOptions_width(opt: jqxWidgetOptions) {
-        opt.width = this.width;
-    }
-
-    // // ------------------------------ onClick ------------------------------
-    // _onClick: IEvent<IEventArgs>;
-    // get onClick(): IEvent<IEventArgs> {
-    //     return this._onClick;
-    // }
-    //
-    // set onClick(value: IEvent<IEventArgs>) {
-    //     this._onClick = value;
-    //     if (this.$ && this._onClick) {
-    //         this.$.on("click", () => {
-    //             let args: IEventArgs = {
-    //                 sender: this
-    //             };
-    //             this._onClick.call(this._owner, args);
-    //         })
-    //     }
-    // }
-    //
-    // private __setOptions_onClick() {
-    //     this.onClick = this._onClick;
-    // }
-    //
-    // private __emitCode_onClick(code: EmittedCode) {
-    //     code.emitEventValue(this, "onClick");
-    // }
 
 
     // ------------------------------ render ------------------------------
@@ -422,8 +308,8 @@ export class Input extends Component {
         else {
             if (this.comboType !== "none") {
                 this.$ = $("<div id='" + this.$id + "' data-component='" + this.constructor.name + "'></div>").appendTo(this.parent.$childrenContainer);
-                this.jqxWidget({animationType:"none",autoDropDownHeight:true});
-                this.comboItemsArray=this._comboItemsArray;
+                this.jqxWidget({animationType: "none", autoDropDownHeight: true});
+                this.comboItemsArray = this._comboItemsArray;
             }
             else if (this.actualValueType === "string") {
                 this.$ = $("<input  id='" + this.$id + "'  data-component='" + this.constructor.name + "'></input>").appendTo(this.parent.$childrenContainer);
@@ -459,17 +345,5 @@ export class Input extends Component {
         }
     }
 
-    //
-    // setJqxWidgetOptions() {
-    //     super.setJqxWidgetOptions();
-    //     this.onClick = this._onClick;
-    //     this.text = this._text;
-    // }
-    //
-    // emitCode(code: EmittedCode) {
-    //     super.emitCode(code);
-    //     code.emitStringValue(this, "text");
-    //     code.emitEventValue(this, "onClick");
-    // }
 
 }

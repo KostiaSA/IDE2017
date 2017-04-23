@@ -12,7 +12,7 @@ export class EmittedCode {
         this.declares.push("    " + varName + ":" + type + " = new " + type + "();");
     }
 
-    emitNumberValue(component: any, varName: string, defaultValue?: number) {
+    emitNumberValue(component: any, varName: string, defaultValue?: any) {
         if (component[varName] !== undefined && (defaultValue === undefined || defaultValue !== component[varName])) {
             if (component === component.owner)
                 this.inits.push("        " + "this." + varName + "=" + component[varName] + ";");
@@ -30,7 +30,7 @@ export class EmittedCode {
         }
     }
 
-    emitStringValue(component: any, varName: string, defaultValue?: string) {
+    emitStringValue(component: any, varName: string, defaultValue?: any) {
         if (component[varName] !== undefined && (defaultValue === undefined || defaultValue !== component[varName])) {
             if (component === component.owner)
                 this.inits.push("        " + "this." + varName + "=" + JSON.stringify(component[varName]) + ";");

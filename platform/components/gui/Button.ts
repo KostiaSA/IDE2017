@@ -15,6 +15,10 @@ import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
 import {IconPropertyEditor} from "../../../designer/IconPropertyEditor";
 import {isString} from "util";
+import {TopLeftMixin} from "./mixin/TopLeftMixin";
+import {jqxHeightWidthMixin} from "./mixin/jqxHeightWidthMixin";
+import {jqxEnabledMixin} from "./mixin/jqxEnabledMixin";
+import {OnClickMixin} from "./mixin/OnClickMixin";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -27,7 +31,12 @@ export function __registerBuhtaComponent__(): IComponentRegistration {
 }
 
 
-export class Button extends Component {
+export class Button extends jqxEnabledMixin(
+    OnClickMixin(
+        TopLeftMixin(
+            jqxHeightWidthMixin(
+                Component
+            )))) {
 
 
     constructor() {
@@ -45,6 +54,11 @@ export class Button extends Component {
     designModeInitializeNew() {
         this._text = "Новая кнопка";
     }
+
+    get height_default(): number | string {
+        return 28;
+    }
+
 
     // ------------------------------ text ------------------------------
     _text: string;
@@ -113,188 +127,9 @@ export class Button extends Component {
         return pe;
     }
 
-    // ------------------------------ top ------------------------------
-    _top: number;
-    get top(): number {
-        return this._top;
-    }
-
-    set top(value: number) {
-        this._top = value;
-        if (this.$ && value) {
-            $("#" + this._$id).css("top", value + "px");
-            $("#" + this._$id).css("position", "absolute");
-            //this.$.css("top", value + "px");
-            //this.$.css("position", "absolute");
-        }
-    }
-
-    private __emitCode_top(code: EmittedCode) {
-        code.emitNumberValue(this, "top");
-    }
-
-    private __setOptions_top() {
-        this.top = this._top;
-    }
-
-    private __getPropertyEditor_top(): PropertyEditor {
-        let pe = new NumberPropertyEditor();
-        pe.propertyName = "top";
-        pe.category = Категория_РазмерПозиция;
-        return pe;
-    }
-
-
-    // ------------------------------ left ------------------------------
-    _left: number;
-    get left(): number {
-        return this._left;
-    }
-
-    set left(value: number) {
-        this._left = value;
-        if (this.$ && value) {
-            $("#" + this._$id).css("left", value + "px");
-            $("#" + this._$id).css("position", "absolute");
-        }
-    }
-
-    private __emitCode_left(code: EmittedCode) {
-        code.emitNumberValue(this, "left");
-    }
-
-    private __setOptions_left() {
-        this.left = this._left;
-    }
-
-    private __getPropertyEditor_left(): PropertyEditor {
-        let pe = new NumberPropertyEditor();
-        pe.propertyName = "left";
-        pe.category = Категория_РазмерПозиция;
-        return pe;
-    }
-
-    // ------------------------------ height ------------------------------
-    _height: number | string = 28;
-    get height(): number | string {
-        return this._height;
-    }
-
-    set height(value: number | string) {
-        this._height = value;
-        if (this.$ && value) {
-            if (value !== "auto")
-                this.jqxWidget({height: value} as jqxWidgetOptions);
-        }
-    }
-
-    private __emitCode_height(code: EmittedCode) {
-        if (isString(this.height))
-            code.emitStringValue(this, "height");
-        else
-            code.emitNumberValue(this, "height", 28);
-    }
-
-    private __fillOptions_height(opt: jqxWidgetOptions) {
-        opt.height = this.height;
-    }
-
-    private __getPropertyEditor_height(): PropertyEditor {
-        let pe = new StringPropertyEditor();
-        pe.propertyName = "height";
-        pe.category = Категория_РазмерПозиция;
-        return pe;
-    }
-
-    // ------------------------------ width ------------------------------
-    _width: number | string;
-    get width(): number | string {
-        return this._width;
-    }
-
-    set width(value: number | string) {
-        this._width = value;
-        if (this.$ && value)
-            this.jqxWidget({width: value} as jqxWidgetOptions);
-    }
-
-    private __emitCode_width(code: EmittedCode) {
-        if (isString(this.width))
-            code.emitStringValue(this, "width");
-        else
-            code.emitNumberValue(this, "width");
-    }
-
-    private __fillOptions_width(opt: jqxWidgetOptions) {
-        opt.width = this.width;
-    }
-
-    private __getPropertyEditor_width(): PropertyEditor {
-        let pe = new StringPropertyEditor();
-        pe.propertyName = "width";
-        pe.category = Категория_РазмерПозиция;
-        return pe;
-    }
-
-    // ------------------------------ enabled ------------------------------
-    private _enabled: boolean = true;
-    get enabled(): boolean {
-        return this._enabled;
-    }
-
-    set enabled(value: boolean) {
-        this._enabled = value;
-        if (this.$) {
-            this.jqxWidget({disabled: !this._enabled});
-        }
-    }
-
-    emitCode_enabled(code: EmittedCode) {
-        code.emitBooleanValue(this, "enabled", true);
-    }
-
-    private __setOptions_enabled() {
-        this.enabled = this._enabled;
-    }
-
-    private __getPropertyEditor_enabled(): PropertyEditor {
-        let pe = new BooleanPropertyEditor();
-        pe.propertyName = "enabled";
-        pe.category = Категория_DragDrop;
-        return pe;
-    }
-
-
-    // ------------------------------ onClick ------------------------------
-    _onClick: IEvent<IEventArgs>;
-    get onClick(): IEvent<IEventArgs> {
-        return this._onClick;
-    }
-
-    set onClick(value: IEvent<IEventArgs>) {
-        this._onClick = value;
-        if (this.$ && this._onClick) {
-            $("#" + this._$id).on("click", () => {
-                let args: IEventArgs = {
-                    sender: this
-                };
-                this._onClick.call(this._owner, args);
-            })
-        }
-    }
-
-
-    private __setOptions_onClick() {
-        this.onClick = this._onClick;
-    }
-
-    private __emitCode_onClick(code: EmittedCode) {
-        code.emitEventValue(this, "onClick");
-    }
 
     // ------------------------------ render ------------------------------
     renderBody() {
-        //this.$ = $("<span><div data-component='" + this.constructor.name + "' id='" + this._$id + "'></div></span>").appendTo(this.parent.$childrenContainer).children().first();
         this.$ = $("<div style='display: inline-block' data-component='" + this.constructor.name + "' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
@@ -306,31 +141,5 @@ export class Button extends Component {
 
     }
 
-    afterRender() {
-        super.afterRender();
-        //this.jqxWidget({imgPosition: "left"});
-        //$("#"+this._$id).css("display","inline-block");
-        //this.$.css("margin-right","5px");
-        //this.$.css("margin-bottom","5px");
-    }
-
-    // // ------------------------------ render ------------------------------
-    // renderBody() {
-    //     super.renderBody();
-    //     this.$ = $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-    //     this.$.jqxButton({theme: appState.theme} as jqxWidgetOptions);
-    // }
-    //
-    // setJqxWidgetOptions() {
-    //     super.setJqxWidgetOptions();
-    //     this.onClick = this._onClick;
-    //     this.text = this._text;
-    // }
-    //
-    // emitCode(code: EmittedCode) {
-    //     super.emitCode(code);
-    //     code.emitStringValue(this, "text");
-    //     code.emitEventValue(this, "onClick");
-    // }
 
 }

@@ -24,6 +24,7 @@ export class PropertyEditor {
     category: string;
     title: string;
     help: string;
+    default:any;
 
     render(parent: JQuery) {
         throw "PropertyEditor.render(): abstract error";
