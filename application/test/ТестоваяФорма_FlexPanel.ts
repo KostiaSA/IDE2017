@@ -11,8 +11,8 @@ export class ТестоваяФорма_FlexPanel extends Window {
     //=== BEGIN-DESIGNER-DECLARE-CODE ===//
     panel:HorzFlexPanel = new HorzFlexPanel();
     topPanel:HorzFlexPanelItem = new HorzFlexPanelItem();
-    but1:Button=new Button();
     fillPanel:HorzFlexPanelItem = new HorzFlexPanelItem();
+    but1:Button = new Button();
     //=== END-DESIGNER-DECLARE-CODE ===//
 
     init() {
@@ -27,20 +27,16 @@ export class ТестоваяФорма_FlexPanel extends Window {
         this.panel.left=10;
         this.panel.height=500;
         this.panel.width=400;
-        this.childrenAdd(this.panel);
-
-        this.but1.top=5;
-        this.but1.left=500;
-        this.but1.text="XXX=YYY";
-        this.childrenAdd(this.but1);
-
+        this.topPanel.dock="bottom";
         this.topPanel.size=100;
-        this.topPanel.dock="top";
         this.panel.childrenAdd(this.topPanel);
-
-        //this.fillPanel.size=200;
         this.fillPanel.dock="fill";
         this.panel.childrenAdd(this.fillPanel);
+        this.childrenAdd(this.panel);
+        this.but1.text="XXX=YYY";
+        this.but1.top=5;
+        this.but1.left=500;
+        this.childrenAdd(this.but1);
         //=== END-DESIGNER-INIT-CODE ===//
 
     }
@@ -51,6 +47,7 @@ export class ТестоваяФорма_FlexPanel extends Window {
         ///  this.tabs.tabsPosition="bottom"; костя23
     }
 }
+
 
 
 

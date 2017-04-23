@@ -30,7 +30,7 @@ export class AppState {
     }
 
     set activeComponent(value: Component) {
-        let needRefresh=this._activeComponent !== value;
+        let needRefresh = this._activeComponent !== value;
         this._activeComponent = value;
         if (needRefresh)
             this.toolbar.refresh();
@@ -48,15 +48,81 @@ export class AppState {
         $(document).ready(() => {
             this.desktop.render();
 
-            (this.toolbar as any).parent={};
-            (this.toolbar as any).parent.$childrenContainer=$("#toolbar");
+            (this.toolbar as any).parent = {};
+            (this.toolbar as any).parent.$childrenContainer = $("#toolbar");
             this.toolbar.render();
         });
         //ReactDOM.render(<App/>, document.getElementById("content"));
+    }
+
+
+    test1() {
+        console.log("test1");
     }
 }
 
 
 export let appState = new AppState();
+//appState.startApp();
 
-appState.startApp();
+////////////////////////////////////////////////////
+
+
+// class Point {
+//     public x: number;
+//     public y: number;
+// }
+
+
+// class Person_ {
+//     lastName: string;
+ //}
+
+type Constructor<T> = new(...args: any[]) => T;
+
+class E {
+
+}
+
+function Point<T extends Constructor<{}>>(Base: T) {
+    return class extends Base {
+        public x: number;
+        public y: number;
+        constructor(...args: any[]) {
+            super(...args);
+            //          this._tag = "";
+        }
+    }
+}
+
+function Person<T extends Constructor<{}>>(Base: T) {
+    return class extends Base {
+        lastName: string;
+        constructor(...args: any[]) {
+            super(...args);
+            //          this._tag = "";
+        }
+    }
+}
+
+
+export class But extends Person(Point(E)) {
+    text: string;
+}
+
+let but=new But();
+but.text="wwwwww";
+but.x=100;
+but.lastName="lastna";
+console.log(but);
+
+//const TaggedPoint = MixOf(Point);
+
+//let point1 = new (MixOf(Point))();
+
+//let point = new TaggedPoint();
+//point._tag = "hello";
+
+
+appState.test1();
+
