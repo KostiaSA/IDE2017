@@ -7,6 +7,7 @@ import {isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {getRandomId} from "../../../app/utils/getRandomId";
 
 export class TabPanelItem extends Component {
 
@@ -95,7 +96,8 @@ export class TabPanelItem extends Component {
     render() {
         if (!this.initialized)
             this.init();
-        this.$ = $("<div style='border: none; padding: 0px; position: relative; width:100%'></div>").appendTo(this.parent.$childrenContainer);
+        this._$id = getRandomId();
+        this.$ = $("<div id='" + this._$id + "' style='border: none; padding: 0px; position: relative; width:100%'></div>").appendTo(this.parent.$childrenContainer);
         this.$li = $("<li>" + escapeHtml(this.title) + "</li>").appendTo(this.parent.$childrenContainer.find("ul").first());
         this.setJqxWidgetOptions();
         //this.renderChildren();

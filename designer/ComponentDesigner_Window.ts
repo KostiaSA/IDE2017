@@ -140,9 +140,6 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
 
 
         this.codeTab.title = "Код";
-        this.codeTab.onSelect = () => {
-            this.codeEditor.initMonacoEditor();
-        };
         this.leftTabsPanel.childrenAdd(this.codeTab);
         this.codeEditor.dock = "fill";
         this.codeTab.childrenAdd(this.codeEditor);

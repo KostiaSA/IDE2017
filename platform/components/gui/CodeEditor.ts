@@ -222,14 +222,31 @@ export class CodeEditor extends Component {
     // ------------------------------ render ------------------------------
     render(designer?: IDesigner) {
         this._designer = designer;
-        this._$id = getRandomId();
+        //this._$id = getRandomId();
         if (!this.initialized)
             this.init();
         //this.renderBody();
 //        this.$ = $("<div data-component='" + this.constructor.name + "' style='border: 0px solid red; height: 100%;width: 100%'></div>").appendTo(this.parent.$childrenContainer);
         this.$ = this.parent.$childrenContainer;
+        this._$id = this.parent.$childrenContainer.attr("id");
         this.$.css("overflow", "hidden");
 
+        // инициализируется monaco editor
+        if (this.monacoEditor)
+            return;
+
+        // workaround monaco-css not understanding the environment
+        (self as any).module = undefined;
+        // workaround monaco-typescript not understanding the environment
+        (self as any).process.browser = true;
+
+        let __this = this;
+
+        (window as any).amdRequire(["vs/editor/editor.main"], function () {
+
+            __this.monacoEditor = (window as any).monaco.editor.create($("#" + __this._$id)[0], __this.getMonacoEditorOptions());
+
+        });
 
     }
 
@@ -248,42 +265,5 @@ export class CodeEditor extends Component {
 
     monacoEditor: IStandaloneCodeEditor;
 
-    initMonacoEditor() {
-        // monaco editor не инициализируется в невидимый div, поэтому мы его рендерим, только после открытия tab-а "code"
-        if (this.monacoEditor)
-            return;
-
-        // workaround monaco-css not understanding the environment
-        (self as any).module = undefined;
-        // workaround monaco-typescript not understanding the environment
-        (self as any).process.browser = true;
-
-        let __this = this;
-
-        (window as any).amdRequire(["vs/editor/editor.main"], function () {
-
-            __this.monacoEditor = (window as any).monaco.editor.create(__this.$[0], __this.getMonacoEditorOptions());
-
-        });
-
-    }
-
-    // renderBody() {
-    //     super.renderBody();
-    //     this.$ = $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
-    //     this.$.jqxCodeEditor({theme: appState.theme} as jqxWidgetOptions);
-    // }
-    //
-    // setJqxWidgetOptions() {
-    //     super.setJqxWidgetOptions();
-    //     this.onClick = this._onClick;
-    //     this.text = this._text;
-    // }
-    //
-    // emitCode(code: EmittedCode) {
-    //     super.emitCode(code);
-    //     code.emitStringValue(this, "text");
-    //     code.emitEventValue(this, "onClick");
-    // }
 
 }

@@ -283,11 +283,11 @@ export class ListBox extends Component {
         if (this.$) {
             if (!value || isArray(value)) {
                 this.prepareDataSource(this.dataSource);
-                this.$.jqxListBox({source: this.dataSource,equalItemsWidth:true});
+                this.$.jqxListBox({source: this.dataSource, itemHeight: 23});
             }
             else if ((value as any).bindDownloadComplete && (value as any).buildHierarchy) { // это jqx.dataAdapter
                 this.prepareDataSource((value as any)._source);
-                this.$.jqxListBox({source: value,equalItemsWidth:true});
+                this.$.jqxListBox({source: value});
             }
             else {
                 //(window as any)["xxx"]=value; bindDownloadComplete
@@ -386,22 +386,20 @@ export class ListBox extends Component {
     renderBody() {
         this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "' style='width: 100%'></div>").appendTo(this.parent.$childrenContainer);
         setTimeout(() => {
-            if (this.$)
+            if (this.$) {
                 this.jqxWidget("refresh");
+            }
         }, 1);
     }
 
     doLayout() {
         if (this.$) {
             this.jqxWidget("refresh");
-            console.log("refresh");
-
         }
         super.doLayout();
     }
 
-    afterRender(){
- //       this.jqxWidget({equalItemsWidth:false});
+    afterRender() {
 
     }
 
