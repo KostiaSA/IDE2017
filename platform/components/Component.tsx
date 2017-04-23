@@ -43,9 +43,9 @@ export class Component {
 
     protected renderJqxWidgetAfterChildren: boolean = false;
 
-    jqxWidget(...args: any[]): Function {
-        throw "abstract error Component.jqxWidget() for " + this.constructor.name;
-    };
+    // jqxWidget(...args: any[]): Function {
+    //     throw "abstract error Component.jqxWidget() for " + this.constructor.name;
+    // };
 
     //[opt: string]: any;
 
@@ -217,7 +217,7 @@ export class Component {
             }
         }
         this.fillJqxWidgetOptions(opt);
-        this.jqxWidget(opt);
+        (this as any).jqxWidget(opt);
     }
 
     fillJqxWidgetOptions(opt: any) {

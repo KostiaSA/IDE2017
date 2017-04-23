@@ -1,4 +1,4 @@
-import {MixinConstructor} from "./BasePropertyMixin";
+import {MixinConstructor} from "./MixinConstructor";
 import {Component} from "../../Component";
 import {EmittedCode} from "../../code-emitter/EmittedCode";
 import {PropertyEditor, Категория_Прочее} from "../../../../designer/PropertyEditor";
@@ -23,7 +23,7 @@ export function jqxEnabledMixin<T extends MixinConstructor<Component>>(Base: T) 
         set enabled(value: boolean) {
             this._enabled = value;
             if (this.$) {
-                this.jqxWidget({disabled: !this._enabled});
+                (this as any).jqxWidget({disabled: !this._enabled});
             }
         }
 

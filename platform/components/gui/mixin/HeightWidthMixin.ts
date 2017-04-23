@@ -1,4 +1,4 @@
-import {MixinConstructor} from "./BasePropertyMixin";
+import {MixinConstructor} from "./MixinConstructor";
 import {Component} from "../../Component";
 import {EmittedCode} from "../../code-emitter/EmittedCode";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../../designer/PropertyEditor";
@@ -6,7 +6,7 @@ import {NumberPropertyEditor} from "../../../../designer/NumberPropertyEditor";
 import {isString, isUndefined} from "util";
 import {StringPropertyEditor} from "../../../../designer/StringPropertyEditor";
 
-export function jqxHeightWidthMixin<T extends MixinConstructor<Component>>(Base: T) {
+export function HeightWidthMixin<T extends MixinConstructor<Component>>(Base: T) {
     return class extends Base {
         constructor(...args: any[]) {
             super(...args);
@@ -21,9 +21,18 @@ export function jqxHeightWidthMixin<T extends MixinConstructor<Component>>(Base:
 
         set height(value: number | string) {
             this._height = value;
-            if (this.$ && value) {
-                if (value !== "auto")
-                    this.jqxWidget({height: value});
+            if (this.$) {
+                if ((this as any).dock === "fill")
+                    value = "100%";
+                if (value !== "auto") {
+                    if ((this as any).jqxWidget) {
+                        (this as any).jqxWidget({height: value});
+                    }
+                    else {
+                        if (value)
+                            this.$.height(value);
+                    }
+                }
             }
         }
 
@@ -58,8 +67,20 @@ export function jqxHeightWidthMixin<T extends MixinConstructor<Component>>(Base:
 
         set width(value: number | string) {
             this._width = value;
-            if (this.$ && value)
-                this.jqxWidget({width: value});
+            if (this.$) {
+                if ((this as any).dock === "fill")
+                    value = "100%";
+                if (value !== "auto") {
+                    if ((this as any).jqxWidget) {
+                        (this as any).jqxWidget({width: value});
+                    }
+                    else {
+                        if (value)
+                            this.$.width(value);
+                    }
+                }
+            }
+
         }
 
         protected get width_default(): number | string {

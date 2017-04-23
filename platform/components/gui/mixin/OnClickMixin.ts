@@ -1,4 +1,4 @@
-import {MixinConstructor} from "./BasePropertyMixin";
+import {MixinConstructor} from "./MixinConstructor";
 import {Component, IEvent, IEventArgs} from "../../Component";
 import {EmittedCode} from "../../code-emitter/EmittedCode";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../../designer/PropertyEditor";
@@ -29,11 +29,11 @@ export function OnClickMixin<T extends MixinConstructor<Component>>(Base: T) {
         }
 
 
-        private __setOptions_onClick() {
+        protected __setOptions_onClick() {
             this.onClick = this._onClick;
         }
 
-        private __emitCode_onClick(code: EmittedCode) {
+        protected  __emitCode_onClick(code: EmittedCode) {
             code.emitEventValue(this, "onClick");
         }
 

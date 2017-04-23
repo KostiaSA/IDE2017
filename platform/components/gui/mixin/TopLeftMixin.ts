@@ -1,4 +1,4 @@
-import {MixinConstructor} from "./BasePropertyMixin";
+import {MixinConstructor} from "./MixinConstructor";
 import {Component} from "../../Component";
 import {EmittedCode} from "../../code-emitter/EmittedCode";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../../designer/PropertyEditor";
@@ -23,8 +23,13 @@ export function TopLeftMixin<T extends MixinConstructor<Component>>(Base: T) {
         set top(value: number) {
             this._top = value;
             if (this.$ && value) {
-                $("#" + this._$id).css("top", value + "px");
-                $("#" + this._$id).css("position", "absolute");
+                if ((this as any).dock === "fill") {
+                    $("#" + this._$id).css("top", "0px");
+                }
+                else {
+                    $("#" + this._$id).css("top", value + "px");
+                    $("#" + this._$id).css("position", "absolute");
+                }
             }
         }
 
@@ -57,8 +62,13 @@ export function TopLeftMixin<T extends MixinConstructor<Component>>(Base: T) {
         set left(value: number) {
             this._left = value;
             if (this.$ && value) {
-                $("#" + this._$id).css("left", value + "px");
-                $("#" + this._$id).css("position", "absolute");
+                if ((this as any).dock === "fill") {
+                    $("#" + this._$id).css("left", "0px");
+                }
+                else {
+                    $("#" + this._$id).css("left", value + "px");
+                    $("#" + this._$id).css("position", "absolute");
+                }
             }
         }
 

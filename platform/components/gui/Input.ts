@@ -17,7 +17,7 @@ import {isArray, isBoolean, isNumber, isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
 import {jqxEnabledMixin} from "./mixin/jqxEnabledMixin";
 import {TopLeftMixin} from "./mixin/TopLeftMixin";
-import {jqxHeightWidthMixin} from "./mixin/jqxHeightWidthMixin";
+import {HeightWidthMixin} from "./mixin/HeightWidthMixin";
 
 export type InputValueType = "auto" | "string" | "number" | "boolean";
 export type InputComboType = "none" | "array" | "sql" | "function" | "system";
@@ -44,7 +44,7 @@ export interface IComboBoxItem {
 
 export class Input extends jqxEnabledMixin(
     TopLeftMixin(
-        jqxHeightWidthMixin(
+        HeightWidthMixin(
             Component
         ))) {
 
