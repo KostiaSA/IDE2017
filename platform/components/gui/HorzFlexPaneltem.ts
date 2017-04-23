@@ -11,10 +11,12 @@ import {
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {BooleanPropertyEditor} from "../../../designer/BooleanPropertyEditor";
+import {getRandomId} from "../../../app/utils/getRandomId";
+import {IDesigner} from "../../designer/IDesigner";
 
 export type HorzFlexPanelItemType = "top" | "bottom" | "fill";
 
-export class HorzFlexPanelItem extends Control {
+export class HorzFlexPanelItem extends Component {
 
 
     // ------------------------------ dock ------------------------------
@@ -24,11 +26,25 @@ export class HorzFlexPanelItem extends Control {
     }
 
     set dock(value: HorzFlexPanelItemType) {
-        let needReloadPropertyEditor = this._dock !== value;
+        let needRerender = this._dock !== value;
         this._dock = value;
-        if (this.$ && needReloadPropertyEditor && this._designer) {
-            this._designer.reloadPropertyEditor();
+        if (this.$) {
+            if (this.dock === "fill") {
+                this.$.css("flex", "1 0 auto");
+                this.$.css("height", "10px");
+            }
+            else{
+                this.$.css("flex", "0 0 auto");
+            }
+            if (needRerender) {
+                this.__setOptions_size();
+                this.parent.reRender();
+                console.log("reRender-flex");
+            }
         }
+        // if (this.$ && needReloadPropertyEditor && this._designer) {
+        //     this._designer.reloadPropertyEditor();
+        // }
     }
 
     private __emitCode_dock(code: EmittedCode) {
@@ -90,8 +106,25 @@ export class HorzFlexPanelItem extends Control {
 
     set size(value: number) {
         this._size = value;
-        //if (this.$)
-        //  this.$.size(this.size);
+        if (this.$) {
+            if (this.dock === "top" || this.dock === "bottom") {
+                if (this._designer) {
+                    if (this.size)
+                        this.$.height(this.size + "px");
+                    else
+                        this.$.height("50px");
+                }
+                else {
+                    if (this.size && !this.sizeToContent)
+                        this.$.height(this.size + "px");
+                }
+                this.$.css("flex", "0 auto")
+            }
+        }
+    }
+
+    private __setOptions_size() {
+        this.size = this._size;
     }
 
     private __emitCode_size(code: EmittedCode) {
@@ -113,9 +146,9 @@ export class HorzFlexPanelItem extends Control {
 
     set sizeToContent(value: boolean) {
         this._sizeToContent = value;
-        if (this.$) {
-            this.jqxWidget({sizeToContent: this._sizeToContent});
-        }
+        // if (this.$) {
+        //     this.jqxWidget({sizeToContent: this._sizeToContent});
+        // }
     }
 
     emitCode_sizeToContent(code: EmittedCode) {
@@ -134,38 +167,43 @@ export class HorzFlexPanelItem extends Control {
     }
 
     // ------------------------------ render ------------------------------
-    render() {
+    render(designer?: IDesigner) {
+        this._designer = designer;
+
         if (!this.initialized)
             this.init();
 
+        this._$id = getRandomId();
         this.beforeRender();
 
-        this.$ = $("<div style ='border: 0px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div id='" + this._$id + "' style ='border: 1px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
 
-        this.__setOptions_padding();
+        //this.__setOptions_padding();
 
         for (let child of this.children) {
             child.render(this._designer);
         }
 
-        this.$.attr("dock", this.dock);
-        if (this.dock === "top" || this.dock === "bottom") {
-            if (this._designer) {
-                if (this.size)
-                    this.$.height(this.size + "px");
-                else
-                    this.$.height("50px");
-            }
-            else {
-                if (this.size && !this.sizeToContent)
-                    this.$.height(this.size + "px");
-            }
-            this.$.css("flex", "0 auto")
-        }
-        if (this.dock === "fill") {
-            this.$.css("flex", "1 0 auto");
-            this.$.css("height", "10px");
-        }
+        this.setJqxWidgetOptions();
+
+        //this.$.attr("dock", this.dock);
+        // if (this.dock === "top" || this.dock === "bottom") {
+        //     if (this._designer) {
+        //         if (this.size)
+        //             this.$.height(this.size + "px");
+        //         else
+        //             this.$.height("50px");
+        //     }
+        //     else {
+        //         if (this.size && !this.sizeToContent)
+        //             this.$.height(this.size + "px");
+        //     }
+        //     this.$.css("flex", "0 auto")
+        // }
+        // if (this.dock === "fill") {
+        //     this.$.css("flex", "1 0 auto");
+        //     this.$.css("height", "10px");
+        // }
 
         this.afterRender();
 

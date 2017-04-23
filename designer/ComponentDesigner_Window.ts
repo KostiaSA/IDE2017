@@ -57,9 +57,10 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         }
 
         if (this._activeComponent && this._activeComponent.$) {
-            let frame = $("#"+this._activeComponent.$id);
+            let frame = $("#" + this._activeComponent.$id);
             frame.css("outline", "");
-            frame.resizable("destroy");
+            if (frame.is('.ui-resizable'))
+                frame.resizable("destroy");
         }
         let savedOld = this._activeComponent;
         this._activeComponent = value;
@@ -72,7 +73,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
             func(value, savedOld);
         }
 
-        let frame = $("#"+this._activeComponent.$id);
+        let frame = $("#" + this._activeComponent.$id);
         frame.css("outline", "solid 2px deepskyblue");
         frame.resizable({
             grid: 5,
@@ -161,7 +162,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         this.rightTabsPanel.childrenAdd(this.componentsTab);
 
         this.componentsListBox.dock = "fill";
-        this.componentsListBox.noBorder=true;
+        this.componentsListBox.noBorder = true;
         this.componentsListBox.onDblClick = this.componentsListBox_DblClick;
         this.componentsTab.childrenAdd(this.componentsListBox);
 

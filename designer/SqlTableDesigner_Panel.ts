@@ -37,6 +37,7 @@ export class SqlTableDesigner_Panel extends BaseDesigner_Panel {
         this.splitPanel1.childrenAdd(this.splitPanelBottom);
 
         this.columnsListBox.dock = "fill";
+        this.columnsListBox.noBorder = true;
         this.splitPanelTop.childrenAdd(this.columnsListBox);
 
         this.addColumnButton.text="добавить колонку";

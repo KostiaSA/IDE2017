@@ -307,6 +307,7 @@ export class Button extends Component {
     }
 
     afterRender() {
+        super.afterRender();
         //this.jqxWidget({imgPosition: "left"});
         //$("#"+this._$id).css("display","inline-block");
         //this.$.css("margin-right","5px");

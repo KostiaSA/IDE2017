@@ -189,6 +189,9 @@ export class Component {
         this.afterRender();
     }
 
+    reRender(){
+
+    }
 
     initialized: boolean;
 
@@ -215,6 +218,26 @@ export class Component {
         }
         this.fillJqxWidgetOptions(opt);
         this.jqxWidget(opt);
+    }
+
+    fillJqxWidgetOptions(opt: any) {
+    }
+
+    setJqxWidgetOptions() {
+        for (let propName of getAllObjectProps(this)) {
+            if (propName.startsWith("__setOptions_")) {
+                ((this as any)[propName]).call(this);
+            }
+        }
+    }
+
+    renderChildren() {
+        for (let child of this.children) {
+            child.render(this._designer);
+        }
+    }
+
+    afterRender() {
         if (this._designer) {
 
             $("#"+this._$id).on("mousedown", this.designModeOnMouseDown);
@@ -239,27 +262,6 @@ export class Component {
                 },
             });
         }
-    }
-
-    fillJqxWidgetOptions(opt: any) {
-    }
-
-    setJqxWidgetOptions() {
-        for (let propName of getAllObjectProps(this)) {
-            if (propName.startsWith("__setOptions_")) {
-                ((this as any)[propName]).call(this);
-            }
-        }
-    }
-
-    renderChildren() {
-        for (let child of this.children) {
-            child.render(this._designer);
-        }
-    }
-
-    afterRender() {
-
     }
 
     beforeRender() {

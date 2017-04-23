@@ -5,6 +5,8 @@ import {HorzFlexPanelItem} from "./HorzFlexPaneltem";
 import {PanelDock} from "./DockPanel";
 import {PropertyEditor, Категория_РазмерПозиция} from "../../../designer/PropertyEditor";
 import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
+import {getRandomId} from "../../../app/utils/getRandomId";
+import {IDesigner} from "../../designer/IDesigner";
 
 
 export function __registerBuhtaComponent__(): IComponentRegistration {
@@ -168,19 +170,17 @@ export class HorzFlexPanel extends Component {
 
     }
 
-    render() {
+    render(designer?: IDesigner) {
+        this._designer = designer;
         if (!this.initialized)
             this.init();
 
+        this._$id = getRandomId();
         this.beforeRender();
 
-        this.$ = $("<div style='border: 0px solid green; display: flex; flex-direction: column;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div style='border: 1px solid green; display: flex; flex-direction: column;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
 
-        this.__setOptions_left();
-        this.__setOptions_top();
-        this.__setOptions_height();
-        this.__setOptions__width();
-        this.__setOptions_dock();
+        this.setJqxWidgetOptions();
 
         for (let child of this.children) {
             let item = child as HorzFlexPanelItem;
@@ -200,6 +200,32 @@ export class HorzFlexPanel extends Component {
                 child.render(this._designer);
         }
 
+        this.afterRender();
+
+    }
+
+    reRender() {
+
+        this.$.empty();
+
+        for (let child of this.children) {
+            let item = child as HorzFlexPanelItem;
+            if (item.dock === "top")
+                child.render(this._designer);
+        }
+
+        for (let child of this.children) {
+            let item = child as HorzFlexPanelItem;
+            if (item.dock === "fill")
+                child.render(this._designer);
+        }
+
+        for (let child of this.children) {
+            let item = child as HorzFlexPanelItem;
+            if (item.dock === "bottom")
+                child.render(this._designer);
+        }
+        console.log("reRender-flex-parent");
         this.afterRender();
 
     }

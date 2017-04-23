@@ -204,6 +204,7 @@ export class TabsPanel extends Component {
     }
 
     afterRender() {
+        super.afterRender();
         this.$.on("selected", (event: any) => {
             var selectedTab = event.args.item;
             let title = this.jqxWidget("getTitleAt", selectedTab).toString();

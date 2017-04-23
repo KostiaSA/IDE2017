@@ -283,7 +283,7 @@ export class ListBox extends Component {
         if (this.$) {
             if (!value || isArray(value)) {
                 this.prepareDataSource(this.dataSource);
-                this.$.jqxListBox({source: this.dataSource, itemHeight: 23});
+                this.$.jqxListBox({source: this.dataSource});
             }
             else if ((value as any).bindDownloadComplete && (value as any).buildHierarchy) { // это jqx.dataAdapter
                 this.prepareDataSource((value as any)._source);
@@ -400,7 +400,7 @@ export class ListBox extends Component {
     }
 
     afterRender() {
-
+        super.afterRender();
     }
 
 }

@@ -181,10 +181,6 @@ export class ProjectExplorer_window extends Window {
     }
 
 
-    afterRender() {
-        //this.splitPanel1.refresh();
-        //this.splitPanel2.refresh();
-    }
 
 
 }
