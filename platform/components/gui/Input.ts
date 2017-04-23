@@ -15,7 +15,7 @@ import {StringPropertyEditor} from "../../../designer/StringPropertyEditor";
 import {NumberPropertyEditor} from "../../../designer/NumberPropertyEditor";
 import {isArray, isBoolean, isNumber, isString} from "util";
 import {escapeHtml} from "../../utils/escapeHtml";
-import {jqxEnabledMixin} from "./mixin/jqxEnabledMixin";
+import {EnabledMixin} from "./mixin/EnabledMixin";
 import {TopLeftMixin} from "./mixin/TopLeftMixin";
 import {HeightWidthMixin} from "./mixin/HeightWidthMixin";
 
@@ -42,7 +42,7 @@ export interface IComboBoxItem {
     image?: string;
 }
 
-export class Input extends jqxEnabledMixin(
+export class Input extends EnabledMixin(
     TopLeftMixin(
         HeightWidthMixin(
             Component

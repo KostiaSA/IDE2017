@@ -17,7 +17,7 @@ import {IconPropertyEditor} from "../../../designer/IconPropertyEditor";
 import {isString} from "util";
 import {TopLeftMixin} from "./mixin/TopLeftMixin";
 import {HeightWidthMixin} from "./mixin/HeightWidthMixin";
-import {jqxEnabledMixin} from "./mixin/jqxEnabledMixin";
+import {EnabledMixin} from "./mixin/EnabledMixin";
 import {OnClickMixin} from "./mixin/OnClickMixin";
 
 
@@ -31,7 +31,7 @@ export function __registerBuhtaComponent__(): IComponentRegistration {
 }
 
 
-export class Button extends jqxEnabledMixin(
+export class Button extends EnabledMixin(
     OnClickMixin(
         TopLeftMixin(
             HeightWidthMixin(
