@@ -53,19 +53,19 @@ export class Component {
         return true;
     }
 
-    getDesignerPanel():BaseDesigner_Panel {
+    getDesignerPanel(): BaseDesigner_Panel {
         throw "дизайнер не определен для компонента " + this.constructor.name;
     }
 
-    getDesignerLabel():string {
+    getDesignerLabel(): string {
         return this.constructor.name;
     }
 
-    getDesignerImage():string {
+    getDesignerImage(): string {
         return "vendor/fugue/icons/puzzle.png";
     }
 
-    getDesignerCategory():string {
+    getDesignerCategory(): string {
         return "КОМПОНЕНТЫ";
     }
 
@@ -96,14 +96,17 @@ export class Component {
 
 
     // --- owner ---
-    protected _owner: Component;
     get owner(): Component {
-        return this._owner || this;
+        if (!this.parent)
+            return this;
+        else {
+            if (this.parent.constructor.name === "FormDesigner_Panel")
+                return this;
+            else
+                return this.parent.owner;
+        }
     }
 
-    set owner(value: Component) {
-        this._owner = value;
-    }
 
     // --- $ ---
     protected _$: JQuery;
@@ -130,7 +133,7 @@ export class Component {
         if (this.owner === this)
             return this.constructor.name;
 
-        console.error("ошибка платформы Component.get name() for " + this.constructor.name);
+        console.error("ошибка платформы Component.get name() for " + this.constructor.name, this, this.owner);
         return "ошибка_" + this.constructor.name;
     }
 
@@ -141,7 +144,6 @@ export class Component {
     childrenAdd(child: Component) {
         if (this.children.indexOf(child) > -1)
             throw "ошибка childrenAdd: двойное добавление";
-        child.owner = this.owner;
         child.parent = this;
         this.children.push(child);
     }
@@ -189,7 +191,7 @@ export class Component {
         this.afterRender();
     }
 
-    reRender(){
+    reRender() {
 
     }
 
@@ -240,13 +242,13 @@ export class Component {
     afterRender() {
         if (this._designer) {
 
-            $("#"+this._$id).on("mousedown", this.designModeOnMouseDown);
+            $("#" + this._$id).on("mousedown", this.designModeOnMouseDown);
             if (!this.allowChildren) {
                 //this.$.droppable({disabled: true});
             }
             else {
                 //console.log("dropped", this.$);
-                $("#"+this._$id).droppable({
+                $("#" + this._$id).droppable({
                     greedy: true,
                     hoverClass: "form-designer-drop-hover",
                     drop: function () {
@@ -254,11 +256,11 @@ export class Component {
                     }
                 });
             }
-            $("#"+this._$id).draggable({
+            $("#" + this._$id).draggable({
                 grid: [5, 5],
                 drag: () => {
-                    (this._designer!.activeComponent as any).left = $("#"+this._$id).position().left;
-                    (this._designer!.activeComponent as any).top = $("#"+this._$id).position().top;
+                    (this._designer!.activeComponent as any).left = $("#" + this._$id).position().left;
+                    (this._designer!.activeComponent as any).top = $("#" + this._$id).position().top;
                 },
             });
         }
@@ -272,8 +274,8 @@ export class Component {
 
     }
 
-    doLayout(){
-        console.log("doLayout "+this.constructor.name);
+    doLayout() {
+        console.log("doLayout " + this.constructor.name);
         for (let child of this.children) {
             child.doLayout();
         }

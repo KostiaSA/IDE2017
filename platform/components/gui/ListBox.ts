@@ -332,7 +332,7 @@ export class ListBox extends Component {
                     sender: this,
                     item: __this.$.jqxListBox("getSelectedItem")
                 };
-                this._onDblClick.call(this._owner, args);
+                this._onDblClick.call(this.owner, args);
             })
         }
     }
@@ -369,7 +369,7 @@ export class ListBox extends Component {
                     sender: __this,
                     item: event.args.item
                 };
-                this._onChange.call(this._owner, args);
+                this._onChange.call(this.owner, args);
             })
         }
     }

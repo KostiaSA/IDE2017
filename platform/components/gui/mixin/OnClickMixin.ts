@@ -23,7 +23,7 @@ export function OnClickMixin<T extends MixinConstructor<Component>>(Base: T) {
                     let args: IEventArgs = {
                         sender: this
                     };
-                    this._onClick.call(this._owner, args);
+                    this._onClick.call(this.owner, args);
                 })
             }
         }

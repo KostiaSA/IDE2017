@@ -29,7 +29,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
     }
 
     set designedComponentPath(value: string) {
-        this._designedComponentPath = value;
+        this._designedComponentPath = replaceAll(value, "\\", "/");
     }
 
     // ------------------------------ designedForm ------------------------------
@@ -290,7 +290,13 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
 
     testRun() {
         this.save();
-        let formModule = require("../" + this.designedComponentPath.replace(".ts", ".js"));
+
+        let formModuleName="../" + this.designedComponentPath.replace(".ts", ".js");
+        console.log("testRun",formModuleName);
+        let formModule = require(formModuleName);
+
+        //formModule = replaceAll(formModule, "\\", "/");
+
         let formClassName = path.basename(this.designedComponentPath, ".ts");
         let testform = new formModule[formClassName]() as Window;
         testform.render();
@@ -352,7 +358,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         fs.renameSync(this.designedComponentPath, bakFileName);
         fs.writeFileSync(this.designedComponentPath, code);
 
-        console.log(code);
+        //console.log(code);
 
         let ts = require("typescript");
 
@@ -396,10 +402,12 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         else
             fs.writeFileSync(jsFileName, res.outputText);
 
-        console.log(res.outputText);
+        //console.log(res.outputText);
 
         // reload module
+        //console.log("jsFileName" ,jsFileName);
         Object.keys(require.cache).forEach(module => {
+            //console.log("cached module" ,module);
             if (replaceAll(module, "\\", "/").indexOf(jsFileName) >= 0) {
                 delete require.cache[module];
                 console.log("module reloaded-> " + module);
