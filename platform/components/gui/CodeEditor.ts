@@ -227,8 +227,8 @@ export class CodeEditor extends Component {
             this.init();
         this.beforeRender();
 //        this.$ = $("<div data-component='" + this.constructor.name + "' style='border: 0px solid red; height: 100%;width: 100%'></div>").appendTo(this.parent.$childrenContainer);
-        this.$ = this.parent.$childrenContainer;
-        this._$id = this.parent.$childrenContainer.attr("id");
+        //(this as any)._$ = this.parent.$childrenContainer;
+        (this as any)._$id = this.parent.$childrenContainer.attr("id");
         this.$.css("overflow", "hidden");
 
         // инициализируется monaco editor
@@ -244,7 +244,7 @@ export class CodeEditor extends Component {
 
         (window as any).amdRequire(["vs/editor/editor.main"], function () {
 
-            __this.monacoEditor = (window as any).monaco.editor.create($("#" + __this._$id)[0], __this.getMonacoEditorOptions());
+            __this.monacoEditor = (window as any).monaco.editor.create(__this.$[0], __this.getMonacoEditorOptions());
 
         });
         this.afterRender();

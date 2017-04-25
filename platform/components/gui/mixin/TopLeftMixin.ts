@@ -24,11 +24,11 @@ export function TopLeftMixin<T extends MixinConstructor<Component>>(Base: T) {
             this._top = value;
             if (this.$ && value) {
                 if ((this as any).dock === "fill") {
-                    $("#" + this._$id).css("top", "0px");
+                    this.$.css("top", "0px");
                 }
                 else {
-                    $("#" + this._$id).css("top", value + "px");
-                    $("#" + this._$id).css("position", "absolute");
+                    this.$.css("top", value + "px");
+                    this.$.css("position", "absolute");
                 }
             }
         }
@@ -63,11 +63,11 @@ export function TopLeftMixin<T extends MixinConstructor<Component>>(Base: T) {
             this._left = value;
             if (this.$ && value) {
                 if ((this as any).dock === "fill") {
-                    $("#" + this._$id).css("left", "0px");
+                    this.$.css("left", "0px");
                 }
                 else {
-                    $("#" + this._$id).css("left", value + "px");
-                    $("#" + this._$id).css("position", "absolute");
+                    this.$.css("left", value + "px");
+                    this.$.css("position", "absolute");
                 }
             }
         }

@@ -200,7 +200,7 @@ export class TabsPanel extends Component {
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='width:100%; border: none;' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
+        $("<div style='width:100%; border: none;' id='" + this.$id + "'><ul id='" + this.$id + "-ul'></ul></div>").appendTo(this.parent.$childrenContainer);
     }
 
     afterRender() {

@@ -32,7 +32,7 @@ export class ТестоваяФорма_FlexPanel extends Window {
         this.topPanel.size=100;
         this.but2.text="AAA-BBB-ccc";
         this.but2.top=20;
-        this.but2.left=170;
+        this.but2.left=55;
         this.but2.height="43";
         this.but2.width="141";
         this.topPanel.childrenAdd(this.but2);
@@ -117,6 +117,7 @@ export class ТестоваяФорма_FlexPanel extends Window {
 
 
  */
+
 
 
 

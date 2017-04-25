@@ -6,8 +6,6 @@ import {Button} from "../platform/components/gui/Button";
 import {EmittedCode} from "../platform/components/code-emitter/EmittedCode";
 import {IEventArgs} from "../platform/components/Component";
 import {Panel} from "../platform/components/gui/Panel";
-import {Layout} from "../platform/components/gui/Layout";
-import {LayoutPanel} from "../platform/components/gui/LayoutPanel";
 import {SplitPanel} from "../platform/components/gui/SplitPanel";
 import {SplitPanelItem} from "../platform/components/gui/SplitPaneltem";
 import {TabsPanel} from "../platform/components/gui/TabPanel";
@@ -69,9 +67,6 @@ export class TestWindow extends Window {
     кнопкаPanel123: Button = new Button();
     testSql: Button = new Button();
     panel1: Panel = new Panel();
-    layout1: Layout = new Layout();
-    laypanel: LayoutPanel = new LayoutPanel();
-    laypanel2: LayoutPanel = new LayoutPanel();
 
     splitPanel1: SplitPanel = new SplitPanel();
     panelA: SplitPanelItem = new SplitPanelItem();

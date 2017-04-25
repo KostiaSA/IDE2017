@@ -130,7 +130,7 @@ export class Button extends EnabledMixin(
 
     // ------------------------------ render ------------------------------
     renderBody() {
-        this.$ = $("<div style='display: inline-block' data-component='" + this.constructor.name + "' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div style='display: inline-block' data-component='" + this.constructor.name + "' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     createAppToolBar() {

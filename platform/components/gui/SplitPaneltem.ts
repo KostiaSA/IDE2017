@@ -106,7 +106,7 @@ export class SplitPanelItem extends Control {
     render() {
         if (!this.initialized)
             this.init();
-        this.$ = $("<div></div>").appendTo(this.parent.$childrenContainer);
+        $("<div id='" + this.$id + "' ></div>").appendTo(this.parent.$childrenContainer);
         this.__setOptions_padding();
         this.renderChildren();
     }

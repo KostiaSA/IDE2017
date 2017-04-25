@@ -384,7 +384,7 @@ export class ListBox extends Component {
 
     // ------------------------------ render ------------------------------
     renderBody() {
-        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "' style='width: 100%'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div data-component='" + this.constructor.name + "' id='" + this.$id + "' style='width: 100%'></div>").appendTo(this.parent.$childrenContainer);
         setTimeout(() => {
             if (this.$) {
                 this.jqxWidget("refresh");

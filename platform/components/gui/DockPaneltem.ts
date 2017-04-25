@@ -117,7 +117,7 @@ export class DockPanelItem extends Control {
         // else if (this.dock === "left" || this.dock === "right")
         //     styleStr = "style='width:" + this.size + "px'";
 
-        this.$ = $("<div style ='border: 1px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
+        $("<div id='" + this.$id + "' style ='border: 1px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
 
         this.__setOptions_padding();
 

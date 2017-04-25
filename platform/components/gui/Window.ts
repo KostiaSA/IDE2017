@@ -214,7 +214,7 @@ export class Window extends Component {
         //this._height = this._height || 600;
         //this._width = this._width || 500;
         if (this._designer) {
-            this.$ = $("<div id='" + this.$id + "' style='position: relative; padding: 10px'></div>").appendTo(this.parent.$childrenContainer);
+            $("<div id='" + this.$id + "' style='position: relative; padding: 10px'></div>").appendTo(this.parent.$childrenContainer);
             // this.$.on("mousedown", this.designModeOnMouseDown);
             this.$.resizable({
                 grid: 1,
@@ -235,7 +235,7 @@ export class Window extends Component {
                 </div>
                 `;
 
-            this.$ = $(html).appendTo($(`#content`));
+            $(html).appendTo($(`#content`));
             this.$.on("resizing", () => {
                 this.doLayout();
             });

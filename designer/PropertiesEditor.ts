@@ -174,7 +174,7 @@ export class PropertiesEditor extends Component {
 
     renderBody() {
 
-        this.$ = $("<div style='width:100px;height: 100px; border: 0px solid red'><table id='" + this.$id + "' style='border:0px solid green; width:95%;border-spacing:0;'></table></div>").appendTo(this.parent.$childrenContainer);
+        $("<div border: 0px solid red'><table id='" + this.$id + "' style='border:0px solid green; width:95%;border-spacing:0;'></table></div>").appendTo(this.parent.$childrenContainer);
 
     }
 

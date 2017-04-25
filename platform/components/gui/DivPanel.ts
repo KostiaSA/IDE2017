@@ -210,11 +210,10 @@ export class DivPanel extends DockNoneFillMixin(
 
     render(designer?: IDesigner) {
         this._designer = designer;
-        this._$id = getRandomId();
         if (!this.initialized)
             this.init();
         this.beforeRender();
-        this.$ = $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
         this.renderChildren();
         this.setJqxWidgetOptions();
         this.afterRender();

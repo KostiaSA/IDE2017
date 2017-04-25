@@ -389,7 +389,7 @@ export class TreeList extends Component {
     // ------------------------------ render ------------------------------
     renderBody() {
         // не убирать style='height: 100%'
-        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "' style='height: 100%'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div data-component='" + this.constructor.name + "' id='" + this.$id + "' style='height: 100%'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     doLayout() {

@@ -180,10 +180,10 @@ export class HorzFlexPanel extends DockNoneFillMixin(
         if (!this.initialized)
             this.init();
 
-        this._$id = getRandomId();
+        //this._$id = getRandomId();
         this.beforeRender();
 
-        this.$ = $("<div style='border: 1px solid green; display: flex; flex-direction: column;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div style='border: 1px solid green; display: flex; flex-direction: column;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
 
         this.setJqxWidgetOptions();
 

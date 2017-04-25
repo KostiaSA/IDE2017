@@ -109,17 +109,23 @@ export class Component {
 
 
     // --- $ ---
-    protected _$: JQuery;
+    //protected _$: JQuery;
     get $(): JQuery {
-        return this._$;
+        let ret = $("#" + this.$id);
+        if (ret.length > 0)
+            return ret;
+        else
+            return null as any;
     }
 
-    set $(value: JQuery) {
-        this._$ = value;
-    }
+    // set $(value: JQuery) {
+    //     this._$ = value;
+    // }
 
-    protected _$id: string;
+    private _$id: string;
     get $id(): string {
+        if (!this._$id)
+            this._$id = getRandomId();
         return this._$id;
     }
 
@@ -173,7 +179,6 @@ export class Component {
 
     render(designer?: IDesigner) {// this._parentId = parentId;
         this._designer = designer;
-        this._$id = getRandomId();
         if (!this.initialized)
             this.init();
         this.beforeRender();
@@ -203,7 +208,7 @@ export class Component {
     }
 
     renderBody() {
-        this.$ = $("<div data-component='" + this.constructor.name + "' id='" + this._$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div data-component='" + this.constructor.name + "' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     designModeOnMouseDown = (e: any) => {
@@ -242,13 +247,13 @@ export class Component {
     afterRender() {
         if (this._designer) {
 
-            $("#" + this._$id).on("mousedown", this.designModeOnMouseDown);
+            this.$.on("mousedown", this.designModeOnMouseDown);
             if (!this.allowChildren) {
                 //this.$.droppable({disabled: true});
             }
             else {
                 //console.log("dropped", this.$);
-                $("#" + this._$id).droppable({
+                this.$.droppable({
                     greedy: true,
                     hoverClass: "form-designer-drop-hover",
                     drop: function () {
@@ -256,11 +261,11 @@ export class Component {
                     }
                 });
             }
-            $("#" + this._$id).draggable({
+            this.$.draggable({
                 grid: [5, 5],
                 drag: () => {
-                    (this._designer!.activeComponent as any).left = $("#" + this._$id).position().left;
-                    (this._designer!.activeComponent as any).top = $("#" + this._$id).position().top;
+                    (this._designer!.activeComponent as any).left = this.$.position().left;
+                    (this._designer!.activeComponent as any).top = this.$.position().top;
                 },
             });
         }

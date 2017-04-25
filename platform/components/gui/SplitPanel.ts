@@ -218,7 +218,7 @@ export class SplitPanel extends Component {
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: none;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div style='border: none;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
     getPanelsLayout(): SplitterPanel[] {

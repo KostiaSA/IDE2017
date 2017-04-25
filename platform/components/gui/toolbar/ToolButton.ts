@@ -125,7 +125,10 @@ export class ToolButton extends Component implements IToolBarItem {
     // ------------------------------ renderItem ------------------------------
     renderItem() {
         (this.parent as any).jqxWidget("addTool", "button", "last", this.separator, (type: string, $tool: any) => {
-            this.$ = $tool;
+
+            //this.$ = $tool;
+            $tool.attr("id",this.$);
+
             if (this.image) {
                 let button = $("<div>" + "<img src='" + this.image + "'/>" + "</div>");
                 $tool.append(button);

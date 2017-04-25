@@ -227,7 +227,7 @@ export class Panel extends Control {
     }
 
     renderBody() {
-        this.$ = $("<div style='border: none;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div style='border: none;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
     }
 
 }

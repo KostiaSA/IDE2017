@@ -96,10 +96,9 @@ export class TabPanelItem extends Component {
     render() {
         if (!this.initialized)
             this.init();
-        this._$id = getRandomId();
         this.beforeRender();
 
-        this.$ = $("<div id='" + this._$id + "' style='border: none; padding: 0px; position: relative; width:100%'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div id='" + this.$id + "' style='border: none; padding: 0px; position: relative; width:100%'></div>").appendTo(this.parent.$childrenContainer);
         this.$li = $("<li>" + escapeHtml(this.title) + "</li>").appendTo(this.parent.$childrenContainer.find("ul").first());
         this.setJqxWidgetOptions();
         //this.renderChildren();

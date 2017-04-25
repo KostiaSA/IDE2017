@@ -19,7 +19,7 @@ export function OnClickMixin<T extends MixinConstructor<Component>>(Base: T) {
         set onClick(value: IEvent<IEventArgs>) {
             this._onClick = value;
             if (this.$ && this._onClick) {
-                $("#" + this._$id).on("click", () => {
+                this.$.on("click", () => {
                     let args: IEventArgs = {
                         sender: this
                     };

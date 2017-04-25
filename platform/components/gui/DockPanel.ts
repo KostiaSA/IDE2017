@@ -172,7 +172,7 @@ export class DockPanel extends Component {
 
     // ------------------------------ renderBody ------------------------------
     renderBody() {
-        this.$ = $("<div style='border: 2px solid green;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
+        $("<div style='border: 2px solid green;' id='" + this.$id + "'></div>").appendTo(this.parent.$childrenContainer);
 
         this.$.on("layout", () => {
             for (let child of this.children) {
