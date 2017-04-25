@@ -298,8 +298,10 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         //formModule = replaceAll(formModule, "\\", "/");
 
         let formClassName = path.basename(this.designedComponentPath, ".ts");
-        let testform = new formModule[formClassName]() as Window;
+        let testform = new formModule[formClassName]() as Component;
+        console.log((testform as any).topPanel,(testform as any).topPanel.dock);
         testform.render();
+        console.log((testform as any).topPanel,(testform as any).topPanel.dock);
 
     }
 
@@ -402,7 +404,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         else
             fs.writeFileSync(jsFileName, res.outputText);
 
-        //console.log(res.outputText);
+        console.log(res.outputText);
 
         // reload module
         //console.log("jsFileName" ,jsFileName);

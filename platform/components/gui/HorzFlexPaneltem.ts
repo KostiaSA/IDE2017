@@ -176,7 +176,7 @@ export class HorzFlexPanelItem extends Component {
         this._$id = getRandomId();
         this.beforeRender();
 
-        this.$ = $("<div id='" + this._$id + "' style ='border: 1px solid red;' ></div>").appendTo(this.parent.$childrenContainer);
+        this.$ = $("<div id='" + this._$id + "' style ='border: 1px solid red; position: relative' ></div>").appendTo(this.parent.$childrenContainer);
 
         //this.__setOptions_padding();
 

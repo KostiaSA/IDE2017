@@ -188,22 +188,32 @@ export class HorzFlexPanel extends DockNoneFillMixin(
         this.setJqxWidgetOptions();
 
         for (let child of this.children) {
-            let item = child as HorzFlexPanelItem;
-            if (item.dock === "top")
-                child.render(this._designer);
+            console.log("before-render flex", child.name, (child as any).dock);
         }
 
         for (let child of this.children) {
             let item = child as HorzFlexPanelItem;
-            if (item.dock === "fill")
+            if (item.dock === "top") {
                 child.render(this._designer);
+                console.log("top-render flex", child.name, (child as any).dock);
+            }
+        }
+        for (let child of this.children) {
+            let item = child as HorzFlexPanelItem;
+            if (item.dock === "fill") {
+                child.render(this._designer);
+                console.log("fill-render flex", child.name, (child as any).dock);
+            }
         }
 
         for (let child of this.children) {
             let item = child as HorzFlexPanelItem;
-            if (item.dock === "bottom")
+            if (item.dock === "bottom") {
                 child.render(this._designer);
+                console.log("bottom-render flex", child.name, (child as any).dock);
+            }
         }
+
 
         this.afterRender();
 

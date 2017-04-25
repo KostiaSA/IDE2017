@@ -28,10 +28,11 @@ export class ТестоваяФорма_FlexPanel extends Window {
         this.panel.left=10;
         this.panel.height=500;
         this.panel.width=400;
+        this.topPanel.dock="bottom";
         this.topPanel.size=100;
         this.but2.text="AAA-BBB-ccc";
-        this.but2.top=15;
-        this.but2.left=225;
+        this.but2.top=20;
+        this.but2.left=170;
         this.but2.height="43";
         this.but2.width="141";
         this.topPanel.childrenAdd(this.but2);
@@ -40,8 +41,9 @@ export class ТестоваяФорма_FlexPanel extends Window {
         this.panel.childrenAdd(this.fillPanel);
         this.childrenAdd(this.panel);
         this.but1.text="XXX=YYY";
-        this.but1.top=5;
-        this.but1.left=500;
+        this.but1.top=35;
+        this.but1.left=490;
+        this.but1.height="28";
         this.childrenAdd(this.but1);
         //=== END-DESIGNER-INIT-CODE ===//
 
@@ -115,6 +117,20 @@ export class ТестоваяФорма_FlexPanel extends Window {
 
 
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
