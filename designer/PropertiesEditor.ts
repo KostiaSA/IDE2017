@@ -180,7 +180,7 @@ export class PropertiesEditor extends Component {
 
     renderEditors() {
 
-        $("#" + this.$id).empty();
+        this.$.empty();
 
         let allCategories: string[] = R.clone(PropertyEditorCategories);
         let categories: string[] = [];
@@ -205,7 +205,7 @@ export class PropertiesEditor extends Component {
 
             if (R.contains(category, categories)) {
                 let $catagoryTr = $("<tr><td colspan='2' style='text-align: right; font-weight: bold; font-size: 11px; padding-top: 7px; padding-bottom: 5px;  padding-left: 5px;padding-right: 5px'>" + escapeHtml(category) + "</td><td></td></tr>");
-                $catagoryTr.appendTo($("#" + this.$id));
+                $catagoryTr.appendTo(this.$);
 
                 for (let pe of propEditors) {
                     if (pe.category === category) {
@@ -216,7 +216,7 @@ export class PropertiesEditor extends Component {
                             title = "";
 
                         let $tr = $("<tr id='" + $peId + "'><td style='min-width: 50px; padding-left: 5px;padding-right: 5px'>" + escapeHtml(title) + "</td> <td id='" + $peId + "-input'></td></tr>");
-                        $tr.appendTo($("#" + this.$id));
+                        $tr.appendTo(this.$);
                         pe.render($("#" + $peId + "-input"));
                     }
                 }
