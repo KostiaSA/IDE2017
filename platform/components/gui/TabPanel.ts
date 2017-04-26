@@ -227,7 +227,6 @@ export class TabsPanel extends Component {
     fillJqxWidgetOptions(opt: jqxWidgetOptions) {
         opt.keyboardNavigation=false;
         opt.initTabContent=(tab:any)=>{
-            console.log(tab);
             this.children[tab].renderChildren();
         };
         //opt.panels = this.getPanelsLayout();

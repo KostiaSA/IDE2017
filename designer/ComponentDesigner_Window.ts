@@ -19,6 +19,15 @@ import {PropertiesEditor} from "./PropertiesEditor";
 import {IListBoxEventArgs, IListBoxItem, ListBox} from "../platform/components/gui/ListBox";
 import {getRegisteredComponents} from "./utils/getRegisteredComponents";
 import {FormDesigner_Panel} from "./FormDesigner_Panel";
+import {ITreeListItem, TreeList} from "../platform/components/gui/TreeList";
+import * as R from "ramda";
+import {defaultComparator} from "../platform/utils/defautComparator";
+import {escapeHtml} from "../platform/utils/escapeHtml";
+
+
+export interface ITreeListComponentItem extends ITreeListItem {
+    isFolder: boolean;
+}
 
 export class ComponentDesigner_Window extends Window implements IDesigner {
 
@@ -106,6 +115,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
 
     componentsTab: TabPanelItem = new TabPanelItem();
     componentsListBox: ListBox = new ListBox();
+    componentsTreeList: TreeList = new TreeList();
 
     formExplorerTab: TabPanelItem = new TabPanelItem();
 
@@ -161,10 +171,17 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         this.componentsTab.padding = "5px";
         this.rightTabsPanel.childrenAdd(this.componentsTab);
 
-        this.componentsListBox.dock = "fill";
-        this.componentsListBox.noBorder = true;
-        this.componentsListBox.onDblClick = this.componentsListBox_DblClick;
-        this.componentsTab.childrenAdd(this.componentsListBox);
+        // this.componentsListBox.dock = "fill";
+        // this.componentsListBox.noBorder = true;
+        // this.componentsListBox.allowDrag = true;
+        // //this.componentsListBox.onDblClick = this.componentsListBox_DblClick;
+        // this.componentsTab.childrenAdd(this.componentsListBox);
+
+        this.componentsTreeList.dock = "fill";
+        this.componentsTreeList.noBorder = true;
+        this.componentsTreeList.allowDrag = true;
+        //this.componentsListBox.onDblClick = this.componentsListBox_DblClick;
+        this.componentsTab.childrenAdd(this.componentsTreeList);
 
 
         this.formExplorerTab.title = "Структура";
@@ -247,18 +264,54 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
     }
 
     loadRegisteredComponents() {
-        let items: IListBoxItem[] = [];
+        // let items: IListBoxItem[] = [];
+        //
+        // for (let regComp of getRegisteredComponents()) {
+        //     items.push({
+        //         label: regComp.componentClass.name + "  (" + regComp.title + ")",
+        //         group: regComp.category,
+        //         value: regComp,
+        //         image: regComp.image
+        //     });
+        // }
+        //
+        // this.componentsListBox.dataSource = items;
 
-        for (let regComp of getRegisteredComponents()) {
-            items.push({
-                label: regComp.componentClass.name + "  (" + regComp.title + ")",
-                group: regComp.category,
-                value: regComp,
-                image: regComp.image
-            });
+        let fullCompsList = getRegisteredComponents();
+        let categories = R.sort(defaultComparator, R.uniq(fullCompsList.map((comp) => comp.category)));
+
+        let items: ITreeListComponentItem[] = [];
+
+        for (let category of categories)
+        {
+
+            let folderItem: ITreeListComponentItem = {
+                isFolder: true,
+//                html: `<span style="font-weight: bold;text-wrap: none">${escapeHtml(category)}</span>`,
+                label:`<strong>${escapeHtml(category)}</strong>`,
+                expanded: true,
+                icon: "vendor/fugue/icons/folder-horizontal.png",
+                iconSize: 16,
+                items:[]
+            };
+            folderItem.value = category;
+            items.push(folderItem);
+
+            let compsList=R.filter<IComponentRegistration>((c)=>c.category===category,fullCompsList);
+            for (let comp of compsList) {
+                let compItem: ITreeListComponentItem = {
+                    isFolder: false,
+                    label: escapeHtml(comp.componentClass.name + "  ("+comp.title+")"),
+                    icon: comp.image,
+                    iconSize: 16,
+                };
+                folderItem.items!.push(compItem);
+            }
+            //this.walkDir(path.join(homeDir, fileName), item);
         }
 
-        this.componentsListBox.dataSource = items;
+        console.log("categories",categories);
+        this.componentsTreeList.dataSource = items;
 
     }
 
@@ -291,17 +344,12 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
     testRun() {
         this.save();
 
-        let formModuleName="../" + this.designedComponentPath.replace(".ts", ".js");
-        console.log("testRun",formModuleName);
+        let formModuleName = "../" + this.designedComponentPath.replace(".ts", ".js");
+        console.log("testRun", formModuleName);
         let formModule = require(formModuleName);
-
-        //formModule = replaceAll(formModule, "\\", "/");
-
         let formClassName = path.basename(this.designedComponentPath, ".ts");
         let testform = new formModule[formClassName]() as Component;
-        console.log((testform as any).topPanel,(testform as any).topPanel.dock);
         testform.render();
-        console.log((testform as any).topPanel,(testform as any).topPanel.dock);
 
     }
 
@@ -389,9 +437,8 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         });
 
         // let xxx=eval(res.outputText);
-        // console.log("xxx",xxx);
-        //
         //console.log(res.diagnostics);
+
         let errors: string[] = [];
         for (let diag of res.diagnostics) {
             if (diag.category === DiagnosticCategory.Error) {
@@ -407,9 +454,7 @@ export class ComponentDesigner_Window extends Window implements IDesigner {
         console.log(res.outputText);
 
         // reload module
-        //console.log("jsFileName" ,jsFileName);
         Object.keys(require.cache).forEach(module => {
-            //console.log("cached module" ,module);
             if (replaceAll(module, "\\", "/").indexOf(jsFileName) >= 0) {
                 delete require.cache[module];
                 console.log("module reloaded-> " + module);

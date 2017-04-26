@@ -325,15 +325,17 @@ export class ListBox extends Component {
     set onDblClick(value: IEvent<IListBoxEventArgs>) {
         this._onDblClick = value;
         if (this.$ && this._onDblClick) {
+            console.log("set onDblClick", this.$.find(".jqx-listitem-state-normal"));
             let __this = this;
             this.$.find(".jqx-listitem-state-normal").dblclick((event: any) => {
                 console.log("dbl-eventTarget", event.target);
                 let args: IListBoxEventArgs = {
-                    sender: this,
+                    sender: __this,
                     item: __this.$.jqxListBox("getSelectedItem")
                 };
                 this._onDblClick.call(this.owner, args);
-            })
+            });
+            console.log("set onDblClick2", this.$.find(".jqx-listitem-state-normal"));
         }
     }
 
@@ -385,21 +387,30 @@ export class ListBox extends Component {
     // ------------------------------ render ------------------------------
     renderBody() {
         $("<div data-component='" + this.constructor.name + "' id='" + this.$id + "' style='width: 100%'></div>").appendTo(this.parent.$childrenContainer);
-        setTimeout(() => {
-            if (this.$) {
-                this.jqxWidget("refresh");
-            }
-        }, 1);
+        // setTimeout(() => {
+        //     if (this.$) {
+        //         this.jqxWidget("refresh");
+        //     }
+        // }, 1);
     }
 
     doLayout() {
         if (this.$) {
-            this.jqxWidget("refresh");
+            setTimeout(() => {
+                // непонятная ситуация , при задержке менее 100ms dblclick не работает!!!!
+                this.__setOptions_onDblClick();
+            }, 100);
         }
         super.doLayout();
     }
 
     afterRender() {
+        if (this.$) {
+            setTimeout(() => {
+                // непонятная ситуация , при задержке менее 100ms dblclick не работает!!!!
+                this.__setOptions_onDblClick();
+            }, 100);
+        }
         super.afterRender();
     }
 

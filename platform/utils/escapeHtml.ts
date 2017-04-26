@@ -9,7 +9,7 @@ var entityMap: any = {
     '=': '&#x3D;'
 };
 
-export function escapeHtml(str: string) {
+export function escapeHtml(str: string|undefined) {
     if (!str)
         return "";
     else
