@@ -42,7 +42,7 @@ export class ToolButton extends Component implements IToolBarItem {
         return this._separator;
     }
 
-    set separator(value:  boolean) {
+    set separator(value: boolean) {
         this._separator = value;
         //if (this.$)
         //  this.$.separator(this.separator);
@@ -123,11 +123,21 @@ export class ToolButton extends Component implements IToolBarItem {
     }
 
     // ------------------------------ renderItem ------------------------------
+
+    get $(): JQuery {
+        if (this.$tool)
+            return this.$tool;
+        else
+            return null as any;
+    }
+
+
+    $tool: JQuery;
+
     renderItem() {
         (this.parent as any).jqxWidget("addTool", "button", "last", this.separator, (type: string, $tool: any) => {
 
-            //this.$ = $tool;
-            $tool.attr("id",this.$);
+            this.$tool = $tool;
 
             if (this.image) {
                 let button = $("<div>" + "<img src='" + this.image + "'/>" + "</div>");
